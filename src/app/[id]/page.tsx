@@ -3,6 +3,7 @@ import PokeSprite from "@/components/pokesprite";
 import PokemonTypeBadge from "@/components/pokemon-type-badge";
 import { getSinglePokemon } from "@/lib/pokemon-data";
 import { notFound } from "next/navigation";
+import formatDexNumber from "@/utilities/format-dex-number";
 
 export default async function PokemonDetailPage({
   params,
@@ -25,6 +26,7 @@ export default async function PokemonDetailPage({
   return (
     <div>
       <h2 className="text-2xl first-letter:capitalize">{pokemon.name}</h2>
+      <p>Types:</p>
       {pokemon.types.map((pokemonType) => (
         <PokemonTypeBadge key={pokemonType} variant={pokemonType}>
           {pokemonType}
@@ -33,6 +35,12 @@ export default async function PokemonDetailPage({
       <PokeSprite id={pokemonId} />
       <PokeCry id={pokemonId} />
       {pokemon.region && <p className="capitalize">Region: {pokemon.region}</p>}
+      <p>Entry number: {formatDexNumber(pokemon.id)} </p>
+      <p>TODO: Height</p>
+      <p>TODO: Weight</p>
+      <p>TODO: Sub type</p>
+      <p>TODO: Description</p>
+      <p>TODO: Footprint</p>
     </div>
   );
 }
