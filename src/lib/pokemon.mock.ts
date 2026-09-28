@@ -16,5 +16,6 @@ export const MOCK_POKEMON_DETAIL = {
   id: 1,
   name: "bulbasaur",
   types: ["Grass", "Poison"],
+  cries: "latest",
   region: "kanto",
 } satisfies PokemonDetail;

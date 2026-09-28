@@ -34,5 +34,6 @@ export interface PokemonListItem {
  * Represents detailed information about a Pokémon.
  */
 export interface PokemonDetail extends PokemonListItem {
+  cryUrl: string | null;
   region: string | null;
 }

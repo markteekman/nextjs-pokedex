@@ -3,6 +3,15 @@ import type { PokemonDetail, PokemonListItem, PokemonTypes } from "@/app/types";
 import { query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
 
+interface CryUrls {
+  latest: string | null;
+  legacy: string | null;
+}
+
+interface PokemonCry {
+  cries: CryUrls | null;
+}
+
 interface TypeName {
   name: PokemonTypes;
 }
@@ -16,6 +25,7 @@ interface PokemonTypeEntry {
 }
 
 interface PokemonForm {
+  pokemoncries: PokemonCry[];
   pokemontypes: PokemonTypeEntry[];
 }
 
@@ -63,6 +73,9 @@ const GET_SINGLE_POKEMON = gql`
             }
           }
         }
+        pokemoncries {
+          cries
+        }
       }
       generation {
         region {
@@ -72,6 +85,15 @@ const GET_SINGLE_POKEMON = gql`
     }
   }
 `;
+
+function getLatestCry(forms: PokemonForm[]): string | null {
+  const firstForm = forms[0];
+
+  if (!firstForm) return null
+
+
+  return firstForm.pokemoncries[0]?.cries?.latest ?? null;
+}
 
 function getTypeNames(forms: PokemonForm[]): PokemonTypes[] {
   const firstForm = forms[0];
@@ -123,6 +145,7 @@ export async function getSinglePokemon(
     id: firstResult.id,
     name: firstResult.name,
     types: getTypeNames(firstResult.pokemons),
+    cryUrl: getLatestCry(firstResult.pokemons),
     region: firstResult.generation?.region?.name ?? null,
   };
 }
