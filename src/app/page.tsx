@@ -23,9 +23,6 @@ export default async function Home() {
             id={pokemon.id}
             name={pokemon.name}
             types={pokemon.types}
-            image={{
-              src: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`,
-            }}
           />
         ))}
       </ul>

@@ -16,6 +16,9 @@ export const MOCK_POKEMON_DETAIL = {
   id: 1,
   name: "bulbasaur",
   types: ["Grass", "Poison"],
-  cries: "latest",
+  cryUrl:
+    "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
+  height: 7,
+  weight: 69,
   region: "kanto",
 } satisfies PokemonDetail;

@@ -33,11 +33,11 @@ export default async function PokemonDetailPage({
         </PokemonTypeBadge>
       ))}
       <PokeSprite id={pokemonId} />
-      <PokeCry id={pokemonId} />
+      {pokemon.cryUrl && <PokeCry src={pokemon.cryUrl} />}
       {pokemon.region && <p className="capitalize">Region: {pokemon.region}</p>}
       <p>Entry number: {formatDexNumber(pokemon.id)} </p>
-      <p>TODO: Height</p>
-      <p>TODO: Weight</p>
+      {pokemon.height !== null && <p>Height: {pokemon.height}</p>}
+      {pokemon.weight !== null && <p>Weight: {pokemon.weight}</p>}
       <p>TODO: Sub type</p>
       <p>TODO: Description</p>
       <p>TODO: Footprint</p>

@@ -1,9 +1,9 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import type { PokemonTypes } from "../app/types";
 import PokemonTypeBadge from "./pokemon-type-badge";
 import PokeSprite from "./pokesprite";
+import formatDexNumber from "@/utilities/format-dex-number";
 
 type Props = {
   id: number;
@@ -19,7 +19,7 @@ export function PokeSlot({ id, name, types }: Props): ReactNode {
         className="pokeslot relative flex flex-col items-center gap-2 p-3 text-center"
       >
         <span className="pokeslot-number" aria-hidden="true">
-          #{String(id).padStart(3, "0")}
+          {formatDexNumber(id)}
         </span>
         <PokeSprite id={id} />
         <p className="leading-none first-letter:uppercase">{name}</p>

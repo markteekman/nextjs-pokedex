@@ -1,18 +1,14 @@
 import type { ReactNode } from "react";
 
 type Props = {
-  id: number;
+  src: string;
 };
 
-export default function PokeCry({ id }: Props): ReactNode {
+export default function PokeCry({ src }: Props): ReactNode {
   return (
     <>
       <p>Cry:</p>
-      <audio
-        controls
-        aria-label="Listen to Pokémon cry"
-        src={`https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`}
-      >
+      <audio controls aria-label="Listen to Pokémon cry" src={src}>
         Your browser does not support the audio tag.
       </audio>
     </>

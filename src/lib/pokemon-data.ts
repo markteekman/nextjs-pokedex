@@ -25,8 +25,10 @@ interface PokemonTypeEntry {
 }
 
 interface PokemonForm {
-  pokemoncries: PokemonCry[];
   pokemontypes: PokemonTypeEntry[];
+  pokemoncries: PokemonCry[];
+  height: number | null;
+  weight: number | null;
 }
 
 interface GenerationResponse {
@@ -76,6 +78,8 @@ const GET_SINGLE_POKEMON = gql`
         pokemoncries {
           cries
         }
+        height
+        weight
       }
       generation {
         region {
@@ -89,8 +93,7 @@ const GET_SINGLE_POKEMON = gql`
 function getLatestCry(forms: PokemonForm[]): string | null {
   const firstForm = forms[0];
 
-  if (!firstForm) return null
-
+  if (!firstForm) return null;
 
   return firstForm.pokemoncries[0]?.cries?.latest ?? null;
 }
@@ -146,6 +149,8 @@ export async function getSinglePokemon(
     name: firstResult.name,
     types: getTypeNames(firstResult.pokemons),
     cryUrl: getLatestCry(firstResult.pokemons),
+    height: firstResult.pokemons[0]?.height ?? null,
+    weight: firstResult.pokemons[0]?.weight ?? null,
     region: firstResult.generation?.region?.name ?? null,
   };
 }

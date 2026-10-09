@@ -35,5 +35,7 @@ export interface PokemonListItem {
  */
 export interface PokemonDetail extends PokemonListItem {
   cryUrl: string | null;
+  height: number | null;
+  weight: number | null;
   region: string | null;
 }
