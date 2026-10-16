@@ -1,8 +1,13 @@
 import { getPokemon } from "@/lib/pokemon-data";
+import { PokedexError } from "@/components/pokedex-error";
 import { PokeSlot } from "../components/pokeslot";
 
 export default async function Home() {
-  const pokemons = await getPokemon();
+  const result = await getPokemon();
+
+  if (result.status === "unavailable") return <PokedexError />;
+
+  const pokemons = result.data;
 
   if (pokemons.length === 0) {
     return <p>No Pokémon found. Try looking in the tall grass.</p>;

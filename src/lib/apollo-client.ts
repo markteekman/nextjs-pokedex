@@ -1,4 +1,5 @@
 import { HttpLink } from "@apollo/client";
+import { fetchPokemonApi } from "@/lib/pokemon-request";
 import {
   ApolloClient,
   InMemoryCache,
@@ -10,6 +11,7 @@ export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
     cache: new InMemoryCache(),
     link: new HttpLink({
       uri: "https://graphql.pokeapi.co/v1beta2",
+      fetch: fetchPokemonApi,
     }),
   });
 });

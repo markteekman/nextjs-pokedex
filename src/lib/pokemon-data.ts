@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import type { PokemonDetail, PokemonListItem, PokemonTypes } from "@/app/types";
 import { query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
+import { requestPokemon, type PokemonResult } from "@/lib/pokemon-request";
 
 interface CryUrls {
   latest: string | null;
@@ -108,49 +109,60 @@ function getTypeNames(forms: PokemonForm[]): PokemonTypes[] {
   );
 }
 
-export async function getPokemon(): Promise<PokemonListItem[]> {
+export async function getPokemon(): Promise<PokemonResult<PokemonListItem[]>> {
   if (process.env.POKEAPI_DATA_SOURCE === "mock") {
-    return MOCK_POKEMON;
+    return { status: "success", data: MOCK_POKEMON };
   }
 
-  const { data } = await query<{ pokemon: PokemonSpecies[] }>({
-    query: GET_POKEMON,
-  });
+  const result = await requestPokemon(() =>
+    query<{ pokemon: PokemonSpecies[] }>({ query: GET_POKEMON }),
+  );
 
-  if (!data) return [];
+  if (result.status === "unavailable") return result;
 
-  return data.pokemon.map(({ id, name, pokemons }) => ({
-    id,
-    name,
-    types: getTypeNames(pokemons),
-  }));
+  return {
+    status: "success",
+    data: result.data.pokemon.map(({ id, name, pokemons }) => ({
+      id,
+      name,
+      types: getTypeNames(pokemons),
+    })),
+  };
 }
 
 export async function getSinglePokemon(
   id: number,
-): Promise<PokemonDetail | null> {
+): Promise<PokemonResult<PokemonDetail | null>> {
   if (process.env.POKEAPI_DATA_SOURCE === "mock") {
-    return MOCK_POKEMON_DETAIL;
+    return {
+      status: "success",
+      data: id === MOCK_POKEMON_DETAIL.id ? MOCK_POKEMON_DETAIL : null,
+    };
   }
 
-  const { data } = await query<{ pokemon: PokemonSpecies[] }>({
-    query: GET_SINGLE_POKEMON,
-    variables: { id },
-  });
+  const result = await requestPokemon(() =>
+    query<{ pokemon: PokemonSpecies[] }>({
+      query: GET_SINGLE_POKEMON,
+      variables: { id },
+    }),
+  );
 
-  if (!data) return null;
+  if (result.status === "unavailable") return result;
 
-  const firstResult = data.pokemon[0];
+  const firstResult = result.data.pokemon[0];
 
-  if (!firstResult) return null;
+  if (!firstResult) return { status: "success", data: null };
 
   return {
-    id: firstResult.id,
-    name: firstResult.name,
-    types: getTypeNames(firstResult.pokemons),
-    cryUrl: getLatestCry(firstResult.pokemons),
-    height: firstResult.pokemons[0]?.height ?? null,
-    weight: firstResult.pokemons[0]?.weight ?? null,
-    region: firstResult.generation?.region?.name ?? null,
+    status: "success",
+    data: {
+      id: firstResult.id,
+      name: firstResult.name,
+      types: getTypeNames(firstResult.pokemons),
+      cryUrl: getLatestCry(firstResult.pokemons),
+      height: firstResult.pokemons[0]?.height ?? null,
+      weight: firstResult.pokemons[0]?.weight ?? null,
+      region: firstResult.generation?.region?.name ?? null,
+    },
   };
 }

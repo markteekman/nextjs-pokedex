@@ -20,6 +20,33 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Preview API failures
+
+To simulate a connection failure on both `/` and `/1`, stop the development
+server and start it with:
+
+```bash
+POKEAPI_SIMULATE_ERROR=true pnpm dev
+```
+
+The error appears inside the Pokédex screen, with a **Try again** button. While
+simulation is enabled, retries keep showing the error. Restart with `pnpm dev`
+to restore live requests. Alternatively, put `POKEAPI_SIMULATE_ERROR=true` in
+`.env.local`, and remove it and restart when finished.
+
+Simulation is only enabled in development and exercises the Apollo request
+failure path. Use the live data source: `POKEAPI_DATA_SOURCE=mock` bypasses API
+requests, including simulation. Browser DevTools' offline mode does not simulate
+this outage because the Pokémon requests run on the Next.js server.
+
+Connection failures, timeouts (after 10 seconds), HTTP 408/429/5xx responses, and
+invalid JSON responses show the service error. GraphQL errors and unexpected
+application errors reach `src/app/error.tsx`. Successful empty responses remain
+separate: an empty list shows the tall-grass message; a missing detail returns
+the not-found page. Technical errors are logged rather than shown to visitors.
+
+Run the request-handling checks with `pnpm test`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

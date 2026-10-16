@@ -1,5 +1,6 @@
 import PokeCry from "@/components/pokecry";
 import PokeSprite from "@/components/pokesprite";
+import { PokedexError } from "@/components/pokedex-error";
 import PokemonTypeBadge from "@/components/pokemon-type-badge";
 import { getSinglePokemon } from "@/lib/pokemon-data";
 import { notFound } from "next/navigation";
@@ -13,11 +14,15 @@ export default async function PokemonDetailPage({
   const { id } = await params;
   const pokemonId = Number(id);
 
-  if (!Number.isInteger(pokemonId)) {
+  if (!Number.isInteger(pokemonId) || pokemonId < 1) {
     notFound();
   }
 
-  const pokemon = await getSinglePokemon(pokemonId);
+  const result = await getSinglePokemon(pokemonId);
+
+  if (result.status === "unavailable") return <PokedexError />;
+
+  const pokemon = result.data;
 
   if (!pokemon) {
     notFound();
