@@ -5,6 +5,10 @@ import PokemonTypeBadge from "@/components/pokemon-type-badge";
 import { getSinglePokemon } from "@/lib/pokemon-data";
 import { notFound } from "next/navigation";
 import formatDexNumber from "@/utilities/format-dex-number";
+import {
+  formatPokemonHeight,
+  formatPokemonWeight,
+} from "@/utilities/format-pokemon-measurements";
 
 export default async function PokemonDetailPage({
   params,
@@ -41,8 +45,12 @@ export default async function PokemonDetailPage({
       {pokemon.cryUrl && <PokeCry src={pokemon.cryUrl} />}
       {pokemon.region && <p className="capitalize">Region: {pokemon.region}</p>}
       <p>Entry number: {formatDexNumber(pokemon.id)} </p>
-      {pokemon.height !== null && <p>Height: {pokemon.height}</p>}
-      {pokemon.weight !== null && <p>Weight: {pokemon.weight}</p>}
+      {pokemon.height !== null && (
+        <p>Height: {formatPokemonHeight(pokemon.height)}</p>
+      )}
+      {pokemon.weight !== null && (
+        <p>Weight: {formatPokemonWeight(pokemon.weight)}</p>
+      )}
       <p>TODO: Sub type</p>
       <p>TODO: Description</p>
       <p>TODO: Footprint</p>
