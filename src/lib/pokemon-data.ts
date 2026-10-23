@@ -13,6 +13,18 @@ interface PokemonCry {
   cries: CryUrls | null;
 }
 
+interface SpriteUrl {
+  front_default: string | null;
+}
+
+interface PokemonSprites {
+  sprites: {
+    other: {
+      "official-artwork": SpriteUrl | null;
+    };
+  };
+}
+
 interface TypeName {
   name: PokemonTypes;
 }
@@ -28,6 +40,7 @@ interface PokemonTypeEntry {
 interface PokemonForm {
   pokemontypes: PokemonTypeEntry[];
   pokemoncries: PokemonCry[];
+  pokemonsprites: PokemonSprites[];
   height: number | null;
   weight: number | null;
 }
@@ -58,6 +71,9 @@ const GET_POKEMON = gql`
             }
           }
         }
+        pokemonsprites {
+          sprites
+        }
       }
     }
   }
@@ -81,6 +97,9 @@ const GET_SINGLE_POKEMON = gql`
         }
         height
         weight
+        pokemonsprites {
+          sprites
+        }
       }
       generation {
         region {
@@ -97,6 +116,17 @@ function getLatestCry(forms: PokemonForm[]): string | null {
   if (!firstForm) return null;
 
   return firstForm.pokemoncries[0]?.cries?.latest ?? null;
+}
+
+function getSpriteUrl(forms: PokemonForm[]): string | null {
+  const firstForm = forms[0];
+
+  if (!firstForm) return null;
+
+  return (
+    firstForm.pokemonsprites[0]?.sprites?.other["official-artwork"]
+      ?.front_default ?? null
+  );
 }
 
 function getTypeNames(forms: PokemonForm[]): PokemonTypes[] {
@@ -126,6 +156,7 @@ export async function getPokemon(): Promise<PokemonResult<PokemonListItem[]>> {
       id,
       name,
       types: getTypeNames(pokemons),
+      spriteUrl: getSpriteUrl(pokemons),
     })),
   };
 }
@@ -160,6 +191,7 @@ export async function getSinglePokemon(
       name: firstResult.name,
       types: getTypeNames(firstResult.pokemons),
       cryUrl: getLatestCry(firstResult.pokemons),
+      spriteUrl: getSpriteUrl(firstResult.pokemons),
       height: firstResult.pokemons[0]?.height ?? null,
       weight: firstResult.pokemons[0]?.weight ?? null,
       region: firstResult.generation?.region?.name ?? null,

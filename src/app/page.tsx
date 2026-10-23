@@ -28,6 +28,7 @@ export default async function Home() {
             id={pokemon.id}
             name={pokemon.name}
             types={pokemon.types}
+            src={pokemon.spriteUrl}
           />
         ))}
       </ul>

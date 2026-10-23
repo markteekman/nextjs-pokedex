@@ -28,6 +28,7 @@ export interface PokemonListItem {
   id: number;
   name: string;
   types: PokemonTypes[];
+  spriteUrl: string | null;
 }
 
 /**

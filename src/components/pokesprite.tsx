@@ -2,17 +2,11 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 
 type Props = {
-  id: number;
+  src: string;
 };
 
-export default function PokeSprite({ id }: Props): ReactNode {
+export default function PokeSprite({ src }: Props): ReactNode {
   return (
-    <Image
-      src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`}
-      alt=""
-      width={88}
-      height={88}
-      className="pokeslot-image"
-    />
+    <Image src={src} alt="" width={88} height={88} className="pokeslot-image" />
   );
 }

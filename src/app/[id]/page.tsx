@@ -41,7 +41,7 @@ export default async function PokemonDetailPage({
           {pokemonType}
         </PokemonTypeBadge>
       ))}
-      <PokeSprite id={pokemonId} />
+      {pokemon.spriteUrl && <PokeSprite src={pokemon.spriteUrl} />}
       {pokemon.cryUrl && <PokeCry src={pokemon.cryUrl} />}
       {pokemon.region && <p className="capitalize">Region: {pokemon.region}</p>}
       <p>Entry number: {formatDexNumber(pokemon.id)} </p>

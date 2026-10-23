@@ -9,9 +9,10 @@ type Props = {
   id: number;
   name: string;
   types: PokemonTypes[];
+  src: string | null;
 };
 
-export function PokeSlot({ id, name, types }: Props): ReactNode {
+export function PokeSlot({ id, name, types, src }: Props): ReactNode {
   return (
     <li>
       <Link
@@ -21,7 +22,7 @@ export function PokeSlot({ id, name, types }: Props): ReactNode {
         <span className="pokeslot-number" aria-hidden="true">
           {formatDexNumber(id)}
         </span>
-        <PokeSprite id={id} />
+        {src && <PokeSprite src={src} />}
         <p className="leading-none first-letter:uppercase">{name}</p>
         <span className="flex flex-wrap justify-center gap-1">
           {types.map((pokemonType) => (
