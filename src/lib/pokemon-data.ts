@@ -47,6 +47,10 @@ interface PokemonFlavorText {
   flavor_text: string | null;
 }
 
+interface PokemonSpeciesName {
+  genus: string | null;
+}
+
 interface PokemonListForm {
   pokemontypes: PokemonTypeEntry[];
   pokemonsprites: PokemonSprites[];
@@ -69,6 +73,7 @@ interface PokemonDetailSpecies extends PokemonListSpecies {
   pokemons: PokemonDetailForm[];
   generation: GenerationResponse | null;
   pokemonspeciesflavortexts: PokemonFlavorText[] | null;
+  pokemonspeciesnames: PokemonSpeciesName[] | null;
 }
 
 const GET_POKEMON = gql`
@@ -123,6 +128,9 @@ const GET_SINGLE_POKEMON = gql`
         where: { language_id: { _eq: 9 }, version_id: { _eq: 33 } }
       ) {
         flavor_text
+      }
+      pokemonspeciesnames(where: { language_id: { _eq: 9 } }) {
+        genus
       }
     }
   }
@@ -215,6 +223,7 @@ export async function getSinglePokemon(
       region: firstResult.generation?.region?.name ?? null,
       flavorText:
         firstResult.pokemonspeciesflavortexts?.[0]?.flavor_text ?? null,
+      genus: firstResult.pokemonspeciesnames?.[0]?.genus ?? null,
     },
   };
 }

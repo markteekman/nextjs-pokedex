@@ -79,4 +79,5 @@ export const MOCK_POKEMON_DETAIL = {
   region: "kanto",
   flavorText:
     "There is a plant seed on its back right from the day this Pokémon is born. The seed slowly grows larger.",
+  genus: "Seed Pokémon",
 } satisfies PokemonDetail;

@@ -52,11 +52,10 @@ export default async function PokemonDetailPage({
       {pokemon.weight !== null && (
         <p>Weight: {formatPokemonWeight(pokemon.weight)}</p>
       )}
-      <p>TODO: Sub type</p>
+      {pokemon.genus && <p>Category: {pokemon.genus}</p>}
       {pokemon.flavorText && (
         <p>Description: {formatFlavorText(pokemon.flavorText)}</p>
       )}
-      <p>TODO: Footprint</p>
     </div>
   );
 }
