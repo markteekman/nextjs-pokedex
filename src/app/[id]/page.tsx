@@ -9,7 +9,7 @@ import {
   formatPokemonHeight,
   formatPokemonWeight,
 } from "@/utilities/format-pokemon-measurements";
-import { FormatFlavorText } from "@/utilities/format-flavor-text";
+import formatFlavorText from "@/utilities/format-flavor-text";
 
 export default async function PokemonDetailPage({
   params,
@@ -54,7 +54,7 @@ export default async function PokemonDetailPage({
       )}
       <p>TODO: Sub type</p>
       {pokemon.flavorText && (
-        <p>Description: {FormatFlavorText(pokemon.flavorText)}</p>
+        <p>Description: {formatFlavorText(pokemon.flavorText)}</p>
       )}
       <p>TODO: Footprint</p>
     </div>
