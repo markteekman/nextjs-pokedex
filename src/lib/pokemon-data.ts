@@ -51,11 +51,16 @@ interface GenerationResponse {
   } | null;
 }
 
+interface PokemonFlavorText {
+  flavor_text: string | null;
+}
+
 interface PokemonSpecies {
   id: number;
   name: string;
   pokemons: PokemonForm[];
   generation: GenerationResponse | null;
+  pokemonspeciesflavortexts: PokemonFlavorText[] | null;
 }
 
 const GET_POKEMON = gql`
@@ -105,6 +110,11 @@ const GET_SINGLE_POKEMON = gql`
         region {
           name
         }
+      }
+      pokemonspeciesflavortexts(
+        where: { language_id: { _eq: 9 }, version_id: { _eq: 33 } }
+      ) {
+        flavor_text
       }
     }
   }
@@ -195,6 +205,8 @@ export async function getSinglePokemon(
       height: firstResult.pokemons[0]?.height ?? null,
       weight: firstResult.pokemons[0]?.weight ?? null,
       region: firstResult.generation?.region?.name ?? null,
+      flavorText:
+        firstResult.pokemonspeciesflavortexts?.[0]?.flavor_text ?? null,
     },
   };
 }

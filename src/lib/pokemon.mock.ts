@@ -77,4 +77,6 @@ export const MOCK_POKEMON_DETAIL = {
   height: 7,
   weight: 69,
   region: "kanto",
+  flavorText:
+    "There is a plant seed on its back right from the day this Pokémon is born. The seed slowly grows larger.",
 } satisfies PokemonDetail;

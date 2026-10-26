@@ -39,4 +39,5 @@ export interface PokemonDetail extends PokemonListItem {
   height: number | null;
   weight: number | null;
   region: string | null;
+  flavorText: string | null;
 }
