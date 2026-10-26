@@ -37,14 +37,6 @@ interface PokemonTypeEntry {
   type: PokemonTypeNames;
 }
 
-interface PokemonForm {
-  pokemontypes: PokemonTypeEntry[];
-  pokemoncries: PokemonCry[];
-  pokemonsprites: PokemonSprites[];
-  height: number | null;
-  weight: number | null;
-}
-
 interface GenerationResponse {
   region: {
     name: string;
@@ -55,10 +47,26 @@ interface PokemonFlavorText {
   flavor_text: string | null;
 }
 
-interface PokemonSpecies {
+interface PokemonListForm {
+  pokemontypes: PokemonTypeEntry[];
+  pokemonsprites: PokemonSprites[];
+}
+
+interface PokemonDetailForm extends PokemonListForm {
+  pokemoncries: PokemonCry[];
+
+  height: number | null;
+  weight: number | null;
+}
+
+interface PokemonListSpecies {
   id: number;
   name: string;
-  pokemons: PokemonForm[];
+  pokemons: PokemonListForm[];
+}
+
+interface PokemonDetailSpecies extends PokemonListSpecies {
+  pokemons: PokemonDetailForm[];
   generation: GenerationResponse | null;
   pokemonspeciesflavortexts: PokemonFlavorText[] | null;
 }
@@ -120,15 +128,17 @@ const GET_SINGLE_POKEMON = gql`
   }
 `;
 
-function getLatestCry(forms: PokemonForm[]): string | null {
+function getTypeNames(forms: PokemonListForm[]): PokemonTypes[] {
   const firstForm = forms[0];
 
-  if (!firstForm) return null;
+  if (!firstForm) return [];
 
-  return firstForm.pokemoncries[0]?.cries?.latest ?? null;
+  return firstForm.pokemontypes.flatMap(({ type }) =>
+    type.typenames.map(({ name }) => name),
+  );
 }
 
-function getSpriteUrl(forms: PokemonForm[]): string | null {
+function getSpriteUrl(forms: PokemonListForm[]): string | null {
   const firstForm = forms[0];
 
   if (!firstForm) return null;
@@ -139,14 +149,12 @@ function getSpriteUrl(forms: PokemonForm[]): string | null {
   );
 }
 
-function getTypeNames(forms: PokemonForm[]): PokemonTypes[] {
+function getLatestCry(forms: PokemonDetailForm[]): string | null {
   const firstForm = forms[0];
 
-  if (!firstForm) return [];
+  if (!firstForm) return null;
 
-  return firstForm.pokemontypes.flatMap(({ type }) =>
-    type.typenames.map(({ name }) => name),
-  );
+  return firstForm.pokemoncries[0]?.cries?.latest ?? null;
 }
 
 export async function getPokemon(): Promise<PokemonResult<PokemonListItem[]>> {
@@ -155,7 +163,7 @@ export async function getPokemon(): Promise<PokemonResult<PokemonListItem[]>> {
   }
 
   const result = await requestPokemon(() =>
-    query<{ pokemon: PokemonSpecies[] }>({ query: GET_POKEMON }),
+    query<{ pokemon: PokemonListSpecies[] }>({ query: GET_POKEMON }),
   );
 
   if (result.status === "unavailable") return result;
@@ -182,7 +190,7 @@ export async function getSinglePokemon(
   }
 
   const result = await requestPokemon(() =>
-    query<{ pokemon: PokemonSpecies[] }>({
+    query<{ pokemon: PokemonDetailSpecies[] }>({
       query: GET_SINGLE_POKEMON,
       variables: { id },
     }),
