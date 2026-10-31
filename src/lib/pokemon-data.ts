@@ -78,7 +78,7 @@ interface PokemonDetailSpecies extends PokemonListSpecies {
 
 const GET_POKEMON = gql`
   query GetPokemon {
-    pokemon: pokemonspecies(limit: 9) {
+    pokemon: pokemonspecies(limit: 36, order_by: { id: asc }) {
       id
       name
       pokemons {
