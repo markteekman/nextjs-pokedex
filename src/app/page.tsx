@@ -21,7 +21,7 @@ export default async function Home() {
           {String(pokemons.length).padStart(3, "0")} entries
         </p>
       </div>
-      <ul className="pokedex-grid grid grid-cols-3">
+      <ul className="pokedex-grid grid grid-cols-2 lg:grid-cols-3">
         {pokemons.map((pokemon) => (
           <PokeSlot
             key={pokemon.id}
