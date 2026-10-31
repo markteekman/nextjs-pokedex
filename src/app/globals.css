@@ -361,12 +361,10 @@ body {
     0 4px 8px rgb(0 0 0 / 0.2);
 }
 
-/* A detail record uses the same LCD field as the registry, with a little more
-   vertical room for the specimen and its field notes. */
+/* Detail records use compact spacing for the specimen and its field notes. */
 .pokedex-screen:where(:has(.pokemon-detail)) .pokedex-screen-content {
   container-type: inline-size;
   padding: 1.5rem;
-  max-block-size: 32rem;
   scrollbar-color: #09607a transparent;
   scrollbar-width: thin;
 }
