@@ -53,7 +53,7 @@ const menuItems: {
 export function Navigation() {
   return (
     <nav>
-      <ul className="flex flex-col gap-4">
+      <ul className="pokedex-nav-list flex flex-col gap-4">
         {menuItems.map(({ id, href, label, icon: Icon }) => (
           <MenuItem key={id} href={href} label={label}>
             <Icon aria-hidden="true" />
