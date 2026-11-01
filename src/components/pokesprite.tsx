@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import PokemonDetailSprite from "./pokemon-detail-sprite";
 
 type Props = {
   src: string;
@@ -14,16 +15,20 @@ export default function PokeSprite({
   variant = "slot",
   preload = false,
 }: Props): ReactNode {
-  const isDetail = variant === "detail";
+  if (variant === "detail") {
+    return (
+      <PokemonDetailSprite key={src} src={src} alt={alt} preload={preload} />
+    );
+  }
 
   return (
     <Image
       src={src}
       alt={alt}
-      width={isDetail ? 224 : 88}
-      height={isDetail ? 224 : 88}
-      sizes={isDetail ? "(max-width: 600px) 160px, 224px" : "88px"}
-      className={isDetail ? "pokemon-detail-artwork" : "pokeslot-image"}
+      width={88}
+      height={88}
+      sizes="88px"
+      className="pokeslot-image"
       preload={preload}
     />
   );
