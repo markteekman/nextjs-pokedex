@@ -75,6 +75,18 @@ Run `npm test` for deterministic cache-policy tests. They check cache hits,
 failure/retry behavior, per-ID isolation, query-key changes, empty results and
 outage simulation without making requests to the public API.
 
+## Detail page data
+
+Descriptions prefer the English Pokémon Sword entry, falling back to the
+nonempty English entry with the highest game-version ID. Both are requested in
+the same cached detail query; if neither exists, the description stays hidden.
+
+Footprint availability matches the bundled images in `public/footprint-assets`.
+Fully transparent placeholders display **No footprint** instead of an empty
+image. Update `src/lib/pokemon-footprints.ts` when replacing or extending this
+asset set. Availability is stored as metadata so pages need no runtime image
+decoding or client-side detection.
+
 ## Preview API failures
 
 To simulate a connection failure on both `/` and `/1`, stop the development

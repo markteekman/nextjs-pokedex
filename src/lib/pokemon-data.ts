@@ -79,6 +79,7 @@ interface PokemonSpecies<Form> {
 interface PokemonDetailSpecies extends PokemonSpecies<PokemonDetailForm> {
   generation: GenerationResponse | null;
   pokemonspeciesflavortexts: PokemonFlavorText[] | null;
+  fallbackFlavorTexts: PokemonFlavorText[] | null;
   pokemonspeciesnames: PokemonSpeciesName[] | null;
 }
 
@@ -144,6 +145,14 @@ const GET_SINGLE_POKEMON = gql`
       }
       pokemonspeciesflavortexts(
         where: { language_id: { _eq: 9 }, version_id: { _eq: 33 } }
+        limit: 1
+      ) {
+        flavor_text
+      }
+      fallbackFlavorTexts: pokemonspeciesflavortexts(
+        where: { language_id: { _eq: 9 }, flavor_text: { _neq: "" } }
+        order_by: { version_id: desc }
+        limit: 1
       ) {
         flavor_text
       }
@@ -252,7 +261,9 @@ async function requestPokemonDetail(
       weight: firstResult.pokemons[0]?.weight ?? null,
       region: firstResult.generation?.region?.name ?? null,
       flavorText:
-        firstResult.pokemonspeciesflavortexts?.[0]?.flavor_text ?? null,
+        firstResult.pokemonspeciesflavortexts?.[0]?.flavor_text?.trim() ||
+        firstResult.fallbackFlavorTexts?.[0]?.flavor_text?.trim() ||
+        null,
       genus: firstResult.pokemonspeciesnames?.[0]?.genus ?? null,
     },
   };

@@ -3,6 +3,7 @@ import PokeSprite from "@/components/pokesprite";
 import { PokedexError } from "@/components/pokedex-error";
 import PokemonTypeBadge from "@/components/pokemon-type-badge";
 import { getSinglePokemon } from "@/lib/pokemon-data";
+import { getPokemonFootprintUrl } from "@/lib/pokemon-footprints";
 import { notFound } from "next/navigation";
 import formatDexNumber from "@/utilities/format-dex-number";
 import {
@@ -35,6 +36,8 @@ export default async function PokemonDetailPage({
   if (!pokemon) {
     notFound();
   }
+
+  const footprintUrl = getPokemonFootprintUrl(pokemon.id);
 
   return (
     <article className="pokemon-detail">
@@ -101,16 +104,18 @@ export default async function PokemonDetailPage({
 
       <div className="pokemon-detail-identification">
         <figure className="pokemon-detail-footprint">
-          <div className="pokemon-detail-footprint-stamp">
-            <Image
-              src={`/footprint-assets/${pokemon.id}.png`}
-              height={32}
-              width={32}
-              alt={`${pokemon.name} footprint`}
-              className="pokemon-detail-footprint-image"
-            />
-          </div>
-          <figcaption>Footprint</figcaption>
+          {footprintUrl && (
+            <div className="pokemon-detail-footprint-stamp">
+              <Image
+                src={footprintUrl}
+                height={32}
+                width={32}
+                alt={`${pokemon.name} footprint`}
+                className="pokemon-detail-footprint-image"
+              />
+            </div>
+          )}
+          <figcaption>{footprintUrl ? "Footprint" : "No footprint"}</figcaption>
         </figure>
         {pokemon.cryUrl && (
           <PokeCry
