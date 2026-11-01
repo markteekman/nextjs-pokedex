@@ -24,14 +24,36 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 Successful normalized overview and detail results use Next.js's persistent Data
 Cache, with a 24-hour revalidation interval. Detail IDs have separate cache
-entries; changing a GraphQL query also changes its cache key. The overview
-still requests 36 Pokémon at this checkpoint.
+entries; changing a GraphQL query also changes its cache key.
+
+The overview starts with 36 Pokémon and loads further batches on demand, up to
+National Pokédex #649. Each batch has its own cache entry, keyed by the last
+species ID from the previous batch. The final batch contains only #649. An
+aggregate count in the same GraphQL request supplies the catalog total. Reading
+the whole catalog takes 19 overview queries on a cold cache; shared warm batches
+are reused across visitors. Overview links disable detail prefetching to avoid
+loading detail records simply because their cards enter the viewport.
 
 The overview requests only each species' default form and projects the single
 official-artwork URL from the sprite JSON. Detail pages retain their own query.
 For the same first 36 entries, the measured raw GraphQL response decreased from
 1,284,127 to 9,341 bytes; names, types and artwork URLs were unchanged. Those are
 uncompressed JSON sizes, not browser page sizes or a guaranteed latency gain.
+The paginated query also includes the small aggregate count described above.
+
+**Load more Pokémon** appends entries to the existing semantic list. A status
+region reports loading, success and failure, while `aria-busy` marks the list
+during a request. The button remains focusable while loading, with duplicate
+requests blocked. On success, focus moves to the first added card only if it is
+still on the button; moving elsewhere while waiting is respected. Failed loads
+preserve the existing cards and offer a retry. In-flight requests are aborted
+when leaving the overview.
+
+Loaded entries and the selected card's focus/scroll position are kept in browser
+memory for returning from a detail page. A full reload starts with the first
+batch again. `/api/pokemon?after=36` serves subsequent batches through the same
+server cache; its browser response uses `Cache-Control: no-store`, and invalid
+cursors are rejected before making an upstream request.
 
 Temporary service failures are thrown inside the cache boundary and converted
 back to the existing error state outside it. Failed loads therefore aren't

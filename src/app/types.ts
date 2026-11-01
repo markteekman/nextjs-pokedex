@@ -31,6 +31,12 @@ export interface PokemonListItem {
   spriteUrl: string | null;
 }
 
+export interface PokemonListPage {
+  pokemons: PokemonListItem[];
+  nextCursor: number | null;
+  total: number;
+}
+
 /**
  * Represents detailed information about a Pokémon.
  */

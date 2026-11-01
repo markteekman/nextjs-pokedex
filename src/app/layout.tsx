@@ -3,6 +3,7 @@ import { Pixelify_Sans } from "next/font/google";
 import { Navigation } from "@/components/navigation";
 import { PokedexCase } from "@/components/pokedex-case";
 import { PokedexScreen } from "@/components/pokedex-screen";
+import { PokemonOverviewProvider } from "@/components/pokemon-overview-provider";
 import { Footer } from "../components/footer";
 import "./globals.css";
 
@@ -29,7 +30,9 @@ export default function RootLayout({
             <Navigation />
           </aside>
           <main className="pokedex-main mt-5 px-16">
-            <PokedexScreen>{children}</PokedexScreen>
+            <PokemonOverviewProvider>
+              <PokedexScreen>{children}</PokedexScreen>
+            </PokemonOverviewProvider>
           </main>
         </PokedexCase>
         <Footer />

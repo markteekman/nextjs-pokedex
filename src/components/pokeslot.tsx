@@ -10,13 +10,22 @@ type Props = {
   name: string;
   types: PokemonTypes[];
   src: string | null;
+  onNavigate?: () => void;
 };
 
-export function PokeSlot({ id, name, types, src }: Props): ReactNode {
+export function PokeSlot({
+  id,
+  name,
+  types,
+  src,
+  onNavigate,
+}: Props): ReactNode {
   return (
     <li>
       <Link
         href={`/${id}`}
+        prefetch={false}
+        onNavigate={onNavigate}
         className="pokeslot relative flex flex-col items-center gap-2 p-3 text-center"
       >
         <span className="pokeslot-number" aria-hidden="true">
