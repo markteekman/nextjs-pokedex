@@ -12,9 +12,40 @@ const pixelifySans = Pixelify_Sans({
   subsets: ["latin"],
 });
 
+const title = "PokeCenter | Pokédex";
+const description =
+  "Explore 649 Pokémon in a retro Pokédex, with artwork, types, descriptions, footprints, and cries.";
+
 export const metadata: Metadata = {
-  title: "Next.js Pokédex",
-  description: "A Pokédex app built with Next.js",
+  metadataBase: new URL(
+    process.env.SITE_URL ||
+      process.env.URL ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : "http://localhost:3000"),
+  ),
+  title,
+  description,
+  openGraph: {
+    title,
+    description,
+    siteName: "Pokédex App",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/social-preview.png",
+        width: 1200,
+        height: 630,
+        type: "image/png",
+        alt: "PokéDex App showing Bulbasaur, Ivysaur, and Venusaur on a blue display.",
+      },
+    ],
+  },
+  // Next.js inherits the title, description, and image from Open Graph.
+  twitter: {
+    card: "summary_large_image",
+  },
 };
 
 export default function RootLayout({

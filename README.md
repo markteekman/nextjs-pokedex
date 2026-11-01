@@ -114,6 +114,22 @@ the not-found page. Technical errors are logged rather than shown to visitors.
 
 Run the request-handling checks with `pnpm test`.
 
+## Social previews
+
+The root layout defines shared Open Graph metadata and a Twitter large-image
+card using `public/social-preview.png`, a 1200 × 630 image shared by every page.
+The metadata includes the image dimensions, content type, and descriptive alt
+text. Next.js reuses the Open Graph image for Twitter.
+Page-specific titles and descriptions can still override the normal page metadata.
+
+Set `SITE_URL` to your public origin (for example, `https://your-domain.com`) in
+your deployment environment so social image URLs resolve to the correct domain.
+It takes priority over Netlify's `URL` and Vercel's
+`VERCEL_PROJECT_PRODUCTION_URL`; local development falls back to
+`http://localhost:3000`. A custom domain should use `SITE_URL`.
+
+Preview the image locally at [social-preview.png](http://localhost:3000/social-preview.png).
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
