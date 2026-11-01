@@ -20,6 +20,33 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Pokémon data caching
+
+Successful normalized overview and detail results use Next.js's persistent Data
+Cache, with a 24-hour revalidation interval. Detail IDs have separate cache
+entries; changing a GraphQL query also changes its cache key. The overview
+still requests 36 Pokémon at this checkpoint.
+
+Temporary service failures are thrown inside the cache boundary and converted
+back to the existing error state outside it. Failed loads therefore aren't
+stored as successful results, and **Try again** can retry a failed initial load.
+Unexpected application/GraphQL errors still reach the error boundary. Empty
+lists and missing Pokémon remain valid domain results.
+
+The low-level fetch intentionally keeps `cache: "no-store"`: the persistent
+cache stores the normalized data, not raw GraphQL responses (which can contain
+errors even with HTTP 200). Once a cache entry expires, Next.js can serve its
+previous value while revalidating; a failed refresh leaves the previous good
+value available. Cache persistence across deployments or instances depends on
+the hosting platform's Next.js cache support.
+
+Mock data bypasses the live cache. In development, the outage simulation below
+also bypasses warm entries without replacing them.
+
+Run `npm test` for deterministic cache-policy tests. They check cache hits,
+failure/retry behavior, per-ID isolation, query-key changes, empty results and
+outage simulation without making requests to the public API.
+
 ## Preview API failures
 
 To simulate a connection failure on both `/` and `/1`, stop the development

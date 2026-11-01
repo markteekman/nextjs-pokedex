@@ -1,8 +1,11 @@
 import { gql } from "@apollo/client";
+import { unstable_cache } from "next/cache";
+import { print } from "graphql";
 import type { PokemonDetail, PokemonListItem, PokemonTypes } from "@/app/types";
 import { query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
 import { requestPokemon, type PokemonResult } from "@/lib/pokemon-request";
+import { createCachedPokemonRequest } from "@/lib/pokemon-cache";
 
 interface CryUrls {
   latest: string | null;
@@ -165,11 +168,7 @@ function getLatestCry(forms: PokemonDetailForm[]): string | null {
   return firstForm.pokemoncries[0]?.cries?.latest ?? null;
 }
 
-export async function getPokemon(): Promise<PokemonResult<PokemonListItem[]>> {
-  if (process.env.POKEAPI_DATA_SOURCE === "mock") {
-    return { status: "success", data: MOCK_POKEMON };
-  }
-
+async function requestPokemonList(): Promise<PokemonResult<PokemonListItem[]>> {
   const result = await requestPokemon(() =>
     query<{ pokemon: PokemonListSpecies[] }>({ query: GET_POKEMON }),
   );
@@ -187,16 +186,9 @@ export async function getPokemon(): Promise<PokemonResult<PokemonListItem[]>> {
   };
 }
 
-export async function getSinglePokemon(
+async function requestPokemonDetail(
   id: number,
 ): Promise<PokemonResult<PokemonDetail | null>> {
-  if (process.env.POKEAPI_DATA_SOURCE === "mock") {
-    return {
-      status: "success",
-      data: id === MOCK_POKEMON_DETAIL.id ? MOCK_POKEMON_DETAIL : null,
-    };
-  }
-
   const result = await requestPokemon(() =>
     query<{ pokemon: PokemonDetailSpecies[] }>({
       query: GET_SINGLE_POKEMON,
@@ -226,4 +218,36 @@ export async function getSinglePokemon(
       genus: firstResult.pokemonspeciesnames?.[0]?.genus ?? null,
     },
   };
+}
+
+// Include the query in each key so query changes cannot reuse an old result.
+const cachedPokemonList = createCachedPokemonRequest(
+  requestPokemonList,
+  ["pokemon-list-v1", print(GET_POKEMON)],
+  unstable_cache,
+);
+
+const cachedPokemonDetail = createCachedPokemonRequest(
+  requestPokemonDetail,
+  ["pokemon-detail-v1", print(GET_SINGLE_POKEMON)],
+  unstable_cache,
+);
+
+export async function getPokemon(): Promise<PokemonResult<PokemonListItem[]>> {
+  if (process.env.POKEAPI_DATA_SOURCE === "mock") {
+    return { status: "success", data: MOCK_POKEMON };
+  }
+  return cachedPokemonList();
+}
+
+export async function getSinglePokemon(
+  id: number,
+): Promise<PokemonResult<PokemonDetail | null>> {
+  if (process.env.POKEAPI_DATA_SOURCE === "mock") {
+    return {
+      status: "success",
+      data: id === MOCK_POKEMON_DETAIL.id ? MOCK_POKEMON_DETAIL : null,
+    };
+  }
+  return cachedPokemonDetail(id);
 }

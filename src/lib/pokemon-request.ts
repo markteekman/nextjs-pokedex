@@ -28,7 +28,8 @@ export const fetchPokemonApi: typeof fetch = async (input, options) => {
     : timeout;
 
   try {
-    // Retry should make a fresh request, rather than reuse a cached response.
+    // Successful normalized data is cached by pokemon-cache. A cache miss or
+    // retry must reach the service; do not separately cache raw GraphQL errors.
     return await fetch(input, { ...options, signal, cache: "no-store" });
   } catch (error) {
     // Next.js can throw during fetch to opt a route into dynamic rendering.
