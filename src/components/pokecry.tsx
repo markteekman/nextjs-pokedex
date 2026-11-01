@@ -2,6 +2,7 @@
 
 import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { usePokedexPreferences } from "@/hooks/use-pokedex-preferences";
 
 type Props = {
   src: string;
@@ -15,6 +16,8 @@ export default function PokeCry({ src, name = "Pokémon" }: Props) {
   const audioRef = useRef<HTMLAudioElement>(null);
   const meterRef = useRef<HTMLSpanElement>(null);
   const graphRef = useRef<AudioGraph | null>(null);
+  const autoplayAttempted = useRef(false);
+  const { ready, autoplayCry, reduceMotion } = usePokedexPreferences();
   const [status, setStatus] = useState<
     "idle" | "loading" | "playing" | "paused" | "error"
   >("idle");
@@ -22,12 +25,7 @@ export default function PokeCry({ src, name = "Pokémon" }: Props) {
   const isPlaying = status === "playing";
 
   useEffect(() => {
-    if (
-      !isPlaying ||
-      !graphRef.current ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    )
-      return;
+    if (!isPlaying || !graphRef.current || reduceMotion) return;
     const { analyser } = graphRef.current;
     const frequencies = new Uint8Array(analyser.frequencyBinCount);
     const bars = meterRef.current?.children;
@@ -52,17 +50,62 @@ export default function PokeCry({ src, name = "Pokémon" }: Props) {
           (bar as HTMLElement).style.scale = "1 0.08";
         });
     };
-  }, [isPlaying]);
+  }, [isPlaying, reduceMotion]);
 
-  useEffect(
-    () => () => {
+  useEffect(() => {
+    const audio = audioRef.current;
+    return () => {
+      audio?.pause();
       void graphRef.current?.context.close();
-    },
-    [],
-  );
+      graphRef.current = null;
+    };
+  }, []);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio || !ready || !autoplayCry || autoplayAttempted.current) return;
+
+    let cancelled = false;
+    // Deferring makes the attempt cancellable during Strict Mode's setup check.
+    const frame = requestAnimationFrame(() => {
+      if (autoplayAttempted.current) return;
+      autoplayAttempted.current = true;
+      void audio.play().catch((error: unknown) => {
+        if (cancelled) return;
+        const blocked =
+          error instanceof DOMException &&
+          (error.name === "NotAllowedError" || error.name === "AbortError");
+        // A browser policy block isn't a broken recording: keep manual play ready.
+        setStatus(blocked ? "idle" : "error");
+      });
+    });
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(frame);
+    };
+  }, [ready, autoplayCry]);
+
+  function connectAudioGraph(audio: HTMLAudioElement, onlyIfRunning = false) {
+    if (graphRef.current || typeof AudioContext === "undefined") return;
+    const context = new AudioContext();
+    // Never route an automatically playing cry into a suspended context,
+    // which would silence it while waiting for a user gesture.
+    if (onlyIfRunning && context.state !== "running") {
+      void context.close();
+      return;
+    }
+    const analyser = context.createAnalyser();
+    analyser.fftSize = 64;
+    analyser.smoothingTimeConstant = 0.7;
+    context.createMediaElementSource(audio).connect(analyser);
+    analyser.connect(context.destination);
+    graphRef.current = { context, analyser };
+  }
 
   async function togglePlayback() {
     if (status === "loading") return;
+    autoplayAttempted.current = true;
     const audio = audioRef.current;
     if (!audio) return;
     if (!audio.paused) {
@@ -72,28 +115,22 @@ export default function PokeCry({ src, name = "Pokémon" }: Props) {
     setStatus("loading");
 
     try {
-      // Create one graph per element, from a playback gesture. Without Web Audio,
-      // playback still works and the meter remains a quiet baseline.
-      if (!graphRef.current && typeof AudioContext !== "undefined") {
-        const context = new AudioContext();
-        const analyser = context.createAnalyser();
-        analyser.fftSize = 64;
-        analyser.smoothingTimeConstant = 0.7;
-        context.createMediaElementSource(audio).connect(analyser);
-        analyser.connect(context.destination);
-        graphRef.current = { context, analyser };
-      }
-      await graphRef.current?.context.resume();
+      connectAudioGraph(audio);
       if (audio.error) audio.load();
       if (audio.ended) audio.currentTime = 0;
-      await audio.play();
+      // Start both in the activation handler, before awaiting either promise.
+      await Promise.all([graphRef.current?.context.resume(), audio.play()]);
     } catch {
       setStatus("error");
     }
   }
 
   return (
-    <div className="pokecry" data-playing={isPlaying}>
+    <div
+      className="pokecry"
+      data-playing={isPlaying}
+      data-reduced-motion={reduceMotion}
+    >
       <audio
         ref={audioRef}
         className="pokecry-native"
@@ -102,7 +139,10 @@ export default function PokeCry({ src, name = "Pokémon" }: Props) {
         preload="none"
         aria-label={`${name} cry`}
         src={src}
-        onPlaying={() => setStatus("playing")}
+        onPlaying={(event) => {
+          connectAudioGraph(event.currentTarget, true);
+          setStatus("playing");
+        }}
         onPause={() => setStatus("paused")}
         onWaiting={() => setStatus("loading")}
         onEnded={() => {
