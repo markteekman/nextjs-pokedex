@@ -27,6 +27,12 @@ Cache, with a 24-hour revalidation interval. Detail IDs have separate cache
 entries; changing a GraphQL query also changes its cache key. The overview
 still requests 36 Pokémon at this checkpoint.
 
+The overview requests only each species' default form and projects the single
+official-artwork URL from the sprite JSON. Detail pages retain their own query.
+For the same first 36 entries, the measured raw GraphQL response decreased from
+1,284,127 to 9,341 bytes; names, types and artwork URLs were unchanged. Those are
+uncompressed JSON sizes, not browser page sizes or a guaranteed latency gain.
+
 Temporary service failures are thrown inside the cache boundary and converted
 back to the existing error state outside it. Failed loads therefore aren't
 stored as successful results, and **Try again** can retry a failed initial load.
