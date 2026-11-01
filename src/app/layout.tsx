@@ -12,7 +12,7 @@ const pixelifySans = Pixelify_Sans({
   subsets: ["latin"],
 });
 
-const title = "PokeCenter | Pokédex";
+const title = "Next.js Pokédex App | By Mark Teekman";
 const description =
   "Explore 649 Pokémon in a retro Pokédex, with artwork, types, descriptions, footprints, and cries.";
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About | PokeCenter",
+  title: "About | Next.js Pokédex App",
   description:
     "Learn why PokeCenter was built, what powers it, and how accessibility shaped the experience.",
 };
