@@ -1,7 +1,12 @@
 import { gql } from "@apollo/client";
 import { unstable_cache } from "next/cache";
 import { print } from "graphql";
-import type { PokemonDetail, PokemonListPage, PokemonTypes } from "@/app/types";
+import type {
+  PokemonDetail,
+  PokemonListPage,
+  PokemonType,
+  PokemonTypes,
+} from "@/app/types";
 import { query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
 import { requestPokemon, type PokemonResult } from "@/lib/pokemon-request";
@@ -33,6 +38,7 @@ interface TypeName {
 }
 
 interface PokemonTypeNames {
+  id: number;
   typenames: TypeName[];
 }
 
@@ -98,6 +104,7 @@ const GET_POKEMON = gql`
       pokemons(where: { is_default: { _eq: true } }, limit: 1) {
         pokemontypes {
           type {
+            id
             typenames(where: { language_id: { _eq: 9 } }) {
               name
             }
@@ -124,6 +131,7 @@ const GET_SINGLE_POKEMON = gql`
       pokemons {
         pokemontypes {
           type {
+            id
             typenames(where: { language_id: { _eq: 9 } }) {
               name
             }
@@ -163,13 +171,16 @@ const GET_SINGLE_POKEMON = gql`
   }
 `;
 
-function getTypeNames(forms: PokemonForm[]): PokemonTypes[] {
+function getTypes(forms: PokemonForm[]): PokemonType[] {
   const firstForm = forms[0];
 
   if (!firstForm) return [];
 
   return firstForm.pokemontypes.flatMap(({ type }) =>
-    type.typenames.map(({ name }) => name),
+    type.typenames.map(({ name }) => ({
+      id: type.id,
+      name,
+    })),
   );
 }
 
@@ -213,7 +224,7 @@ async function requestPokemonList(
   const pokemons = result.data.pokemon.map(({ id, name, pokemons }) => ({
     id,
     name,
-    types: getTypeNames(pokemons),
+    types: getTypes(pokemons),
     spriteUrl: pokemons[0]?.pokemonsprites[0]?.spriteUrl ?? null,
   }));
   const lastId = pokemons.at(-1)?.id;
@@ -254,7 +265,7 @@ async function requestPokemonDetail(
     data: {
       id: firstResult.id,
       name: firstResult.name,
-      types: getTypeNames(firstResult.pokemons),
+      types: getTypes(firstResult.pokemons),
       cryUrl: getLatestCry(firstResult.pokemons),
       spriteUrl: getSpriteUrl(firstResult.pokemons),
       height: firstResult.pokemons[0]?.height ?? null,

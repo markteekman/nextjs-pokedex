@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { PokemonTypes } from "../app/types";
+import type { PokemonType } from "../app/types";
 import PokemonTypeBadge from "./pokemon-type-badge";
 import PokeSprite from "./pokesprite";
 import formatDexNumber from "@/utilities/format-dex-number";
@@ -8,7 +8,7 @@ import formatDexNumber from "@/utilities/format-dex-number";
 type Props = {
   id: number;
   name: string;
-  types: PokemonTypes[];
+  types: PokemonType[];
   src: string | null;
   onNavigate?: () => void;
 };
@@ -33,11 +33,9 @@ export function PokeSlot({
         </span>
         {src && <PokeSprite src={src} />}
         <p className="leading-none first-letter:uppercase">{name}</p>
-        <span className="flex flex-wrap justify-center gap-1">
+        <span className="flex flex-wrap justify-center gap-0.5">
           {types.map((pokemonType) => (
-            <PokemonTypeBadge key={pokemonType} variant={pokemonType}>
-              {pokemonType}
-            </PokemonTypeBadge>
+            <PokemonTypeBadge key={pokemonType.id} type={pokemonType} />
           ))}
         </span>
       </Link>

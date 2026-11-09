@@ -4,63 +4,75 @@ export const MOCK_POKEMON = [
   {
     id: 1,
     name: "bulbasaur",
-    types: ["Grass", "Poison"],
+    types: [
+      { id: 12, name: "Grass" },
+      { id: 4, name: "Poison" },
+    ],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png",
   },
   {
     id: 2,
     name: "ivysaur",
-    types: ["Grass", "Poison"],
+    types: [
+      { id: 12, name: "Grass" },
+      { id: 4, name: "Poison" },
+    ],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png",
   },
   {
     id: 3,
     name: "venusaur",
-    types: ["Grass", "Poison"],
+    types: [
+      { id: 12, name: "Grass" },
+      { id: 4, name: "Poison" },
+    ],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
   },
   {
     id: 4,
     name: "charmander",
-    types: ["Fire"],
+    types: [{ id: 10, name: "Fire" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
   },
   {
     id: 5,
     name: "charmeleon",
-    types: ["Fire"],
+    types: [{ id: 10, name: "Fire" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
   },
   {
     id: 6,
     name: "charizard",
-    types: ["Fire", "Flying"],
+    types: [
+      { id: 10, name: "Fire" },
+      { id: 3, name: "Flying" },
+    ],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png",
   },
   {
     id: 7,
     name: "squirtle",
-    types: ["Water"],
+    types: [{ id: 11, name: "Water" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
   },
   {
     id: 8,
     name: "wartortle",
-    types: ["Water"],
+    types: [{ id: 11, name: "Water" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
   },
   {
     id: 9,
     name: "blastoise",
-    types: ["Water"],
+    types: [{ id: 11, name: "Water" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png",
   },
@@ -69,7 +81,10 @@ export const MOCK_POKEMON = [
 export const MOCK_POKEMON_DETAIL = {
   id: 1,
   name: "bulbasaur",
-  types: ["Grass", "Poison"],
+  types: [
+    { id: 12, name: "Grass" },
+    { id: 4, name: "Poison" },
+  ],
   cryUrl:
     "https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg",
   spriteUrl:

@@ -22,12 +22,20 @@ export type PokemonTypes =
   | "Water";
 
 /**
+ * Represents a single Pokemon type.
+ */
+export interface PokemonType {
+  id: number;
+  name: PokemonTypes;
+}
+
+/**
  * Represents a Pokémon in a list.
  */
 export interface PokemonListItem {
   id: number;
   name: string;
-  types: PokemonTypes[];
+  types: PokemonType[];
   spriteUrl: string | null;
 }
 

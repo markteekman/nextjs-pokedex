@@ -72,10 +72,8 @@ export default async function PokemonDetailPage({
           )}
           <ul className="pokemon-detail-types" aria-label="Types">
             {pokemon.types.map((pokemonType) => (
-              <li key={pokemonType}>
-                <PokemonTypeBadge variant={pokemonType}>
-                  {pokemonType}
-                </PokemonTypeBadge>
+              <li key={pokemonType.id}>
+                <PokemonTypeBadge type={pokemonType} isDetail />
               </li>
             ))}
           </ul>
