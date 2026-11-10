@@ -4,6 +4,7 @@ import { print } from "graphql";
 import type {
   PokemonDetail,
   PokemonListPage,
+  PokemonSearchItem,
   PokemonType,
   PokemonTypes,
 } from "@/app/types";
@@ -119,6 +120,19 @@ const GET_POKEMON = gql`
       aggregate {
         count
       }
+    }
+  }
+`;
+
+const GET_POKEMON_SEARCH_CATALOG = gql`
+  query GetPokemonSearchCatalog($maxId: Int!) {
+    pokemon: pokemonspecies(
+      limit: $maxId
+      order_by: { id: asc }
+      where: { id: { _gte: 1, _lte: $maxId } }
+    ) {
+      id
+      name
     }
   }
 `;
@@ -244,6 +258,24 @@ async function requestPokemonList(
   };
 }
 
+async function requestPokemonSearchCatalog(): Promise<
+  PokemonResult<PokemonSearchItem[]>
+> {
+  const result = await requestPokemon(() =>
+    query<{ pokemon: PokemonSearchItem[] }>({
+      query: GET_POKEMON_SEARCH_CATALOG,
+      variables: { maxId: POKEMON_MAX_ID },
+    }),
+  );
+
+  if (result.status === "unavailable") return result;
+
+  return {
+    status: "success",
+    data: result.data.pokemon.map(({ id, name }) => ({ id, name })),
+  };
+}
+
 async function requestPokemonDetail(
   id: number,
 ): Promise<PokemonResult<PokemonDetail | null>> {
@@ -287,6 +319,16 @@ const cachedPokemonList = createCachedPokemonRequest(
   unstable_cache,
 );
 
+const cachedPokemonSearchCatalog = createCachedPokemonRequest(
+  requestPokemonSearchCatalog,
+  [
+    "pokemon-search-catalog-v1",
+    print(GET_POKEMON_SEARCH_CATALOG),
+    String(POKEMON_MAX_ID),
+  ],
+  unstable_cache,
+);
+
 const cachedPokemonDetail = createCachedPokemonRequest(
   requestPokemonDetail,
   ["pokemon-detail-v1", print(GET_SINGLE_POKEMON)],
@@ -317,6 +359,21 @@ export async function getPokemon(
     };
   }
   return cachedPokemonList(afterId);
+}
+
+export async function getPokemonSearchCatalog(): Promise<
+  PokemonResult<PokemonSearchItem[]>
+> {
+  if (process.env.POKEAPI_DATA_SOURCE === "mock") {
+    return {
+      status: "success",
+      data: MOCK_POKEMON.filter(
+        ({ id }) => id >= 1 && id <= POKEMON_MAX_ID,
+      ).map(({ id, name }) => ({ id, name })),
+    };
+  }
+
+  return cachedPokemonSearchCatalog();
 }
 
 export async function getSinglePokemon(

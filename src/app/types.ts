@@ -39,6 +39,8 @@ export interface PokemonListItem {
   spriteUrl: string | null;
 }
 
+export type PokemonSearchItem = Pick<PokemonListItem, "id" | "name">;
+
 export interface PokemonListPage {
   pokemons: PokemonListItem[];
   nextCursor: number | null;
