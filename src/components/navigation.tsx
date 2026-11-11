@@ -9,8 +9,13 @@ import {
   Settings,
   type LucideIcon,
 } from "lucide-react";
-import type { ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { Suspense, type ReactNode } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+import {
+  getPokemonFilterHref,
+  parsePokemonFilters,
+  type PokemonFilters,
+} from "@/lib/pokemon-filters";
 
 const menuItems: {
   id: number;
@@ -52,10 +57,35 @@ const menuItems: {
 
 export function Navigation() {
   return (
+    <Suspense fallback={<NavigationLinks />}>
+      <NavigationWithFilters />
+    </Suspense>
+  );
+}
+
+function NavigationWithFilters() {
+  const params = useSearchParams();
+  return <NavigationLinks filters={parsePokemonFilters(params)} />;
+}
+
+function NavigationLinks({
+  filters = { generations: [], types: [] },
+}: {
+  filters?: PokemonFilters;
+}) {
+  return (
     <nav>
       <ul className="pokedex-nav-list flex flex-col gap-4">
         {menuItems.map(({ id, href, label, icon: Icon }) => (
-          <MenuItem key={id} href={href} label={label}>
+          <MenuItem
+            key={id}
+            href={
+              href === "/" || href === "/filter"
+                ? getPokemonFilterHref(filters, href)
+                : href
+            }
+            label={label}
+          >
             <Icon aria-hidden="true" />
           </MenuItem>
         ))}
@@ -79,7 +109,7 @@ function MenuItem({
     <li>
       <Link
         href={href}
-        aria-current={currentPath === href ? "page" : undefined}
+        aria-current={currentPath === href.split("?")[0] ? "page" : undefined}
         className="pokedex-nav-button grid h-16 w-16 place-items-center rounded-md"
       >
         {children}

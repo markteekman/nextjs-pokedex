@@ -1,8 +1,21 @@
-export default function Filter() {
+import PokemonFilters from "@/components/pokemon-filters";
+import {
+  getPokemonFilterKey,
+  parsePokemonFilters,
+  type PokemonFilterSearchParams,
+} from "@/lib/pokemon-filters";
+
+export default async function Filter({
+  searchParams,
+}: {
+  searchParams: Promise<PokemonFilterSearchParams>;
+}) {
+  const filters = parsePokemonFilters(await searchParams);
+
   return (
-    <div>
-      <h1 className="text-5xl">Filter</h1>
-      <p className="mt-4 text-2xl">Coming soon!</p>
-    </div>
+    <PokemonFilters
+      key={getPokemonFilterKey(filters)}
+      initialFilters={filters}
+    />
   );
 }

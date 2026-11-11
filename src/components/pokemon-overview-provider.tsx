@@ -4,13 +4,14 @@ import { createContext, useContext, useState, type ReactNode } from "react";
 import type { PokemonListPage } from "@/app/types";
 
 export type OverviewSnapshot = {
+  filterKey: string;
   page: PokemonListPage;
   returnTo: { id: number; scrollTop: number } | null;
 };
 
 const OverviewContext = createContext<{
   snapshot: OverviewSnapshot | null;
-  saveSnapshot: (snapshot: OverviewSnapshot) => void;
+  saveSnapshot: (snapshot: OverviewSnapshot | null) => void;
 } | null>(null);
 
 // The shared layout keeps this state alive during client-side navigation.

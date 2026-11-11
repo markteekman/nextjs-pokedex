@@ -1,7 +1,15 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import Link from "next/link";
 import type { PokemonListPage } from "@/app/types";
+import {
+  getPokemonFilterHref,
+  getPokemonFilterKey,
+  getPokemonFilterSummary,
+  hasPokemonFilters,
+  type PokemonFilters,
+} from "@/lib/pokemon-filters";
 import { PokeSlot } from "./pokeslot";
 import {
   usePokemonOverview,
@@ -10,14 +18,19 @@ import {
 
 export default function PokemonIndex({
   initialPage,
+  filters,
 }: {
   initialPage: PokemonListPage;
+  filters: PokemonFilters;
 }) {
+  const filterKey = getPokemonFilterKey(filters);
+  const filtersActive = hasPokemonFilters(filters);
   const { snapshot: savedOverview, saveSnapshot } = usePokemonOverview();
   const [overview, setOverview] = useState<OverviewSnapshot>(() =>
-    savedOverview?.page.total === initialPage.total
+    savedOverview?.filterKey === filterKey &&
+    savedOverview.page.total === initialPage.total
       ? savedOverview
-      : { page: initialPage, returnTo: null },
+      : { filterKey, page: initialPage, returnTo: null },
   );
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
@@ -28,6 +41,7 @@ export default function PokemonIndex({
   const requestRef = useRef<AbortController | null>(null);
   const returnToRef = useRef(overview.returnTo);
   const focusNewIdRef = useRef<number | "end" | null>(null);
+  const hasRestoredPositionRef = useRef(false);
   const { page } = overview;
 
   useEffect(() => () => requestRef.current?.abort(), []);
@@ -35,14 +49,17 @@ export default function PokemonIndex({
   useLayoutEffect(() => {
     const returnTo = returnToRef.current;
     const targetId = focusNewIdRef.current ?? returnTo?.id;
-    if (targetId == null) return;
-
     // Restore after Next.js has applied its own route scroll handling.
     const frame = requestAnimationFrame(() => {
+      const screen = gridRef.current?.closest(".pokedex-screen-content");
+      if (targetId == null) {
+        if (!hasRestoredPositionRef.current && screen) screen.scrollTop = 0;
+        hasRestoredPositionRef.current = true;
+        return;
+      }
       const link = gridRef.current?.querySelector<HTMLAnchorElement>(
         `a[href="/${targetId}"]`,
       );
-      const screen = gridRef.current?.closest(".pokedex-screen-content");
       if (returnTo && screen) screen.scrollTop = returnTo.scrollTop;
 
       if (targetId === "end") {
@@ -55,12 +72,14 @@ export default function PokemonIndex({
 
       returnToRef.current = null;
       focusNewIdRef.current = null;
+      hasRestoredPositionRef.current = true;
     });
     return () => cancelAnimationFrame(frame);
-  }, []);
+  }, [page.pokemons.length]);
 
   function rememberPosition(id: number) {
     saveSnapshot({
+      filterKey,
       page,
       returnTo: {
         id,
@@ -80,7 +99,9 @@ export default function PokemonIndex({
     setMessage("Loading more Pokémon…");
 
     try {
-      const response = await fetch(`/api/pokemon?after=${page.nextCursor}`, {
+      const params = new URLSearchParams(filterKey);
+      params.set("after", String(page.nextCursor));
+      const response = await fetch(`/api/pokemon?${params}`, {
         signal: AbortSignal.any([
           controller.signal,
           AbortSignal.timeout(15_000),
@@ -99,7 +120,7 @@ export default function PokemonIndex({
       if (document.activeElement === buttonRef.current) {
         focusNewIdRef.current = batch.pokemons[0]?.id ?? "end";
       }
-      const snapshot = { page: updated, returnTo: null };
+      const snapshot = { filterKey, page: updated, returnTo: null };
       saveSnapshot(snapshot);
       setOverview(snapshot);
       setMessage(
@@ -126,6 +147,35 @@ export default function PokemonIndex({
           {String(page.pokemons.length).padStart(3, "0")} / {page.total} entries
         </p>
       </div>
+      {filtersActive && (
+        <div className="pokedex-filter-controls">
+          <p className="pokedex-filter-summary">
+            {getPokemonFilterSummary(filters)}
+          </p>
+          <div className="pokedex-filter-links">
+            <Link
+              href={getPokemonFilterHref(filters, "/filter")}
+              className="pokedex-filter-button"
+            >
+              Edit filters
+            </Link>
+            <Link
+              href="/"
+              onNavigate={() => saveSnapshot(null)}
+              className="pokedex-filter-button"
+            >
+              Remove filters
+            </Link>
+          </div>
+        </div>
+      )}
+      {page.pokemons.length === 0 && (
+        <p role="status" className="pokedex-filter-empty">
+          {filtersActive
+            ? "No Pokémon match these filters. Try changing or removing them."
+            : "No Pokémon found. Try looking in the tall grass."}
+        </p>
+      )}
       <ul
         id="pokemon-list"
         ref={gridRef}
@@ -159,11 +209,12 @@ export default function PokemonIndex({
                 ? "Try again"
                 : "Load more Pokémon"}
           </button>
-        ) : (
+        ) : page.pokemons.length > 0 ? (
           <p ref={endRef} tabIndex={-1} className="pokedex-pagination-end">
-            All {page.pokemons.length} Pokémon loaded.
+            All {page.pokemons.length} {filtersActive ? "matching " : ""}Pokémon
+            loaded.
           </p>
-        )}
+        ) : null}
         <p className="pokedex-load-status" role="status" aria-atomic="true">
           {message}
         </p>

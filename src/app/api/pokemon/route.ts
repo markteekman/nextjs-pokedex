@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { getPokemon } from "@/lib/pokemon-data";
+import { parsePokemonFilters } from "@/lib/pokemon-filters";
 
 // Browser responses stay fresh; successful batches use the server Data Cache.
 const headers = { "Cache-Control": "no-store" };
 
 export async function GET(request: Request) {
-  const cursor = new URL(request.url).searchParams.get("after");
+  const searchParams = new URL(request.url).searchParams;
+  const cursor = searchParams.get("after");
   const afterId = cursor === null ? NaN : Number(cursor);
 
   if (
@@ -21,7 +23,7 @@ export async function GET(request: Request) {
     );
   }
 
-  const result = await getPokemon(afterId);
+  const result = await getPokemon(afterId, parsePokemonFilters(searchParams));
 
   if (result.status === "unavailable") {
     return NextResponse.json(

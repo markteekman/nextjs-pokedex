@@ -8,10 +8,17 @@ import type {
   PokemonType,
   PokemonTypes,
 } from "@/app/types";
-import { query } from "@/lib/apollo-client";
+import { getClient, query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
 import { requestPokemon, type PokemonResult } from "@/lib/pokemon-request";
 import { createCachedPokemonRequest } from "@/lib/pokemon-cache";
+import {
+  getPokemonFilterConditions,
+  getPokemonFilterKey,
+  matchesPokemonFilters,
+  parsePokemonFilters,
+  type PokemonFilters,
+} from "@/lib/pokemon-filters";
 
 interface CryUrls {
   latest: string | null;
@@ -94,11 +101,15 @@ const POKEMON_PAGE_SIZE = 36;
 const POKEMON_MAX_ID = 649;
 
 const GET_POKEMON = gql`
-  query GetPokemon($afterId: Int!, $limit: Int!) {
+  query GetPokemon(
+    $where: pokemonspecies_bool_exp!
+    $catalogWhere: pokemonspecies_bool_exp!
+    $limit: Int!
+  ) {
     pokemon: pokemonspecies(
       limit: $limit
       order_by: { id: asc }
-      where: { id: { _gt: $afterId, _lte: 649 } }
+      where: $where
     ) {
       id
       name
@@ -116,7 +127,7 @@ const GET_POKEMON = gql`
         }
       }
     }
-    catalog: pokemonspecies_aggregate(where: { id: { _lte: 649 } }) {
+    catalog: pokemonspecies_aggregate(where: $catalogWhere) {
       aggregate {
         count
       }
@@ -219,28 +230,43 @@ function getLatestCry(forms: PokemonDetailForm[]): string | null {
 
 async function requestPokemonList(
   afterId: number,
+  filterKey: string,
 ): Promise<PokemonResult<PokemonListPage>> {
+  const filters = parsePokemonFilters(new URLSearchParams(filterKey));
+  const catalogWhere = {
+    id: { _gte: 1, _lte: POKEMON_MAX_ID },
+    ...getPokemonFilterConditions(filters),
+  };
+  const client = getClient();
   const result = await requestPokemon(() =>
-    query<{
+    client.query<{
       pokemon: PokemonSpecies<PokemonListForm>[];
       catalog: { aggregate: { count: number } };
     }>({
       query: GET_POKEMON,
       variables: {
-        afterId,
-        limit: Math.min(POKEMON_PAGE_SIZE, POKEMON_MAX_ID - afterId),
+        where: {
+          ...catalogWhere,
+          id: { ...catalogWhere.id, _gt: afterId },
+        },
+        catalogWhere,
+        // A look-ahead entry tells us whether a sparse filtered page has more.
+        limit: Math.min(POKEMON_PAGE_SIZE + 1, POKEMON_MAX_ID - afterId),
       },
     }),
   );
 
   if (result.status === "unavailable") return result;
 
-  const pokemons = result.data.pokemon.map(({ id, name, pokemons }) => ({
-    id,
-    name,
-    types: getTypes(pokemons),
-    spriteUrl: pokemons[0]?.pokemonsprites[0]?.spriteUrl ?? null,
-  }));
+  const hasMore = result.data.pokemon.length > POKEMON_PAGE_SIZE;
+  const pokemons = result.data.pokemon
+    .slice(0, POKEMON_PAGE_SIZE)
+    .map(({ id, name, pokemons }) => ({
+      id,
+      name,
+      types: getTypes(pokemons),
+      spriteUrl: pokemons[0]?.pokemonsprites[0]?.spriteUrl ?? null,
+    }));
   const lastId = pokemons.at(-1)?.id;
 
   return {
@@ -248,12 +274,7 @@ async function requestPokemonList(
     data: {
       pokemons,
       total: result.data.catalog.aggregate.count,
-      nextCursor:
-        pokemons.length === POKEMON_PAGE_SIZE &&
-        lastId &&
-        lastId < POKEMON_MAX_ID
-          ? lastId
-          : null,
+      nextCursor: hasMore && lastId ? lastId : null,
     },
   };
 }
@@ -315,7 +336,7 @@ async function requestPokemonDetail(
 // Include the query in each key so query changes cannot reuse an old result.
 const cachedPokemonList = createCachedPokemonRequest(
   requestPokemonList,
-  ["pokemon-list-v1", print(GET_POKEMON)],
+  ["pokemon-list-v2", print(GET_POKEMON)],
   unstable_cache,
 );
 
@@ -337,13 +358,23 @@ const cachedPokemonDetail = createCachedPokemonRequest(
 
 export async function getPokemon(
   afterId = 0,
+  filters: PokemonFilters = { generations: [], types: [] },
 ): Promise<PokemonResult<PokemonListPage>> {
   if (!Number.isInteger(afterId) || afterId < 0 || afterId >= POKEMON_MAX_ID) {
     throw new RangeError("Invalid Pokémon page cursor.");
   }
 
+  const filterKey = getPokemonFilterKey(filters);
+
   if (process.env.POKEAPI_DATA_SOURCE === "mock") {
-    const catalog = MOCK_POKEMON.filter(({ id }) => id <= POKEMON_MAX_ID);
+    const normalizedFilters = parsePokemonFilters(
+      new URLSearchParams(filterKey),
+    );
+    const catalog = MOCK_POKEMON.filter(
+      (pokemon) =>
+        pokemon.id <= POKEMON_MAX_ID &&
+        matchesPokemonFilters(pokemon, normalizedFilters),
+    );
     const pokemons = catalog
       .filter(({ id }) => id > afterId)
       .slice(0, POKEMON_PAGE_SIZE);
@@ -358,7 +389,7 @@ export async function getPokemon(
       },
     };
   }
-  return cachedPokemonList(afterId);
+  return cachedPokemonList(afterId, filterKey);
 }
 
 export async function getPokemonSearchCatalog(): Promise<
