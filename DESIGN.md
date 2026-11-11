@@ -273,6 +273,8 @@ The approved detail entrance is a single 700ms two-hop bounce: 12px, then 5px. T
 
 About uses readable paragraphs, ruled sections, a compact definition list for the stack, and underlined links. Loading, empty, and error states keep the same screen, font, and ink; retain real retry actions and status text. They must not announce fake progress, create decorative metadata, or trigger detail audio while loading.
 
+Route loading stays inside the existing LCD and leaves navigation available. The shared loading message uses a static Poké Ball mark and a polite status announcement. Detail loading reserves the specimen area and uses flat, blue-tinted placeholders for identity, facts, identification, and entry text, with a working All Pokémon link. Placeholders are hidden from assistive technology and contain no interactive or audio components. Keep them static for motion-sensitive users and inherit the enhanced-contrast palette through the existing screen roles.
+
 ## Do's and Don'ts
 
 ### Do:

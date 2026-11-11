@@ -1,3 +1,5 @@
+import { ScreenLoader } from "@/components/screen-loader";
+
 export default function Loading() {
-  return <p role="status">Loading Pokémon search…</p>;
+  return <ScreenLoader message="Loading Pokémon search…" />;
 }

@@ -284,6 +284,68 @@ body {
   text-transform: uppercase;
 }
 
+.pokedex-loading {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-block-size: 44px;
+  font-size: 0.875rem;
+}
+
+.pokedex-loading svg {
+  flex-shrink: 0;
+}
+
+.pokemon-detail-loading .pokemon-detail-header {
+  flex-wrap: wrap;
+  gap: 0 1rem;
+}
+
+.pokemon-detail-loading-artwork {
+  display: block;
+  aspect-ratio: 1;
+  inline-size: min(100%, 14rem);
+}
+
+.pokemon-detail-loading-bar {
+  display: block;
+  opacity: 0.14;
+  border-radius: 0.125rem;
+  background: currentColor;
+  block-size: 1rem;
+}
+
+.pokemon-detail-loading-title {
+  inline-size: 80%;
+  block-size: 2rem;
+}
+
+.pokemon-detail-loading-category {
+  margin-block-start: 0.5rem;
+  inline-size: 55%;
+  block-size: 0.75rem;
+}
+
+.pokemon-detail-loading-type {
+  inline-size: 4rem;
+  block-size: 1.5rem;
+}
+
+.pokemon-detail-loading .pokemon-detail-facts > div {
+  align-items: center;
+  min-block-size: 2.125rem;
+}
+
+.pokemon-detail-loading-cry {
+  flex: 1;
+  block-size: 44px;
+}
+
+.pokemon-detail-loading-description {
+  display: grid;
+  gap: 0.625rem;
+}
+
 .pokedex-error {
   display: flex;
   flex-direction: column;
@@ -1428,7 +1490,8 @@ body {
     min-block-size: 10rem;
   }
 
-  .pokemon-detail-artwork {
+  .pokemon-detail-artwork,
+  .pokemon-detail-loading-artwork {
     inline-size: 10rem;
   }
 
