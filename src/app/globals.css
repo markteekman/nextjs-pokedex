@@ -24,7 +24,10 @@ body {
 }
 
 .pokedex {
+  --pokedex-wing-width: 6.25rem;
+
   isolation: isolate;
+  padding-inline-end: var(--pokedex-wing-width);
   inline-size: min(90vw, 900px);
 }
 
@@ -32,6 +35,7 @@ body {
   position: absolute;
   z-index: 0;
   inset: 0;
+  inset-inline-end: var(--pokedex-wing-width);
   border-radius: inherit;
   background-color: var(--color-pokedex-case);
   pointer-events: none;
@@ -45,8 +49,8 @@ body {
   z-index: -1;
   inset-block-end: 0;
   inset-inline: 0;
+  inset-inline-end: var(--pokedex-wing-width);
   background-color: var(--color-pokedex-case-outer);
-  inline-size: 100%;
   block-size: 80px;
   content: "";
   @apply rounded-bl-4xl;
@@ -977,9 +981,48 @@ body {
 }
 
 .pokedex-navigation {
+  position: relative;
   grid-row: 1;
-  grid-column: 2;
+  grid-column: 1;
+  align-self: center;
+  justify-self: end;
+  margin-inline-end: calc(-1 * var(--pokedex-wing-width));
+  margin-block-start: 1.25rem;
+  isolation: isolate;
+  padding: 2rem 1.125rem 2.5rem;
+  inline-size: var(--pokedex-wing-width);
   min-inline-size: 0;
+}
+
+/* Only the wing's material is clipped; controls and focus rings stay clear. */
+.pokedex-navigation::before,
+.pokedex-navigation::after {
+  position: absolute;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 1.25rem) 0,
+    100% 1.25rem,
+    100% 100%,
+    0 100%
+  );
+  inset: 0;
+  border-radius: 0 1.25rem 1.25rem 0;
+  pointer-events: none;
+  content: "";
+}
+
+.pokedex-navigation::before {
+  z-index: -1;
+  box-shadow:
+    inset 3px 0 5px rgb(0 0 0 / 0.16),
+    inset 0 2px 2px rgb(255 255 255 / 0.14);
+  background-color: var(--color-pokedex-case);
+}
+
+.pokedex-navigation::after {
+  translate: 0 10px;
+  z-index: -2;
+  background-color: var(--color-pokedex-case-outer);
 }
 
 .pokedex-main {
@@ -1405,7 +1448,17 @@ body {
   }
 }
 
+@media (min-width: 1100px) {
+  .pokedex {
+    inset-inline-start: calc(var(--pokedex-wing-width) / 2);
+  }
+}
+
 @media (max-width: 700px) {
+  .pokedex {
+    --pokedex-wing-width: 0px;
+  }
+
   .pokedex-header-vents {
     gap: 0.5rem;
     inset-block-start: 1rem;
@@ -1425,8 +1478,18 @@ body {
   }
 
   .pokedex-navigation {
+    grid-row: 1;
     grid-column: 1;
-    padding-inline: 2rem;
+    align-self: stretch;
+    justify-self: stretch;
+    margin: 0;
+    padding: 0 2rem;
+    inline-size: auto;
+  }
+
+  .pokedex-navigation::before,
+  .pokedex-navigation::after {
+    display: none;
   }
 
   .pokedex-nav-list {

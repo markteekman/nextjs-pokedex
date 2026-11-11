@@ -85,6 +85,7 @@ rounded:
   control: "0.25rem"
   screen: "0.375rem"
   bezel: "0.75rem"
+  wing: "1.25rem"
   track: "1rem"
   case: "2rem"
 spacing:
@@ -123,6 +124,11 @@ components:
     textColor: "{colors.button-yellow-ink}"
     rounded: "{rounded.screen}"
     size: "4rem"
+  hardware-wing:
+    backgroundColor: "{colors.case-red}"
+    rounded: "{rounded.wing}"
+    padding: "2rem 1.125rem 2.5rem"
+    width: "6.25rem"
   database-cell:
     backgroundColor: "{colors.lcd-grid-cell}"
     textColor: "{colors.lcd-ink}"
@@ -201,9 +207,11 @@ Body text and search input use `body`; detail entries use line-height 1.5. Suppo
 
 ## Layout
 
-The device is `min(90vw, 900px)` wide. Its desktop body has a flexible screen column and a 100px navigation column. The screen content viewport stays 32rem high across routes; long content scrolls inside it. Shared desktop screen padding is 2rem, with 1.5rem on detail records.
+The device is `min(90vw, 900px)` wide overall. On desktop, a 100px control wing extends from the right of the main body. The enclosure and header stop before that reserved strip, making the main casing up to 800px wide while preserving the original usable LCD width. The wing is centered alongside the screen and only tall enough to contain its five buttons, rather than forming a full-height second plate. The screen content viewport stays 32rem high across routes; long content scrolls inside it. Shared desktop screen padding is 2rem, with 1.5rem on detail records.
 
-At viewport widths of 700px and below, all routes move the five navigation buttons above the screen, in equal columns. Buttons become 3.5rem high and fill their column. Main and navigation padding become 2rem, screen padding becomes 1rem, and the hardware row gap is 3rem. At 360px and below, outer padding becomes 1.5rem and navigation gaps become 0.25rem.
+At viewport widths of 1100px and above, center the main body by offsetting the overall device toward the wing by half the wing's width (50px). Below that breakpoint, keep the complete device centered so the wing retains room at the viewport edge. Use a logical inset so the alignment follows the inline direction without interfering with the case's entrance transform.
+
+At viewport widths of 700px and below, the reserved wing width becomes zero, its side-panel material disappears, and the main body fills the device width. All routes move the same five navigation links above the screen, in equal columns; do not duplicate navigation for different viewport sizes. Buttons become 3.5rem high and fill their column. Main and navigation padding become 2rem, screen padding becomes 1rem, and the hardware row gap is 3rem. At 360px and below, outer padding becomes 1.5rem and navigation gaps become 0.25rem.
 
 The overview has two columns, increasing to three at Tailwind's viewport `lg` breakpoint (64rem). Detail records use two equal columns, specimen left and facts right. At a detail content-container width of 340px or below they stack; the artwork shrinks from a maximum of 14rem to 10rem and the registration circle from 12rem to 9rem.
 
@@ -213,6 +221,8 @@ Search, Filter, and Settings use flex layouts with `min-block-size: 0` so result
 
 Hardware is structural and raised; screen content is mostly flat. Navigation uses a hard dark lower edge plus a soft contact shadow and a small upper highlight, moving down when hovered or selected. The screen has a 20px warm ivory bezel with subtle material shading and a 3px dark inner rim. An inset screen highlight stays above scrolling content. Its pseudo-elements are non-interactive; the frame must not obstruct pointer input.
 
+The control wing shares Case Red with the main body. A small inset seam at the join and a Case Oxblood lower plate offset by 10px give it the same physical construction. Shape only its decorative layers; leave the navigation container's overflow visible so button shadows and keyboard focus remain intact.
+
 Search uses an inset shadow to feel cut into the display. Grid cells and result rows use shared borders and tonal fills rather than individual floating shadows. Pokémon artwork alone gets a small silhouette shadow: overview `drop-shadow(0 3px 2px rgb(0 54 77 / 0.26))`, detail `drop-shadow(0 6px 3px rgb(0 54 77 / 0.24))`.
 
 **The Hardware Depth Rule.** Reserve substantial elevation for the enclosure and physical navigation. Keep records integrated into the screen rather than turning them into glass tiles.
@@ -220,6 +230,8 @@ Search uses an inset shadow to feel cut into the display. Grid cells and result 
 ## Shapes
 
 The case has broad 2rem corners and an angular clipped header. The bezel uses `bezel` corners with a 1.5rem diagonal cut at its lower left, leaving breathing room around the rounded inner screen; only the physical surround is clipped, leaving the LCD and its focus rings rectangular. Circular geometry belongs to lenses, LEDs, the three recessed header vents, switch thumbs, and the detail registration target. Screen corners and the grid perimeter use `screen`; ordinary controls and panels use `control`; small utility controls and the footprint stamp use `tiny`.
+
+The short control wing has a straight joining edge, a 1.25rem diagonal cut at its upper outer corner, and `wing` rounding on its outer corners. It remains a narrow extension of the enclosure, with no separate display or opening animation.
 
 Grid perimeter and separators share a real 1px rule. Detail facts and information sections use thin horizontal rules. Do not add a circular pedestal to overview Pokémon: that variation was reviewed and rejected. The detail-only circle remains part of the specimen presentation.
 
@@ -233,7 +245,7 @@ The index header aligns its uppercase title and optional count along a thin bott
 
 Screen actions have a 44px minimum height, compact corners, and strong visible focus. Primary actions use Field/On Field; secondary actions use a pale panel with dark ink. Loading controls retain their label and focus using `aria-disabled` when appropriate; the handler must also guard repeated activation. Error retry uses the established 2px current-color outline variant.
 
-Hardware navigation is a separate component family: cobalt with white icons, plus a yellow Settings variant with dark ink. Icons are 28px; the Settings cog uses 30px as an optical correction, keeping the same stroke weight. Controls are 64px square on desktop, full-column width above the screen on mobile. Hover moves them 3px down; active/current moves them 5px down and changes the shadow to depressed. Preserve native links, accessible names, and `aria-current`.
+Hardware navigation is a separate component family: cobalt with white icons, plus a yellow Settings variant with dark ink. Icons are 28px; the Settings cog uses 30px as an optical correction, keeping the same stroke weight. Controls are 64px square in a vertical stack on the desktop wing, full-column width above the screen on mobile. Hover moves them 3px down; active/current moves them 5px down and changes the shadow to depressed. Preserve native links, accessible names, and `aria-current`.
 
 The decorative header vents use three 6px recessed circles. On compact viewports they move toward the upper-right edge above the LED row, with closer spacing to avoid crowding the lights. They have no interactive role or extra animation.
 
