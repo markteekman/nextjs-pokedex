@@ -984,10 +984,9 @@ body {
   position: relative;
   grid-row: 1;
   grid-column: 1;
-  align-self: center;
+  align-self: start;
   justify-self: end;
   margin-inline-end: calc(-1 * var(--pokedex-wing-width));
-  margin-block-start: 1.25rem;
   isolation: isolate;
   padding: 2rem 1.125rem 2.5rem;
   inline-size: var(--pokedex-wing-width);
@@ -1496,6 +1495,7 @@ body {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 0.5rem;
+    margin-inline: -20px;
   }
 
   .pokedex-nav-button {
