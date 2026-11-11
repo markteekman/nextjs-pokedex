@@ -75,6 +75,17 @@ Run `npm test` for deterministic cache-policy tests. They check cache hits,
 failure/retry behavior, per-ID isolation, query-key changes, empty results and
 outage simulation without making requests to the public API.
 
+## Design system
+
+[DESIGN.md](DESIGN.md) documents the approved Handheld Pokédex style: palettes,
+typography, layout, component states, motion, and visual guardrails. Its companion
+[.impeccable/design.json](.impeccable/design.json) contains Impeccable preview
+metadata; both files should change together after approved style updates. The
+metadata does not control runtime styles or hook suppression settings.
+
+The [design consistency audit](docs/design-audit.md) records the reviewed pages,
+evidence, intentional exceptions, and remaining follow-ups.
+
 ## Display preferences
 
 Settings apply immediately and are stored in the existing browser preference
