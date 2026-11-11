@@ -85,6 +85,7 @@ export function usePokedexPreferences() {
     ready: snapshot !== null,
     reduceMotion: preferences.reduceMotion || systemReduceMotion,
     autoplayCry: preferences.autoplayCry,
+    enhanceContrast: preferences.enhanceContrast,
     systemReduceMotion,
   };
 }

@@ -9,16 +9,20 @@ import {
 type Setting = {
   key: string;
   label: string;
-  defaultSelected?: boolean;
-  isSelected?: boolean;
-  isDisabled?: boolean;
+  isSelected: boolean;
+  isDisabled: boolean;
   onChange?: (value: boolean) => void;
-  description?: string;
+  description: string;
 };
 
 export default function Settings() {
-  const { ready, reduceMotion, autoplayCry, systemReduceMotion } =
-    usePokedexPreferences();
+  const {
+    ready,
+    reduceMotion,
+    autoplayCry,
+    enhanceContrast,
+    systemReduceMotion,
+  } = usePokedexPreferences();
   const settings: Setting[] = [
     {
       key: "reduceMotion",
@@ -42,41 +46,53 @@ export default function Settings() {
     {
       key: "enhanceContrast",
       label: "Enhance contrast",
-      defaultSelected: false,
+      isSelected: enhanceContrast,
+      isDisabled: !ready,
+      onChange: (value: boolean) =>
+        updatePreferences({ enhanceContrast: value }),
+      description:
+        "Use a clearer blue screen, stronger outlines, and sharper text.",
     },
   ];
 
   return (
-    <div>
-      <h1 className="mb-6 text-5xl">Settings</h1>
-      <ul className="flex flex-col gap-3 text-3xl">
+    <div
+      className="pokemon-settings flex h-full min-h-0 flex-col"
+      data-reduce-motion={reduceMotion || undefined}
+    >
+      <div className="pokedex-index-header shrink-0">
+        <h1 className="text-xl">Settings</h1>
+      </div>
+      <p className="pokemon-settings-intro">
+        Adjust motion, sound, and contrast to suit you.
+      </p>
+      <ul className="pokemon-settings-list">
         {settings.map((setting) => (
-          <li key={setting.key}>
+          <li key={setting.key} className="pokemon-setting">
             <Switch
               name={setting.key}
               value="true"
-              defaultSelected={setting.defaultSelected}
               isSelected={setting.isSelected}
               isDisabled={setting.isDisabled}
               onChange={setting.onChange}
-              aria-describedby={
-                setting.description ? `${setting.key}-description` : undefined
-              }
-              className="group inline-flex min-h-11 items-center gap-3 rounded-sm text-black data-[focus-visible]:outline-2 data-[focus-visible]:outline-offset-4"
+              aria-describedby={`${setting.key}-description`}
+              className="pokemon-setting-switch"
             >
-              <span className="flex h-7 w-12 shrink-0 items-center rounded-full border-2 border-black bg-black/25 p-0.5 transition-colors group-data-[disabled]:opacity-50 group-data-[selected]:bg-green-500">
-                <span className="h-5 w-5 rounded-full bg-white transition-transform group-data-[pressed]:scale-95 group-data-[selected]:translate-x-5" />
+              <span className="pokemon-setting-label">{setting.label}</span>
+              <span className="pokemon-setting-track" aria-hidden="true">
+                <span className="pokemon-setting-thumb" />
               </span>
-              <span>{setting.label}</span>
             </Switch>
-            {setting.description && (
-              <p id={`${setting.key}-description`} className="mt-1 text-sm">
-                {setting.description}
-              </p>
-            )}
+            <p
+              id={`${setting.key}-description`}
+              className="pokemon-setting-description"
+            >
+              {setting.description}
+            </p>
           </li>
         ))}
       </ul>
+      <p className="pokemon-settings-note">Changes apply immediately.</p>
     </div>
   );
 }

@@ -75,6 +75,20 @@ Run `npm test` for deterministic cache-policy tests. They check cache hits,
 failure/retry behavior, per-ID isolation, query-key changes, empty results and
 outage simulation without making requests to the public API.
 
+## Display preferences
+
+Settings apply immediately and are stored in the existing browser preference
+record. **Enhance contrast** defaults to off, including for older saved records
+that do not contain the new preference. It uses a pale blue screen, deep navy
+text, opaque panels, stronger dividers and focus outlines, and removes the LCD
+texture and text shadows. Pokémon type images switch to readable text badges
+in this mode. The red casing and Pokémon artwork remain recognizable.
+
+The shared screen applies the preference to its subtree; CSS custom
+properties supply the alternate palette across every page. Normal colors are
+kept as fallbacks when the preference is off. The preference does not affect
+the motion or cry-autoplay settings.
+
 ## Detail page data
 
 Descriptions prefer the English Pokémon Sword entry, falling back to the

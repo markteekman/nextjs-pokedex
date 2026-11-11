@@ -1,11 +1,13 @@
 export type PokedexPreferences = {
   reduceMotion: boolean;
   autoplayCry: boolean;
+  enhanceContrast: boolean;
 };
 
 export const DEFAULT_PREFERENCES: PokedexPreferences = {
   reduceMotion: false,
   autoplayCry: true,
+  enhanceContrast: false,
 };
 
 /** Ignore malformed storage and unknown fields rather than trusting saved JSON. */
@@ -23,6 +25,10 @@ export function parsePreferences(value: string | null): PokedexPreferences {
         typeof preferences.autoplayCry === "boolean"
           ? preferences.autoplayCry
           : DEFAULT_PREFERENCES.autoplayCry,
+      enhanceContrast:
+        typeof preferences.enhanceContrast === "boolean"
+          ? preferences.enhanceContrast
+          : DEFAULT_PREFERENCES.enhanceContrast,
     };
   } catch {
     return DEFAULT_PREFERENCES;
