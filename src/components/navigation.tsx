@@ -87,7 +87,7 @@ function NavigationLinks({
             }
             label={label}
           >
-            <Icon aria-hidden="true" />
+            <Icon size={href === "/settings" ? 30 : 28} aria-hidden="true" />
           </MenuItem>
         ))}
       </ul>
