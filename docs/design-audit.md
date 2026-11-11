@@ -2,6 +2,8 @@
 
 Reviewed 11 November 2026 against [DESIGN.md](../DESIGN.md), using Impeccable's document and audit workflows. This captures the current implementation; no application code was changed during the audit.
 
+This snapshot precedes the subsequent Pokopia-inspired bezel, vents, and button-color pass. See the design guide for the current hardware treatment; the two follow-ups below remain open.
+
 ## Implementation integrity verdict: pass
 
 The six primary pages express one coherent system. Red tactile hardware encloses a cyan database screen; Pixelify Sans, thin rules, compact blue controls, and the common screen viewport connect the routes. The detail specimen layout and the dark inset search field are purposeful variations, rather than competing component styles.

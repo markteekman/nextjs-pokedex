@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-11T11:03:33.066427+00:00",
+  "generatedAt": "2026-11-11T11:30:14.275982+00:00",
   "title": "Design System: Next.js Pokédex",
   "extensions": {
     "colorMeta": {
@@ -34,19 +34,109 @@
           "oklch(95% 0.16109 28.611)"
         ]
       },
-      "button-shadow": {
-        "role": "primary",
-        "displayName": "Button Shadow",
-        "canonical": "oklch(31.065% 0.11930 27.863)",
+      "bezel-ivory": {
+        "role": "tertiary",
+        "displayName": "Bezel Ivory",
+        "canonical": "oklch(94.970% 0.03203 97.299)",
         "tonalRamp": [
-          "oklch(15% 0.11930 27.863)",
-          "oklch(26% 0.11930 27.863)",
-          "oklch(38% 0.11930 27.863)",
-          "oklch(49% 0.11930 27.863)",
-          "oklch(61% 0.11930 27.863)",
-          "oklch(72% 0.11930 27.863)",
-          "oklch(84% 0.11930 27.863)",
-          "oklch(95% 0.11930 27.863)"
+          "oklch(15% 0.03203 97.299)",
+          "oklch(26% 0.03203 97.299)",
+          "oklch(38% 0.03203 97.299)",
+          "oklch(49% 0.03203 97.299)",
+          "oklch(61% 0.03203 97.299)",
+          "oklch(72% 0.03203 97.299)",
+          "oklch(84% 0.03203 97.299)",
+          "oklch(95% 0.03203 97.299)"
+        ]
+      },
+      "screen-rim": {
+        "role": "tertiary",
+        "displayName": "Screen Rim",
+        "canonical": "oklch(37.333% 0.02173 229.683)",
+        "tonalRamp": [
+          "oklch(15% 0.02173 229.683)",
+          "oklch(26% 0.02173 229.683)",
+          "oklch(38% 0.02173 229.683)",
+          "oklch(49% 0.02173 229.683)",
+          "oklch(61% 0.02173 229.683)",
+          "oklch(72% 0.02173 229.683)",
+          "oklch(84% 0.02173 229.683)",
+          "oklch(95% 0.02173 229.683)"
+        ]
+      },
+      "button-cobalt": {
+        "role": "primary",
+        "displayName": "Button Cobalt",
+        "canonical": "oklch(53.139% 0.16076 254.814)",
+        "tonalRamp": [
+          "oklch(15% 0.16076 254.814)",
+          "oklch(26% 0.16076 254.814)",
+          "oklch(38% 0.16076 254.814)",
+          "oklch(49% 0.16076 254.814)",
+          "oklch(61% 0.16076 254.814)",
+          "oklch(72% 0.16076 254.814)",
+          "oklch(84% 0.16076 254.814)",
+          "oklch(95% 0.16076 254.814)"
+        ]
+      },
+      "button-cobalt-edge": {
+        "role": "primary",
+        "displayName": "Button Cobalt Edge",
+        "canonical": "oklch(38.087% 0.13022 258.266)",
+        "tonalRamp": [
+          "oklch(15% 0.13022 258.266)",
+          "oklch(26% 0.13022 258.266)",
+          "oklch(38% 0.13022 258.266)",
+          "oklch(49% 0.13022 258.266)",
+          "oklch(61% 0.13022 258.266)",
+          "oklch(72% 0.13022 258.266)",
+          "oklch(84% 0.13022 258.266)",
+          "oklch(95% 0.13022 258.266)"
+        ]
+      },
+      "button-yellow": {
+        "role": "primary",
+        "displayName": "Button Yellow",
+        "canonical": "oklch(82.867% 0.15360 85.258)",
+        "tonalRamp": [
+          "oklch(15% 0.15360 85.258)",
+          "oklch(26% 0.15360 85.258)",
+          "oklch(38% 0.15360 85.258)",
+          "oklch(49% 0.15360 85.258)",
+          "oklch(61% 0.15360 85.258)",
+          "oklch(72% 0.15360 85.258)",
+          "oklch(84% 0.15360 85.258)",
+          "oklch(95% 0.15360 85.258)"
+        ]
+      },
+      "button-yellow-edge": {
+        "role": "primary",
+        "displayName": "Button Yellow Edge",
+        "canonical": "oklch(61.649% 0.12640 70.926)",
+        "tonalRamp": [
+          "oklch(15% 0.12640 70.926)",
+          "oklch(26% 0.12640 70.926)",
+          "oklch(38% 0.12640 70.926)",
+          "oklch(49% 0.12640 70.926)",
+          "oklch(61% 0.12640 70.926)",
+          "oklch(72% 0.12640 70.926)",
+          "oklch(84% 0.12640 70.926)",
+          "oklch(95% 0.12640 70.926)"
+        ]
+      },
+      "button-yellow-ink": {
+        "role": "primary",
+        "displayName": "Button Yellow Ink",
+        "canonical": "oklch(30.020% 0.04456 78.477)",
+        "tonalRamp": [
+          "oklch(15% 0.04456 78.477)",
+          "oklch(26% 0.04456 78.477)",
+          "oklch(38% 0.04456 78.477)",
+          "oklch(49% 0.04456 78.477)",
+          "oklch(61% 0.04456 78.477)",
+          "oklch(72% 0.04456 78.477)",
+          "oklch(84% 0.04456 78.477)",
+          "oklch(95% 0.04456 78.477)"
         ]
       },
       "night": {
@@ -522,13 +612,13 @@
     "shadows": [
       {
         "name": "hardware-rest",
-        "value": "0 9px 0 #5f0707, 0 14px 16px rgb(0 0 0 / 0.28), 0 0 0 2px rgb(255 255 255 / 0)",
+        "value": "inset 0 2px 2px rgb(255 255 255 / 0.18), 0 9px 0 var(--nav-button-edge), 0 14px 16px rgb(0 0 0 / 0.28), 0 0 0 2px rgb(255 255 255 / 0)",
         "purpose": "Structural depth on navigation buttons."
       },
       {
         "name": "screen-bezel",
-        "value": "0 0 0 20px var(--color-pokedex-case-outer)",
-        "purpose": "Outer device bezel; separate overlay frames the scrolling content."
+        "value": "inset 0 2px 2px rgb(255 255 255 / 0.65), inset 0 -3px 4px rgb(53 67 74 / 0.2)",
+        "purpose": "Warm ivory surround extends 20px outside the LCD and has a 32px diagonal cut at lower left; the LCD stays rectangular."
       },
       {
         "name": "search-inset",
@@ -539,6 +629,11 @@
         "name": "sprite-contact",
         "value": "drop-shadow(0 3px 2px rgb(0 54 77 / 0.26))",
         "purpose": "Overview artwork silhouette; not a panel shadow."
+      },
+      {
+        "name": "screen-inner-rim",
+        "value": "0 0 0 3px var(--color-pokedex-screen-rim)",
+        "purpose": "Dark inner lip separating LCD from the ivory bezel."
       }
     ],
     "motion": [
@@ -611,9 +706,17 @@
       "name": "Hardware navigation",
       "kind": "nav",
       "refersTo": "hardware-navigation",
-      "description": "Raised oxblood hardware button. Desktop size shown; the application fills five equal columns above the screen on mobile.",
+      "description": "Raised cobalt hardware button. Desktop size shown; mobile fills five equal columns above the screen.",
       "html": "<a class=\"ds-nav\" href=\"#home\" aria-label=\"Home\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"m3 10 9-7 9 7v11H3Z M9 21v-8h6v8\"/></svg></a>",
-      "css": ".ds-nav {display:grid;place-items:center;width:64px;height:64px;border-radius:6px;background:var(--color-pokedex-case-outer,#8e0c0a);color:white;box-shadow:0 9px 0 #5f0707,0 14px 16px rgb(0 0 0 / .28);transition:translate 160ms cubic-bezier(.2,0,0,1),box-shadow 160ms cubic-bezier(.2,0,0,1);} .ds-nav:hover,.ds-nav:focus-visible {translate:0 3px;} .ds-nav:focus-visible {outline:3px solid white;outline-offset:4px;} .ds-nav:active {translate:0 5px;box-shadow:inset 0 4px 7px rgb(0 0 0 / .32),0 4px 0 #5f0707;}"
+      "css": ".ds-nav {display:grid;place-items:center;width:64px;height:64px;border-radius:6px;background:var(--color-pokedex-button-blue,#176bc6);color:white;box-shadow:inset 0 2px 2px rgb(255 255 255 / .18),0 9px 0 var(--color-pokedex-button-blue-edge,#0b3f86),0 14px 16px rgb(0 0 0 / .28);transition:translate 160ms cubic-bezier(.2,0,0,1),box-shadow 160ms cubic-bezier(.2,0,0,1);} .ds-nav:hover,.ds-nav:focus-visible {translate:0 3px;} .ds-nav:focus-visible {outline:3px solid white;outline-offset:4px;} .ds-nav:active,.ds-nav[aria-current=\"page\"] {translate:0 5px;box-shadow:inset 0 4px 7px rgb(0 0 0 / .32),inset 0 -1px 2px rgb(255 255 255 / .12),0 4px 0 var(--color-pokedex-button-blue-edge,#0b3f86),0 4px 8px rgb(0 0 0 / .2);}"
+    },
+    {
+      "name": "Hardware Settings",
+      "kind": "nav",
+      "refersTo": "hardware-settings",
+      "description": "Yellow hardware Settings variant with dark ink. The same depressed state identifies the current page.",
+      "html": "<a class=\"ds-settings\" href=\"#settings\" aria-label=\"Settings\"><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915\"></path><circle cx=\"12\" cy=\"12\" r=\"3\"></circle></svg></a>",
+      "css": ".ds-settings {display:grid;place-items:center;width:64px;height:64px;border-radius:6px;background:var(--color-pokedex-button-yellow,#f4be38);color:var(--color-pokedex-button-yellow-ink,#3a2b12);box-shadow:inset 0 2px 2px rgb(255 255 255 / .18),0 9px 0 var(--color-pokedex-button-yellow-edge,#b47616),0 14px 16px rgb(0 0 0 / .28);transition:translate 160ms cubic-bezier(.2,0,0,1),box-shadow 160ms cubic-bezier(.2,0,0,1);} .ds-settings:hover,.ds-settings:focus-visible {translate:0 3px;} .ds-settings:focus-visible {outline:3px solid white;outline-offset:4px;} .ds-settings:active,.ds-settings[aria-current=\"page\"] {translate:0 5px;box-shadow:inset 0 4px 7px rgb(0 0 0 / .32),inset 0 -1px 2px rgb(255 255 255 / .12),0 4px 0 var(--color-pokedex-button-yellow-edge,#b47616),0 4px 8px rgb(0 0 0 / .2);}"
     },
     {
       "name": "Database cell",

@@ -4,7 +4,13 @@ description: A tactile red handheld with a crisp, screen-native Pokémon databas
 colors:
   case-red: "#dc0a2d"
   case-oxblood: "#8e0c0a"
-  button-shadow: "#5f0707"
+  bezel-ivory: "#f4efd7"
+  screen-rim: "#35434a"
+  button-cobalt: "#176bc6"
+  button-cobalt-edge: "#0b3f86"
+  button-yellow: "#f4be38"
+  button-yellow-edge: "#b47616"
+  button-yellow-ink: "#3a2b12"
   night: "#171717"
   white: "#ffffff"
   lens-cyan: "#0ebdd2"
@@ -78,6 +84,7 @@ rounded:
   tiny: "0.125rem"
   control: "0.25rem"
   screen: "0.375rem"
+  bezel: "0.75rem"
   track: "1rem"
   case: "2rem"
 spacing:
@@ -107,8 +114,13 @@ components:
     typography: "{typography.body}"
     rounded: "{rounded.control}"
   hardware-navigation:
-    backgroundColor: "{colors.case-oxblood}"
+    backgroundColor: "{colors.button-cobalt}"
     textColor: "{colors.white}"
+    rounded: "{rounded.screen}"
+    size: "4rem"
+  hardware-settings:
+    backgroundColor: "{colors.button-yellow}"
+    textColor: "{colors.button-yellow-ink}"
     rounded: "{rounded.screen}"
     size: "4rem"
   database-cell:
@@ -161,7 +173,7 @@ The palette pairs warm red hardware with a cool cyan display and deep blue ink.
 
 ### Primary: hardware
 
-Case Red and Case Oxblood define the enclosure and raised navigation controls. White outlines, bright Lens Cyan, and red/yellow/green LEDs belong to the hardware. They are not extra screen action colors. Night is the surrounding page background.
+Case Red and Case Oxblood define the enclosure, its lower edges, and three small recessed vents on the upper-right casing. Warm Bezel Ivory frames the display, with a dark Screen Rim separating it from the LCD. Cobalt navigation buttons use a darker blue lower edge and white icons; Settings uses yellow with a darker golden edge and dark ink. The depressed state identifies the current page on both button colors. White outlines, bright Lens Cyan, and red/yellow/green LEDs also belong to the hardware. They are not extra screen action colors. Night is the surrounding page background.
 
 ### Secondary: normal LCD
 
@@ -199,7 +211,7 @@ Search, Filter, and Settings use flex layouts with `min-block-size: 0` so result
 
 ## Elevation & Depth
 
-Hardware is structural and raised; screen content is mostly flat. Navigation uses a hard dark lower edge plus a soft contact shadow, moving down when hovered or selected. The screen has a 20px oxblood bezel and an inset highlight above scrolling content. Its pseudo-elements are non-interactive; the frame must not obstruct pointer input.
+Hardware is structural and raised; screen content is mostly flat. Navigation uses a hard dark lower edge plus a soft contact shadow and a small upper highlight, moving down when hovered or selected. The screen has a 20px warm ivory bezel with subtle material shading and a 3px dark inner rim. An inset screen highlight stays above scrolling content. Its pseudo-elements are non-interactive; the frame must not obstruct pointer input.
 
 Search uses an inset shadow to feel cut into the display. Grid cells and result rows use shared borders and tonal fills rather than individual floating shadows. Pokémon artwork alone gets a small silhouette shadow: overview `drop-shadow(0 3px 2px rgb(0 54 77 / 0.26))`, detail `drop-shadow(0 6px 3px rgb(0 54 77 / 0.24))`.
 
@@ -207,7 +219,7 @@ Search uses an inset shadow to feel cut into the display. Grid cells and result 
 
 ## Shapes
 
-The case has broad 2rem corners and an angular clipped header. Circular geometry belongs to lenses, LEDs, switch thumbs, and the detail registration target. Screen corners and the grid perimeter use `screen`; ordinary controls and panels use `control`; small utility controls and the footprint stamp use `tiny`.
+The case has broad 2rem corners and an angular clipped header. The bezel uses `bezel` corners with a 2rem diagonal cut at its lower left; only the physical surround is clipped, leaving the LCD and its focus rings rectangular. Circular geometry belongs to lenses, LEDs, the three recessed header vents, switch thumbs, and the detail registration target. Screen corners and the grid perimeter use `screen`; ordinary controls and panels use `control`; small utility controls and the footprint stamp use `tiny`.
 
 Grid perimeter and separators share a real 1px rule. Detail facts and information sections use thin horizontal rules. Do not add a circular pedestal to overview Pokémon: that variation was reviewed and rejected. The detail-only circle remains part of the specimen presentation.
 
@@ -221,7 +233,9 @@ The index header aligns its uppercase title and optional count along a thin bott
 
 Screen actions have a 44px minimum height, compact corners, and strong visible focus. Primary actions use Field/On Field; secondary actions use a pale panel with dark ink. Loading controls retain their label and focus using `aria-disabled` when appropriate; the handler must also guard repeated activation. Error retry uses the established 2px current-color outline variant.
 
-Hardware navigation is a separate component family: 64px square on desktop, full-column width above the screen on mobile. Hover moves it 3px down; active/current moves it 5px down and changes the shadow to depressed. Preserve native links, accessible names, and `aria-current`.
+Hardware navigation is a separate component family: cobalt with white icons, plus a yellow Settings variant with dark ink. Controls are 64px square on desktop, full-column width above the screen on mobile. Hover moves them 3px down; active/current moves them 5px down and changes the shadow to depressed. Preserve native links, accessible names, and `aria-current`.
+
+The decorative header vents use three 6px recessed circles. On compact viewports they move toward the upper-right edge above the LED row, with closer spacing to avoid crowding the lights. They have no interactive role or extra animation.
 
 ### Search and results
 

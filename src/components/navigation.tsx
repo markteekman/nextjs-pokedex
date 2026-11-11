@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { clsx } from "clsx";
 import {
   Funnel,
   Home,
@@ -110,7 +111,10 @@ function MenuItem({
       <Link
         href={href}
         aria-current={currentPath === href.split("?")[0] ? "page" : undefined}
-        className="pokedex-nav-button grid h-16 w-16 place-items-center rounded-md"
+        className={clsx(
+          "pokedex-nav-button grid h-16 w-16 place-items-center rounded-md",
+          href === "/settings" && "pokedex-nav-button--settings",
+        )}
       >
         {children}
         <span className="sr-only">{label}</span>

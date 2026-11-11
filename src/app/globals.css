@@ -4,6 +4,13 @@
   --font-sans: var(--font-pixelify-sans);
   --color-pokedex-case: #dc0a2d;
   --color-pokedex-case-outer: #8e0c0a;
+  --color-pokedex-bezel: #f4efd7;
+  --color-pokedex-screen-rim: #35434a;
+  --color-pokedex-button-blue: #176bc6;
+  --color-pokedex-button-blue-edge: #0b3f86;
+  --color-pokedex-button-yellow: #f4be38;
+  --color-pokedex-button-yellow-edge: #b47616;
+  --color-pokedex-button-yellow-ink: #3a2b12;
   --color-pokedex-screen: #9fc8df;
   --color-pokedex-dot-blue: #0ebdd2;
   --color-pokedex-dot-red: #f70a05;
@@ -53,6 +60,26 @@ body {
 
 .top-shape {
   clip-path: polygon(0 0, 100% 0, 100% 42%, 68% 42%, 50% 78%, 0 78%);
+}
+
+.pokedex-header-vents {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  gap: 0.75rem;
+  inset-block-start: 3.25rem;
+  inset-inline-end: 3rem;
+  pointer-events: none;
+}
+
+.pokedex-header-vents > span {
+  box-shadow:
+    inset 0 2px 3px rgb(0 0 0 / 0.55),
+    0 1px 0 rgb(255 255 255 / 0.24);
+  border-radius: 50%;
+  background-color: var(--color-pokedex-case-outer);
+  inline-size: 6px;
+  block-size: 6px;
 }
 
 .pokedex-light--main {
@@ -157,8 +184,33 @@ body {
   }
 }
 
+/* Shape the physical surround without clipping the LCD or its focus rings. */
+.pokedex-screen-bezel {
+  position: relative;
+  isolation: isolate;
+}
+
+.pokedex-screen-bezel::before {
+  position: absolute;
+  z-index: -1;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 2rem 100%, 0 calc(100% - 2rem));
+  inset: -20px;
+  box-shadow:
+    inset 0 2px 2px rgb(255 255 255 / 0.65),
+    inset 0 -3px 4px rgb(53 67 74 / 0.2);
+  border-radius: 0.75rem;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-pokedex-bezel), white 22%),
+    var(--color-pokedex-bezel) 58%,
+    color-mix(in srgb, var(--color-pokedex-bezel), black 10%)
+  );
+  pointer-events: none;
+  content: "";
+}
+
 .pokedex-screen {
-  box-shadow: 0 0 0 20px var(--color-pokedex-case-outer);
+  box-shadow: 0 0 0 3px var(--color-pokedex-screen-rim);
   background:
     radial-gradient(
       circle at 20% 10%,
@@ -931,15 +983,27 @@ body {
 }
 
 .pokedex-nav-button {
+  --nav-button-face: var(--color-pokedex-button-blue);
+  --nav-button-edge: var(--color-pokedex-button-blue-edge);
+
   translate: 0 0;
   transition-duration: 160ms;
   transition-property: translate, box-shadow, background-color, color;
   transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
   box-shadow:
-    0 9px 0 #5f0707,
+    inset 0 2px 2px rgb(255 255 255 / 0.18),
+    0 9px 0 var(--nav-button-edge),
     0 14px 16px rgb(0 0 0 / 0.28),
     0 0 0 2px rgb(255 255 255 / 0);
-  background: var(--color-pokedex-case-outer);
+  background: var(--nav-button-face);
+  color: white;
+}
+
+.pokedex-nav-button--settings {
+  --nav-button-face: var(--color-pokedex-button-yellow);
+  --nav-button-edge: var(--color-pokedex-button-yellow-edge);
+
+  color: var(--color-pokedex-button-yellow-ink);
 }
 
 .pokedex-nav-button:where(:hover, :focus-visible) {
@@ -957,7 +1021,7 @@ body {
   box-shadow:
     inset 0 4px 7px rgb(0 0 0 / 0.32),
     inset 0 -1px 2px rgb(255 255 255 / 0.12),
-    0 4px 0 #5f0707,
+    0 4px 0 var(--nav-button-edge),
     0 4px 8px rgb(0 0 0 / 0.2);
 }
 
@@ -1336,6 +1400,12 @@ body {
 }
 
 @media (max-width: 700px) {
+  .pokedex-header-vents {
+    gap: 0.5rem;
+    inset-block-start: 1rem;
+    inset-inline-end: 1.5rem;
+  }
+
   .pokedex .under-plate {
     grid-template-columns: minmax(0, 1fr);
     gap: 3rem;
