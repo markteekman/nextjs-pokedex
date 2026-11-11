@@ -512,19 +512,13 @@ body {
 .pokemon-filter-generation-options,
 .pokemon-filter-type-options {
   display: grid;
-  gap: 0.5rem;
-}
-
-.pokemon-filter-generation-options {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
-}
-
-.pokemon-filter-type-options {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 6.5rem), 1fr));
+  gap: 0.5rem;
 }
 
 .pokemon-filter-checkbox-button {
   display: flex;
+  position: relative;
   align-items: center;
   gap: 0.5rem;
   cursor: pointer;
@@ -612,6 +606,13 @@ body {
 
 .pokemon-filter-apply {
   flex: 1;
+  background-color: #0b536c;
+  color: #e1fdff;
+  text-shadow: none;
+}
+
+.pokemon-filter-apply:where(:hover, [data-hovered]) {
+  background-color: #09607a;
 }
 
 .pokemon-filter-status {

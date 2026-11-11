@@ -75,7 +75,12 @@ export default function PokemonFilters({
             </Text>
             <div className="pokemon-filter-generation-options">
               {GENERATION_OPTIONS.map(({ id, label }) => (
-                <FilterCheckbox key={id} value={String(id)} label={label} />
+                <FilterCheckbox
+                  key={id}
+                  value={String(id)}
+                  label={label}
+                  compactLabel={label.replace("Generation", "Gen")}
+                />
               ))}
             </div>
           </CheckboxGroup>
@@ -120,14 +125,29 @@ export default function PokemonFilters({
   );
 }
 
-function FilterCheckbox({ value, label }: { value: string; label: string }) {
+function FilterCheckbox({
+  value,
+  label,
+  compactLabel,
+}: {
+  value: string;
+  label: string;
+  compactLabel?: string;
+}) {
   return (
     <CheckboxField value={value} className="pokemon-filter-checkbox">
       <CheckboxButton className="pokemon-filter-checkbox-button">
         <span className="pokemon-filter-indicator" aria-hidden="true">
           <Check size={14} className="pokemon-filter-check" />
         </span>
-        <span>{label}</span>
+        {compactLabel ? (
+          <>
+            <span aria-hidden="true">{compactLabel}</span>
+            <span className="sr-only">{label}</span>
+          </>
+        ) : (
+          <span>{label}</span>
+        )}
       </CheckboxButton>
     </CheckboxField>
   );
