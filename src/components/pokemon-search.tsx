@@ -59,7 +59,7 @@ export default function PokemonSearch({
               <Label className="mb-1">Find your favorite Pokémon</Label>
               <div className="relative">
                 <Input className="min-h-11 w-full rounded-md border p-2 pe-20 outline-offset-2" />
-                <div className="absolute inset-y-0 end-2 flex items-center gap-2">
+                <div className="absolute inset-y-0 inset-e-2 flex items-center gap-2">
                   <Button
                     className={
                       isEmpty
@@ -81,7 +81,7 @@ export default function PokemonSearch({
             aria-label="Pokémon results list"
             aria-busy={isFiltering}
             items={filteredPokemon}
-            className="mt-3 min-h-0 shrink [scrollbar-gutter:stable] overflow-y-auto overscroll-contain rounded-md border border-current/30 p-1"
+            className="mt-3 min-h-0 shrink scrollbar-gutter-stable overflow-y-auto overscroll-contain rounded-md border border-current/30 p-1"
             renderEmptyState={() =>
               isFiltering ? null : (
                 <p className="p-2">
@@ -102,9 +102,12 @@ export default function PokemonSearch({
                     <div {...domProps} />
                   )
                 }
-                className="data-[focused]:text-pokedex-screen data-[hovered]:text-pokedex-screen flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-sm px-3 py-2 outline-offset-[-2px] data-[focused]:bg-black data-[hovered]:bg-black"
+                className="data-focused:text-pokedex-screen data-hovered:text-pokedex-screen flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-sm px-3 py-2 -outline-offset-2 data-focused:bg-black data-hovered:bg-black"
               >
-                <Text slot="label" className="min-w-0 break-words uppercase">
+                <Text
+                  slot="label"
+                  className="min-w-0 wrap-break-word uppercase"
+                >
                   {pokemon.name}
                 </Text>
                 <Text slot="description" className="shrink-0 tabular-nums">
