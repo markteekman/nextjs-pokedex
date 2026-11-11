@@ -1,6 +1,6 @@
 "use client";
 
-import { SearchIcon, X } from "lucide-react";
+import { ChevronRight, SearchIcon, X } from "lucide-react";
 import Fuse from "fuse.js/basic";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -47,31 +47,34 @@ export default function PokemonSearch({
   }, [pokemonSearch, searchQuery]);
 
   return (
-    <div className="flex h-full min-h-0 flex-col">
-      <h1 className="mb-3 shrink-0 text-5xl">Search</h1>
-      <p className="mb-3 shrink-0 text-sm">
-        Search all {pokemons.length} Pokémon.
-      </p>
+    <div className="pokemon-search flex h-full min-h-0 flex-col">
+      <div className="pokedex-index-header shrink-0">
+        <h1 className="text-xl">Search</h1>
+        <p className="pokedex-index-count">{pokemons.length} entries</p>
+      </div>
       <Autocomplete inputValue={value} onInputChange={setValue}>
-        <SearchField className="flex shrink-0 flex-col">
+        <SearchField className="pokemon-search-field">
           {({ isEmpty }) => (
             <>
-              <Label className="mb-1">Find your favorite Pokémon</Label>
-              <div className="relative">
-                <Input className="min-h-11 w-full rounded-md border p-2 pe-20 outline-offset-2" />
-                <div className="absolute inset-y-0 inset-e-2 flex items-center gap-2">
-                  <Button
-                    className={
-                      isEmpty
-                        ? "hidden"
-                        : "grid h-8 w-8 cursor-pointer place-items-center rounded-sm outline-offset-2"
-                    }
-                  >
-                    <span className="sr-only">Clear input</span>
-                    <X size={18} aria-hidden="true" />
-                  </Button>
-                  <SearchIcon size={18} aria-hidden="true" />
-                </div>
+              <Label className="pokemon-search-label">
+                Find your favorite Pokémon
+              </Label>
+              <div className="pokemon-search-input-wrap">
+                <SearchIcon size={18} aria-hidden="true" />
+                <Input
+                  className="pokemon-search-input"
+                  placeholder="e.g. Bulbasaur"
+                />
+                <Button
+                  className={
+                    isEmpty
+                      ? "pokemon-search-clear invisible"
+                      : "pokemon-search-clear"
+                  }
+                >
+                  <span className="sr-only">Clear input</span>
+                  <X size={18} aria-hidden="true" />
+                </Button>
               </div>
             </>
           )}
@@ -81,11 +84,12 @@ export default function PokemonSearch({
             aria-label="Pokémon results list"
             aria-busy={isFiltering}
             items={filteredPokemon}
-            className="mt-3 min-h-0 shrink scrollbar-gutter-stable overflow-y-auto overscroll-contain rounded-md border border-current/30 p-1"
+            className="pokemon-search-results"
             renderEmptyState={() =>
               isFiltering ? null : (
-                <p className="p-2">
-                  No results found for &quot;{searchQuery}&quot;
+                <p className="pokemon-search-empty">
+                  No results found for &quot;{searchQuery}&quot;. Try another
+                  name.
                 </p>
               )
             }
@@ -102,15 +106,17 @@ export default function PokemonSearch({
                     <div {...domProps} />
                   )
                 }
-                className="data-focused:text-pokedex-screen data-hovered:text-pokedex-screen flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-sm px-3 py-2 -outline-offset-2 data-focused:bg-black data-hovered:bg-black"
+                className="pokemon-search-result"
               >
-                <Text
-                  slot="label"
-                  className="min-w-0 wrap-break-word uppercase"
-                >
+                <ChevronRight
+                  size={14}
+                  className="pokemon-search-selection"
+                  aria-hidden="true"
+                />
+                <Text slot="label" className="pokemon-search-name">
                   {pokemon.name}
                 </Text>
-                <Text slot="description" className="shrink-0 tabular-nums">
+                <Text slot="description" className="pokemon-search-number">
                   <span className="sr-only">National Pokédex entry </span>
                   {formatDexNumber(pokemon.id)}
                 </Text>
@@ -118,8 +124,15 @@ export default function PokemonSearch({
             )}
           </ListBox>
         )}
-        <p role="status" className="mt-2 shrink-0 text-sm">
-          {isFiltering ? "Updating results…" : ""}
+        {!hasQuery && (
+          <p className="pokemon-search-hint">Start typing a Pokémon name.</p>
+        )}
+        <p role="status" className="pokemon-search-status">
+          {isFiltering
+            ? "Updating results…"
+            : hasQuery && filteredPokemon.length > 0
+              ? `${filteredPokemon.length} matching Pokémon`
+              : ""}
         </p>
       </Autocomplete>
     </div>
