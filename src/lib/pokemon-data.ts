@@ -6,7 +6,7 @@ import type {
   PokemonListPage,
   PokemonSearchItem,
   PokemonType,
-  PokemonTypes,
+  PokemonTypeName,
 } from "@/app/types";
 import { getClient, query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
@@ -22,7 +22,7 @@ import { POKEMON_MAX_ID } from "@/lib/pokemon-id";
 import { type PokemonResult, requestPokemon } from "@/lib/pokemon-request";
 
 interface TypeName {
-  name: PokemonTypes;
+  name: PokemonTypeName;
 }
 
 interface PokemonTypeNames {

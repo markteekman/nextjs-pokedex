@@ -1,7 +1,7 @@
 /**
- * Represents the various types a Pokémon can have.
+ * Represents the English display name of a Pokémon type.
  */
-export type PokemonTypes =
+export type PokemonTypeName =
   | "Bug"
   | "Dark"
   | "Dragon"
@@ -26,7 +26,7 @@ export type PokemonTypes =
  */
 export interface PokemonType {
   id: number;
-  name: PokemonTypes;
+  name: PokemonTypeName;
 }
 
 /**
