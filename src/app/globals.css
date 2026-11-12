@@ -411,6 +411,8 @@ body {
 }
 
 .pokedex-screen {
+  --screen-ink: #021820;
+
   box-shadow: 0 0 0 3px var(--color-pokedex-screen-rim);
   background:
     radial-gradient(
@@ -418,7 +420,7 @@ body {
       rgb(224 253 255 / 0.32),
       transparent 32%
     ),
-    linear-gradient(145deg, #76dceb 0%, #38bad4 52%, #1595bd 100%);
+    linear-gradient(145deg, #9ae6ef 0%, #57c5dc 52%, #38b0ce 100%);
   color: var(--screen-ink, #063e51);
   text-shadow: 1px 1px 0 rgb(225 253 255 / 0.36);
 }
@@ -449,7 +451,7 @@ body {
   content: "";
 }
 
-/* Keep the screen frame above scrolling content, without blocking input. */
+/* Keep the screen frame above the texture, without blocking input. */
 .pokedex-screen::after {
   position: absolute;
   z-index: 2;
@@ -457,10 +459,16 @@ body {
   box-shadow:
     inset 0 0 0 6px rgb(225 253 255 / 0.2),
     inset 0 12px 18px rgb(255 255 255 / 0.16),
-    inset 0 -18px 24px rgb(0 63 93 / 0.22);
+    inset 0 -18px 24px rgb(0 63 93 / 0.06);
   border-radius: inherit;
   pointer-events: none;
   content: "";
+}
+
+/* Decorative layers must not darken text or wash out selected controls. */
+.pokedex-screen-content {
+  position: relative;
+  z-index: 3;
 }
 
 /* --- Shared page colors and header --- */
@@ -636,7 +644,6 @@ body {
 
 .pokeslot-number {
   position: absolute;
-  opacity: 0.72;
   inset-block-start: 0.5rem;
   inset-inline-start: 0.625rem;
   font-size: 0.625rem;
@@ -1579,7 +1586,6 @@ body {
   border: 2px solid var(--screen-rule);
 }
 
-.pokedex-screen[data-contrast="enhanced"] .pokeslot-number,
 .pokedex-screen[data-contrast="enhanced"] .pokemon-type-badge {
   opacity: 1;
 }

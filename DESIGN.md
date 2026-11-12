@@ -17,10 +17,10 @@ colors:
   led-red: "#f70a05"
   led-yellow: "#fafb07"
   led-green: "#67f50b"
-  lcd-light: "#76dceb"
-  lcd-mid: "#38bad4"
-  lcd-deep: "#1595bd"
-  lcd-ink: "#063e51"
+  lcd-light: "#9ae6ef"
+  lcd-mid: "#57c5dc"
+  lcd-deep: "#38b0ce"
+  lcd-ink: "#021820"
   lcd-field: "#0b536c"
   lcd-outline: "#09607a"
   lcd-on-field: "#e1fdff"
@@ -183,13 +183,13 @@ Case Red and Case Oxblood define the enclosure, its lower edges, and three small
 
 ### Secondary: normal LCD
 
-LCD Light, Mid, and Deep form the screen's 145-degree gradient, with a pale radial highlight at the upper left. LCD Ink supplies text. LCD Field and On Field identify inset inputs and selected actions. LCD Outline is the stronger control edge. Pale translucent rules and panels allow the underlying display to remain visible; grid cells use the separate darker cyan tint.
+LCD Light, Mid, and Deep form the screen's 145-degree gradient, with a pale radial highlight at the upper left. The brighter upper and middle stops give the LCD depth without darkening its contrast-tested lower endpoint. LCD Ink supplies opaque text through the default `--screen-ink` role. Keep scanlines and inset shading beneath the content; the bottom shading uses 6% opacity so it does not undermine the darker text and lighter gradient endpoint. LCD Field and On Field identify inset inputs and selected actions. LCD Outline is the stronger control edge. Pale translucent rules and panels allow the underlying display to remain visible; grid cells use the separate darker cyan tint.
 
 These translucent colors are composited surfaces, not standalone text backgrounds with an assumed contrast ratio. Header rules, grid dividers, and component panels have deliberately different alpha values. Do not flatten them all to one arbitrary opacity.
 
 ### Enhanced contrast: clear LCD
 
-`data-contrast="enhanced"` on `.pokedex-screen` maps screen roles to the Clear palette: Screen, Ink, Rule/Outline, Field, Field Hover, On Field, Panel, Hover, and Switch Off. The gradient, scanlines, text shadow, and inset screen highlight disappear. A solid rule frames the screen, index numbers become fully opaque, and type labels replace the raster badges. The red hardware remains recognizable.
+`data-contrast="enhanced"` on `.pokedex-screen` maps screen roles to the Clear palette: Screen, Ink, Rule/Outline, Field, Field Hover, On Field, Panel, Hover, and Switch Off. The gradient, scanlines, text shadow, and inset screen highlight disappear. A solid rule frames the screen and type labels replace the raster badges. Index numbers are fully opaque in both palettes. The red hardware remains recognizable.
 
 **The Screen Roles Rule.** New screen controls must read the existing `--screen-*` roles with appropriate normal-mode fallbacks. A normal-mode color alone is insufficient when the component has an enhanced-contrast state.
 
@@ -219,7 +219,7 @@ Search, Filter, and Settings use flex layouts with `min-block-size: 0` so result
 
 ## Elevation & Depth
 
-Hardware is structural and raised; screen content is mostly flat. Navigation uses a hard dark lower edge plus a soft contact shadow and a small upper highlight, moving down when hovered or selected. The screen has a 20px warm ivory bezel with subtle material shading and a 3px dark inner rim. An inset screen highlight stays above scrolling content. Its pseudo-elements are non-interactive; the frame must not obstruct pointer input.
+Hardware is structural and raised; screen content is mostly flat. Navigation uses a hard dark lower edge plus a soft contact shadow and a small upper highlight, moving down when hovered or selected. The screen has a 20px warm ivory bezel with subtle material shading and a 3px dark inner rim. The inset screen highlight stays above the background texture and below scrolling content. Its pseudo-elements are non-interactive; the frame must not obstruct pointer input.
 
 The control wing shares Case Red with the main body. A small inset seam at the join and a Case Oxblood lower plate offset by 10px give it the same physical construction. Shape only its decorative layers; leave the navigation container's overflow visible so button shadows and keyboard focus remain intact.
 
