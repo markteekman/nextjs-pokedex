@@ -50,7 +50,9 @@ export default function PokemonSearch({
     <div className="pokemon-search flex h-full min-h-0 flex-col">
       <div className="pokedex-index-header shrink-0">
         <h1 className="text-xl">Search</h1>
-        <p className="pokedex-index-count">{pokemons.length} entries</p>
+        <p className="pokedex-index-count">
+          {pokemons.length} {pokemons.length === 1 ? "entry" : "entries"}
+        </p>
       </div>
       <Autocomplete inputValue={value} onInputChange={setValue}>
         <SearchField className="pokemon-search-field">

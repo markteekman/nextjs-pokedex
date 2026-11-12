@@ -144,7 +144,8 @@ export default function PokemonIndex({
       <div className="pokedex-index-header">
         <h1 className="text-xl">National Pokédex</h1>
         <p className="pokedex-index-count">
-          {String(page.pokemons.length).padStart(3, "0")} / {page.total} entries
+          {String(page.pokemons.length).padStart(3, "0")} / {page.total}{" "}
+          {page.total === 1 ? "entry" : "entries"}
         </p>
       </div>
       {filtersActive && (
