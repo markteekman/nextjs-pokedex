@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { PokemonDetailBackLink } from "@/components/pokemon-detail-back-link";
 import { ScreenLoader } from "@/components/screen-loader";
 
 export default function Loading() {
@@ -7,10 +6,7 @@ export default function Loading() {
     <div className="pokemon-detail pokemon-detail-loading">
       <div className="pokemon-detail-header">
         <ScreenLoader message="Loading Pokémon entry…" />
-        <Link href="/" className="pokemon-detail-back">
-          <ArrowLeft size={14} aria-hidden="true" />
-          All Pokémon
-        </Link>
+        <PokemonDetailBackLink />
       </div>
 
       <div aria-hidden="true">

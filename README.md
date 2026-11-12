@@ -50,8 +50,10 @@ preserve the existing cards and offer a retry. In-flight requests are aborted
 when leaving the overview.
 
 Loaded entries and the selected card's focus/scroll position are kept in browser
-memory for returning from a detail page. A full reload starts with the first
-batch again. `/api/pokemon?after=36` serves subsequent batches through the same
+memory for returning from a detail page. **Back to results** restores that
+overview's filters as well. Direct detail visits or a full reload have no saved
+overview, so **All Pokémon** returns to the unfiltered first batch instead.
+`/api/pokemon?after=36` serves subsequent batches through the same
 server cache; its browser response uses `Cache-Control: no-store`, and invalid
 cursors are rejected before making an upstream request.
 

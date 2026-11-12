@@ -1,6 +1,7 @@
 import PokeCry from "@/components/pokecry";
 import PokeSprite from "@/components/pokesprite";
 import { PokedexError } from "@/components/pokedex-error";
+import { PokemonDetailBackLink } from "@/components/pokemon-detail-back-link";
 import PokemonTypeBadge from "@/components/pokemon-type-badge";
 import { getSinglePokemon } from "@/lib/pokemon-data";
 import { parsePokemonId } from "@/lib/pokemon-id";
@@ -13,8 +14,6 @@ import {
 } from "@/utilities/format-pokemon-measurements";
 import formatFlavorText from "@/utilities/format-flavor-text";
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
 import { cache } from "react";
 import { createPageMetadata } from "@/lib/page-metadata";
 
@@ -87,10 +86,7 @@ export default async function PokemonDetailPage({ params }: Props) {
           <span className="sr-only">National Pokédex entry </span>
           {formatDexNumber(pokemon.id)}
         </p>
-        <Link href="/" className="pokemon-detail-back">
-          <ArrowLeft size={14} aria-hidden="true" />
-          All Pokémon
-        </Link>
+        <PokemonDetailBackLink />
       </div>
 
       <div className="pokemon-detail-record">
