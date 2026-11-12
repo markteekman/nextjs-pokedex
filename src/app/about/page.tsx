@@ -2,7 +2,7 @@ import { createPageMetadata } from "@/lib/page-metadata";
 
 export const metadata = createPageMetadata(
   "About",
-  "Learn why PokeCenter was built, what powers it, and how accessibility shaped the experience.",
+  "Learn why Pokédex was built, what powers it, and how accessibility shaped the experience.",
   "/about",
 );
 
@@ -28,7 +28,7 @@ export default function About() {
         <h1 id="about-title" className="text-xl">
           About
         </h1>
-        <p className="pokedex-index-count">PokeCenter</p>
+        <p className="pokedex-index-count">Pokédex</p>
       </header>
       <p className="pokemon-about-intro">
         A modern, accessible Pokédex built to turn a familiar world into a
@@ -41,9 +41,9 @@ export default function About() {
         <h2 id="mission-title">Mission</h2>
         <div>
           <p>
-            PokeCenter began as a hands-on side project: a way to explore a
-            modern web stack by building something playful, useful, and more
-            ambitious than a tutorial exercise.
+            Pokédex began as a hands-on side project: a way to explore a modern
+            web stack by building something playful, useful, and more ambitious
+            than a tutorial exercise.
           </p>
           <p>
             It turns data from the <a href="https://pokeapi.co/">PokéAPI</a>{" "}
@@ -68,7 +68,7 @@ export default function About() {
       <section aria-labelledby="access-title" className="pokemon-about-section">
         <h2 id="access-title">Built for more trainers</h2>
         <p>
-          Accessibility is part of the build, not a final checklist. PokeCenter
+          Accessibility is part of the build, not a final checklist. Pokédex
           follows WCAG 2.2 principles and aims for an inclusive experience
           across devices, input methods, and user preferences.
         </p>

@@ -1,4 +1,4 @@
-# PokeCenter
+# Pokédex
 
 This document lays out the goal of this little side-project. The main reason for building this app is to get up to speed with a certain tech-stack. This primarily consist of Next.js, TypeScript, GraphQL and Tailwind CSS. As a bonus, I also want to integrate Motion to the app. For fun, I choose to build a Pokémon-themed app, using the [PokéAPI](https://pokeapi.co/).
 
