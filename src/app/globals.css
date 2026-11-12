@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Device styles come first, followed by shared states and page styles.
+   Keep responsive and accessibility overrides after the styles they override. */
+
+/* --- Theme tokens and document defaults --- */
+
 @theme {
   --font-sans: var(--font-pixelify-sans);
   --color-pokedex-case: #dc0a2d;
@@ -22,6 +27,30 @@ body {
   background: #171717;
   color: white;
 }
+
+.dot-pattern {
+  position: fixed;
+  opacity: 0.2;
+  z-index: -10;
+
+  mask-image: radial-gradient(
+    ellipse at center,
+    black 0%,
+    black 50%,
+    transparent 100%
+  );
+  inset: 0;
+
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    white 1px,
+    transparent 1px
+  );
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+/* --- Device case and entrance animation --- */
 
 .pokedex {
   --pokedex-wing-width: 6.25rem;
@@ -98,6 +127,8 @@ body {
   position: relative;
   z-index: 1;
 }
+
+/* --- Case header, vents, and indicator lights --- */
 
 .top-shape {
   clip-path: polygon(0 0, 100% 0, 100% 42%, 68% 42%, 50% 78%, 0 78%);
@@ -225,6 +256,103 @@ body {
   }
 }
 
+/* --- Device navigation and main layout --- */
+
+.pokedex-navigation {
+  position: relative;
+  grid-row: 1;
+  grid-column: 1;
+  align-self: start;
+  justify-self: end;
+  margin-inline-end: calc(-1 * var(--pokedex-wing-width));
+  isolation: isolate;
+  padding: 2rem 1.125rem 2.5rem;
+  inline-size: var(--pokedex-wing-width);
+  min-inline-size: 0;
+}
+
+/* Only the wing's material is clipped; controls and focus rings stay clear. */
+.pokedex-navigation::before,
+.pokedex-navigation::after {
+  position: absolute;
+  clip-path: polygon(
+    0 0,
+    calc(100% - 1.25rem) 0,
+    100% 1.25rem,
+    100% 100%,
+    0 100%
+  );
+  inset: 0;
+  border-radius: 0 1.25rem 1.25rem 0;
+  pointer-events: none;
+  content: "";
+}
+
+.pokedex-navigation::before {
+  z-index: -1;
+  box-shadow:
+    inset 3px 0 5px rgb(0 0 0 / 0.16),
+    inset 0 2px 2px rgb(255 255 255 / 0.14);
+  background-color: var(--color-pokedex-case);
+}
+
+.pokedex-navigation::after {
+  translate: 0 10px;
+  z-index: -2;
+  background-color: var(--color-pokedex-case-outer);
+}
+
+.pokedex-main {
+  grid-row: 1;
+  grid-column: 1;
+  min-inline-size: 0;
+}
+
+.pokedex-nav-button {
+  --nav-button-face: var(--color-pokedex-button-blue);
+  --nav-button-edge: var(--color-pokedex-button-blue-edge);
+
+  translate: 0 0;
+  transition-duration: 160ms;
+  transition-property: translate, box-shadow, background-color, color;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  box-shadow:
+    inset 0 2px 2px rgb(255 255 255 / 0.18),
+    0 9px 0 var(--nav-button-edge),
+    0 14px 16px rgb(0 0 0 / 0.28),
+    0 0 0 2px rgb(255 255 255 / 0);
+  background: var(--nav-button-face);
+  color: white;
+}
+
+.pokedex-nav-button--settings {
+  --nav-button-face: var(--color-pokedex-button-yellow);
+  --nav-button-edge: var(--color-pokedex-button-yellow-edge);
+
+  color: var(--color-pokedex-button-yellow-ink);
+}
+
+.pokedex-nav-button:where(:hover, :focus-visible) {
+  translate: 0 3px;
+}
+
+.pokedex-nav-button:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 4px;
+}
+
+.pokedex-nav-button:active,
+.pokedex-nav-button[aria-current="page"] {
+  translate: 0 5px;
+  box-shadow:
+    inset 0 4px 7px rgb(0 0 0 / 0.32),
+    inset 0 -1px 2px rgb(255 255 255 / 0.12),
+    0 4px 0 var(--nav-button-edge),
+    0 4px 8px rgb(0 0 0 / 0.2);
+}
+
+/* --- Screen bezel and LCD effects --- */
+
 /* Shape the physical surround without clipping the LCD or its focus rings. */
 .pokedex-screen-bezel {
   position: relative;
@@ -309,6 +437,13 @@ body {
   content: "";
 }
 
+/* --- Shared page colors and header --- */
+
+.pokemon-settings,
+.pokemon-about {
+  color: var(--screen-ink, #063e51);
+}
+
 .pokedex-index-header {
   display: flex;
   flex-wrap: wrap;
@@ -320,6 +455,8 @@ body {
   padding-block-end: 0.5rem;
   text-transform: uppercase;
 }
+
+/* --- Loading states --- */
 
 .pokedex-loading {
   display: flex;
@@ -383,6 +520,8 @@ body {
   gap: 0.625rem;
 }
 
+/* --- Error and retry states --- */
+
 .pokedex-error {
   display: flex;
   flex-direction: column;
@@ -422,6 +561,8 @@ body {
   min-block-size: 1.5em;
 }
 
+/* --- Catalog counts, cards, filter summary, and pagination --- */
+
 .pokedex-index-count,
 .pokeslot-number {
   font-variant-numeric: tabular-nums;
@@ -430,6 +571,85 @@ body {
 .pokedex-index-count {
   font-size: 0.75rem;
   letter-spacing: 0.04em;
+}
+
+.pokedex-grid {
+  gap: 1px;
+  border: 1px solid var(--screen-rule, rgb(225 253 255 / 0.52));
+  border-radius: 0.375rem;
+  background-color: var(--screen-rule, rgb(225 253 255 / 0.52));
+  overflow: hidden;
+}
+
+.pokedex-grid > li {
+  background-color: var(--screen-panel, rgb(6 132 174 / 0.2));
+}
+
+.pokeslot {
+  scale: 1;
+  transition-duration: 160ms;
+  transition-property: scale, background-color;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  background-color: transparent;
+  min-block-size: 10.25rem;
+}
+
+.pokeslot:where(:hover, :focus-visible) {
+  background-color: var(--screen-hover, rgb(225 253 255 / 0.2));
+}
+
+.pokeslot:focus-visible {
+  outline: 2px solid var(--screen-ink, rgb(239 254 255 / 0.92));
+  outline-offset: -4px;
+}
+
+.pokeslot:active {
+  scale: 0.96;
+  background-color: rgb(6 89 124 / 0.12);
+}
+
+.pokeslot-number {
+  position: absolute;
+  opacity: 0.72;
+  inset-block-start: 0.5rem;
+  inset-inline-start: 0.625rem;
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+}
+
+.pokeslot-image {
+  translate: 0 0;
+  filter: drop-shadow(0 3px 2px rgb(0 54 77 / 0.26));
+  transition-duration: 180ms;
+  transition-property: translate, filter;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.pokeslot:where(:hover, :focus-visible) .pokeslot-image {
+  translate: 0 -4px;
+  filter: drop-shadow(0 4px 2px rgb(0 54 77 / 0.32));
+}
+
+.pokedex-filter-controls {
+  display: grid;
+  gap: 0.5rem;
+  margin-block-end: 0.75rem;
+}
+
+.pokedex-filter-summary {
+  font-size: 0.875rem;
+  text-wrap: pretty;
+}
+
+.pokedex-filter-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pokedex-filter-empty {
+  padding-block: 1.5rem;
+  text-wrap: pretty;
 }
 
 .pokedex-pagination {
@@ -468,6 +688,8 @@ body {
   font-size: 0.875rem;
   text-wrap: pretty;
 }
+
+/* --- Search page --- */
 
 .pokemon-search {
   --search-ink: var(--screen-ink, #063e51);
@@ -633,6 +855,8 @@ body {
   font-size: 0.875rem;
 }
 
+/* --- Filter page and shared filter buttons --- */
+
 .pokemon-filters {
   color: var(--screen-ink, #063e51);
 }
@@ -793,32 +1017,7 @@ body {
   font-size: 0.75rem;
 }
 
-.pokedex-filter-controls {
-  display: grid;
-  gap: 0.5rem;
-  margin-block-end: 0.75rem;
-}
-
-.pokedex-filter-summary {
-  font-size: 0.875rem;
-  text-wrap: pretty;
-}
-
-.pokedex-filter-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-}
-
-.pokedex-filter-empty {
-  padding-block: 1.5rem;
-  text-wrap: pretty;
-}
-
-.pokemon-settings,
-.pokemon-about {
-  color: var(--screen-ink, #063e51);
-}
+/* --- Settings page --- */
 
 .pokemon-settings-intro {
   flex-shrink: 0;
@@ -929,6 +1128,8 @@ body {
   font-size: 0.875rem;
 }
 
+/* --- About page --- */
+
 .pokemon-about {
   font-size: 0.875rem;
   line-height: 1.65;
@@ -1029,155 +1230,7 @@ body {
   font-size: 0.875rem;
 }
 
-.pokedex-grid {
-  gap: 1px;
-  border: 1px solid var(--screen-rule, rgb(225 253 255 / 0.52));
-  border-radius: 0.375rem;
-  background-color: var(--screen-rule, rgb(225 253 255 / 0.52));
-  overflow: hidden;
-}
-
-.pokedex-grid > li {
-  background-color: var(--screen-panel, rgb(6 132 174 / 0.2));
-}
-
-.pokeslot {
-  scale: 1;
-  transition-duration: 160ms;
-  transition-property: scale, background-color;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-  background-color: transparent;
-  min-block-size: 10.25rem;
-}
-
-.pokeslot:where(:hover, :focus-visible) {
-  background-color: var(--screen-hover, rgb(225 253 255 / 0.2));
-}
-
-.pokeslot:focus-visible {
-  outline: 2px solid var(--screen-ink, rgb(239 254 255 / 0.92));
-  outline-offset: -4px;
-}
-
-.pokeslot:active {
-  scale: 0.96;
-  background-color: rgb(6 89 124 / 0.12);
-}
-
-.pokeslot-number {
-  position: absolute;
-  opacity: 0.72;
-  inset-block-start: 0.5rem;
-  inset-inline-start: 0.625rem;
-  font-size: 0.625rem;
-  letter-spacing: 0.04em;
-}
-
-.pokeslot-image {
-  translate: 0 0;
-  filter: drop-shadow(0 3px 2px rgb(0 54 77 / 0.26));
-  transition-duration: 180ms;
-  transition-property: translate, filter;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-}
-
-.pokeslot:where(:hover, :focus-visible) .pokeslot-image {
-  translate: 0 -4px;
-  filter: drop-shadow(0 4px 2px rgb(0 54 77 / 0.32));
-}
-
-.pokedex-navigation {
-  position: relative;
-  grid-row: 1;
-  grid-column: 1;
-  align-self: start;
-  justify-self: end;
-  margin-inline-end: calc(-1 * var(--pokedex-wing-width));
-  isolation: isolate;
-  padding: 2rem 1.125rem 2.5rem;
-  inline-size: var(--pokedex-wing-width);
-  min-inline-size: 0;
-}
-
-/* Only the wing's material is clipped; controls and focus rings stay clear. */
-.pokedex-navigation::before,
-.pokedex-navigation::after {
-  position: absolute;
-  clip-path: polygon(
-    0 0,
-    calc(100% - 1.25rem) 0,
-    100% 1.25rem,
-    100% 100%,
-    0 100%
-  );
-  inset: 0;
-  border-radius: 0 1.25rem 1.25rem 0;
-  pointer-events: none;
-  content: "";
-}
-
-.pokedex-navigation::before {
-  z-index: -1;
-  box-shadow:
-    inset 3px 0 5px rgb(0 0 0 / 0.16),
-    inset 0 2px 2px rgb(255 255 255 / 0.14);
-  background-color: var(--color-pokedex-case);
-}
-
-.pokedex-navigation::after {
-  translate: 0 10px;
-  z-index: -2;
-  background-color: var(--color-pokedex-case-outer);
-}
-
-.pokedex-main {
-  grid-row: 1;
-  grid-column: 1;
-  min-inline-size: 0;
-}
-
-.pokedex-nav-button {
-  --nav-button-face: var(--color-pokedex-button-blue);
-  --nav-button-edge: var(--color-pokedex-button-blue-edge);
-
-  translate: 0 0;
-  transition-duration: 160ms;
-  transition-property: translate, box-shadow, background-color, color;
-  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
-  box-shadow:
-    inset 0 2px 2px rgb(255 255 255 / 0.18),
-    0 9px 0 var(--nav-button-edge),
-    0 14px 16px rgb(0 0 0 / 0.28),
-    0 0 0 2px rgb(255 255 255 / 0);
-  background: var(--nav-button-face);
-  color: white;
-}
-
-.pokedex-nav-button--settings {
-  --nav-button-face: var(--color-pokedex-button-yellow);
-  --nav-button-edge: var(--color-pokedex-button-yellow-edge);
-
-  color: var(--color-pokedex-button-yellow-ink);
-}
-
-.pokedex-nav-button:where(:hover, :focus-visible) {
-  translate: 0 3px;
-}
-
-.pokedex-nav-button:focus-visible {
-  outline: 3px solid white;
-  outline-offset: 4px;
-}
-
-.pokedex-nav-button:active,
-.pokedex-nav-button[aria-current="page"] {
-  translate: 0 5px;
-  box-shadow:
-    inset 0 4px 7px rgb(0 0 0 / 0.32),
-    inset 0 -1px 2px rgb(255 255 255 / 0.12),
-    0 4px 0 var(--nav-button-edge),
-    0 4px 8px rgb(0 0 0 / 0.2);
-}
+/* --- Pokémon detail page --- */
 
 /* Detail records use compact spacing for the specimen and its field notes. */
 .pokedex-screen:where(:has(.pokemon-detail)) .pokedex-screen-content {
@@ -1379,6 +1432,8 @@ body {
   text-wrap: pretty;
 }
 
+/* --- Pokémon cry controls --- */
+
 .pokecry {
   flex: 1 1 12rem;
   min-inline-size: 0;
@@ -1468,6 +1523,8 @@ body {
   font-size: 0.75rem;
 }
 
+/* --- Type labels and enhanced contrast overrides --- */
+
 .pokemon-type-label {
   display: none;
 }
@@ -1523,6 +1580,8 @@ body {
   background: none;
 }
 
+/* --- Responsive detail layout --- */
+
 @container (max-width: 340px) {
   .pokemon-detail-record {
     grid-template-columns: minmax(0, 1fr);
@@ -1543,6 +1602,8 @@ body {
   }
 }
 
+/* --- Native audio fallback without JavaScript --- */
+
 @media (scripting: none) {
   .pokecry-native {
     display: block;
@@ -1552,6 +1613,8 @@ body {
     display: none;
   }
 }
+
+/* --- Responsive device layout --- */
 
 @media (min-width: 1100px) {
   .pokedex {
@@ -1625,27 +1688,7 @@ body {
   }
 }
 
-.dot-pattern {
-  position: fixed;
-  opacity: 0.2;
-  z-index: -10;
-
-  mask-image: radial-gradient(
-    ellipse at center,
-    black 0%,
-    black 50%,
-    transparent 100%
-  );
-  inset: 0;
-
-  background-image: radial-gradient(
-    circle at 1px 1px,
-    white 1px,
-    transparent 1px
-  );
-  background-size: 32px 32px;
-  pointer-events: none;
-}
+/* --- System reduced-motion overrides --- */
 
 @media (prefers-reduced-motion: reduce) {
   .pokemon-detail-artwork[data-entrance="bounce"] {
