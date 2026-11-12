@@ -31,6 +31,43 @@ body {
   inline-size: min(90vw, 900px);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .pokedex {
+    animation:
+      pokedex-entrance 0.7s cubic-bezier(0.2, 0, 0, 1),
+      pokedex-fade 0.7s linear;
+  }
+}
+
+/* The resting case stays visible even when scripts or animations are unavailable. */
+@keyframes pokedex-entrance {
+  0% {
+    transform: translateY(80px);
+  }
+  78% {
+    transform: translateY(-30px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* Split Motion's globally eased opacity curve at its 0.5-opacity point.
+   CSS eases each keyframe interval, so the equivalent stop is 37.68%, not 78%. */
+@keyframes pokedex-fade {
+  0% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.369874, 0, 0.224266, 0.622537);
+  }
+  37.679556% {
+    opacity: 0.5;
+    animation-timing-function: cubic-bezier(0.20405, 0.582231, 0.513538, 1);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .pokedex::before {
   position: absolute;
   z-index: 0;
