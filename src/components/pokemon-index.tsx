@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { PokemonListPage } from "@/app/types";
+import { PokedexPageHeader } from "@/components/pokedex-page-header";
 import {
   getPokemonFilterHref,
   getPokemonFilterKey,
@@ -141,13 +142,15 @@ export default function PokemonIndex({
 
   return (
     <div className="pokedex-index">
-      <div className="pokedex-index-header">
-        <h1 className="text-xl">National Pokédex</h1>
-        <p className="pokedex-index-count">
-          {String(page.pokemons.length).padStart(3, "0")} / {page.total}{" "}
-          {page.total === 1 ? "entry" : "entries"}
-        </p>
-      </div>
+      <PokedexPageHeader
+        title="National Pokédex"
+        trailing={
+          <>
+            {String(page.pokemons.length).padStart(3, "0")} / {page.total}{" "}
+            {page.total === 1 ? "entry" : "entries"}
+          </>
+        }
+      />
       {filtersActive && (
         <div className="pokedex-filter-controls">
           <p className="pokedex-filter-summary">

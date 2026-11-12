@@ -13,6 +13,7 @@ import {
   Label,
   Text,
 } from "react-aria-components";
+import { PokedexPageHeader } from "@/components/pokedex-page-header";
 import {
   type PokemonFilters as Filters,
   GENERATION_OPTIONS,
@@ -49,9 +50,7 @@ export default function PokemonFilters({
 
   return (
     <div className="pokemon-filters flex h-full min-h-0 flex-col">
-      <div className="pokedex-index-header shrink-0">
-        <h1 className="text-xl">Filter</h1>
-      </div>
+      <PokedexPageHeader title="Filter" className="shrink-0" />
       <p className="pokemon-filter-intro">
         Choose one or more options. Leave a group empty to include all.
       </p>

@@ -1,3 +1,4 @@
+import { PokedexPageHeader } from "@/components/pokedex-page-header";
 import { createPageMetadata } from "@/lib/page-metadata";
 
 export const metadata = createPageMetadata(
@@ -24,12 +25,12 @@ const accessibilityPrinciples = [
 export default function About() {
   return (
     <article aria-labelledby="about-title" className="pokemon-about">
-      <header className="pokedex-index-header">
-        <h1 id="about-title" className="text-xl">
-          About
-        </h1>
-        <p className="pokedex-index-count">Pokédex</p>
-      </header>
+      <PokedexPageHeader
+        as="header"
+        title="About"
+        headingId="about-title"
+        trailing="Pokédex"
+      />
       <p className="pokemon-about-intro">
         A modern, accessible Pokédex built to turn a familiar world into a
         practical place to learn.

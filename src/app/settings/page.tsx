@@ -1,6 +1,7 @@
 "use client";
 
 import { Switch } from "react-aria-components";
+import { PokedexPageHeader } from "@/components/pokedex-page-header";
 import {
   updatePreferences,
   usePokedexPreferences,
@@ -60,9 +61,7 @@ export default function Settings() {
       className="pokemon-settings flex h-full min-h-0 flex-col"
       data-reduce-motion={reduceMotion || undefined}
     >
-      <div className="pokedex-index-header shrink-0">
-        <h1 className="text-xl">Settings</h1>
-      </div>
+      <PokedexPageHeader title="Settings" className="shrink-0" />
       <p className="pokemon-settings-intro">
         Adjust motion, sound, and contrast to suit you.
       </p>

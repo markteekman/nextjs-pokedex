@@ -15,6 +15,7 @@ import {
   Text,
 } from "react-aria-components";
 import type { PokemonSearchItem } from "@/app/types";
+import { PokedexPageHeader } from "@/components/pokedex-page-header";
 import { useDebounce } from "@/hooks/use-debounce";
 import formatDexNumber from "@/utilities/format-dex-number";
 
@@ -48,12 +49,15 @@ export default function PokemonSearch({
 
   return (
     <div className="pokemon-search flex h-full min-h-0 flex-col">
-      <div className="pokedex-index-header shrink-0">
-        <h1 className="text-xl">Search</h1>
-        <p className="pokedex-index-count">
-          {pokemons.length} {pokemons.length === 1 ? "entry" : "entries"}
-        </p>
-      </div>
+      <PokedexPageHeader
+        title="Search"
+        className="shrink-0"
+        trailing={
+          <>
+            {pokemons.length} {pokemons.length === 1 ? "entry" : "entries"}
+          </>
+        }
+      />
       <Autocomplete inputValue={value} onInputChange={setValue}>
         <SearchField className="pokemon-search-field">
           {({ isEmpty }) => (
