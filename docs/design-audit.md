@@ -2,7 +2,13 @@
 
 Reviewed 11 November 2026 against [DESIGN.md](../DESIGN.md), using Impeccable's document and audit workflows. This captures the current implementation; no application code was changed during the audit.
 
-This snapshot precedes the subsequent Pokopia-inspired bezel, vents, and button-color pass. See the design guide for the current hardware treatment; the two follow-ups below remain open.
+This snapshot precedes the subsequent Pokopia-inspired bezel, vents, and button-color pass. See the design guide for the current hardware treatment.
+
+**Follow-up status:** Both findings below have since been resolved. About's
+terms and descriptions stack when their container is 24rem wide or narrower.
+The CSS case entrance and navigation transitions respect the device's
+reduced-motion preference. The original evidence and scores below remain a
+historical snapshot, not a new accessibility assessment.
 
 ## Implementation integrity verdict: pass
 
@@ -87,8 +93,8 @@ No detector advisory was silenced through ignore configuration. There was no nee
 
 ## Recommended next actions
 
-1. **[P2] `$impeccable adapt`:** Stack About's definition-list rows at narrow container widths.
-2. **[P2] `$impeccable animate`:** Align case/navigation motion with the intended preference coverage, retaining static state cues.
-3. **After those changes, `$impeccable polish`:** Make one bounded desktop/mobile confirmation pass, then re-run `$impeccable audit` against this guide.
+1. **Resolved:** About's definition-list rows now stack at narrow container widths.
+2. **Resolved:** Case/navigation motion now follows the device preference, retaining static state cues.
+3. **Still recommended:** Re-run the broader design audit against the current implementation before treating the scores above as current.
 
-These can be handled individually, together, or in either order. No fixes were applied during this audit, and no tests were added. A full WCAG review, screen-reader checks, text enlargement/reflow checks, complete contrast measurements, and production performance profiling remain separate work.
+No fixes were applied during the original audit, and no tests were added at that time. A full WCAG review, screen-reader checks, text enlargement/reflow checks, complete contrast measurements, and production performance profiling remain separate work.

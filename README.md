@@ -1,24 +1,32 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+A retro Pokédex for the first 649 Pokémon, built with Next.js, React,
+TypeScript, Apollo GraphQL, Tailwind CSS, and React Aria.
 
 ## Getting Started
 
-First, run the development server:
+Use Node.js 22.6 or newer and pnpm 10.26.1, the version pinned in
+`package.json`. Install dependencies and start the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The overview page is `src/app/page.tsx`. The page auto-updates as you edit it.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The shared layout in `src/app/layout.tsx` loads Pixelify Sans with
+`next/font/google`.
+
+## Project checks
+
+- `pnpm lint` runs ESLint and Biome's import-order check.
+- `pnpm typecheck` generates Next.js route types and runs TypeScript.
+- `pnpm format:check` checks formatting with Prettier.
+- `pnpm test` runs the six focused tests described below.
+
+Prettier respects `.gitignore` and `.prettierignore`. The generated
+`pnpm-lock.yaml` is excluded because pnpm maintains its formatting.
 
 ## Import ordering
 
@@ -37,20 +45,24 @@ Successful normalized overview and detail results use Next.js's persistent Data
 Cache, with a 24-hour revalidation interval. Detail IDs have separate cache
 entries; changing a GraphQL query also changes its cache key.
 
-The overview starts with 36 Pokémon and loads further batches on demand, up to
-National Pokédex #649. Each batch has its own cache entry, keyed by the last
-species ID from the previous batch. The final batch contains only #649. An
+The overview loads up to 36 Pokémon per batch, up to National Pokédex #649.
+Each batch has its own cache entry, keyed by the normalized filters and the last
+species ID from the previous batch. Filters apply before pagination. In the
+unfiltered catalog, the final batch contains only #649. An
 aggregate count in the same GraphQL request supplies the catalog total. Reading
 the whole catalog takes 19 overview queries on a cold cache; shared warm batches
 are reused across visitors. Overview links disable detail prefetching to avoid
 loading detail records simply because their cards enter the viewport.
 
-The overview requests only each species' default form and projects the single
-official-artwork URL from the sprite JSON. Detail pages retain their own query.
-For the same first 36 entries, the measured raw GraphQL response decreased from
-1,284,127 to 9,341 bytes; names, types and artwork URLs were unchanged. Those are
-uncompressed JSON sizes, not browser page sizes or a guaranteed latency gain.
-The paginated query also includes the small aggregate count described above.
+Both overview and detail queries select each species' default form explicitly.
+They project the official-artwork URL from the sprite JSON; details also project
+the latest cry URL. Overview, search, and detail queries use English species
+display names, preserving punctuation and symbols such as `Mr. Mime` and `Nidoran♀`.
+
+An earlier overview-query optimization reduced the measured raw response for
+the first 36 entries from 1,284,127 to 9,341 bytes. That historical comparison
+predates the English display-name changes; it is not a current payload-size
+benchmark or a guaranteed latency gain.
 
 **Load more Pokémon** appends entries to the existing semantic list. A status
 region reports loading, success and failure, while `aria-busy` marks the list
@@ -157,8 +169,9 @@ failure path. Use the live data source: `POKEAPI_DATA_SOURCE=mock` bypasses API
 requests, including simulation. Browser DevTools' offline mode does not simulate
 this outage because the Pokémon requests run on the Next.js server.
 
-Connection failures, timeouts (after 10 seconds), HTTP 408/429/5xx responses, and
-invalid JSON responses show the service error. GraphQL errors and unexpected
+Connection failures, including disconnects while reading the response body,
+timeouts (after 10 seconds), HTTP 408/429/5xx responses, and invalid JSON
+responses show the service error. GraphQL errors and unexpected
 application errors reach `src/app/error.tsx`. Successful empty responses remain
 separate: an empty list shows the tall-grass message; a missing detail returns
 the not-found page. Technical errors are logged rather than shown to visitors.
@@ -195,8 +208,14 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Production build
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Build and preview the production app locally with:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm build
+pnpm start
+```
+
+The app is deployed on Netlify. Set `SITE_URL` for the production origin as
+described under Social previews.
