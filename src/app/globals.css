@@ -505,7 +505,6 @@ body {
 }
 
 .pokemon-detail-loading .pokemon-detail-header {
-  flex-wrap: wrap;
   gap: 0 1rem;
 }
 
@@ -625,7 +624,9 @@ body {
   transition-property: scale, background-color;
   transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
   background-color: transparent;
+  min-inline-size: 0;
   min-block-size: 10.25rem;
+  overflow-wrap: anywhere;
 }
 
 .pokeslot:where(:hover, :focus-visible) {
@@ -816,7 +817,7 @@ body {
   border: 1px solid var(--search-rule);
   border-radius: 0.25rem;
   background-color: var(--screen-panel, rgb(225 253 255 / 0.2));
-  min-block-size: 0;
+  min-block-size: 8em;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-color: var(--screen-outline, #09607a) transparent;
@@ -827,6 +828,7 @@ body {
 .pokemon-search-result {
   display: flex;
   position: relative;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
@@ -905,7 +907,8 @@ body {
   display: flex;
   flex: 1;
   flex-direction: column;
-  min-block-size: 0;
+  /* Preserve usable options space when enlarged text grows the surrounding copy. */
+  min-block-size: 12em;
 }
 
 .pokemon-filter-options {
@@ -999,6 +1002,7 @@ body {
 .pokemon-filter-actions {
   display: flex;
   flex-shrink: 0;
+  flex-wrap: wrap;
   gap: 0.5rem;
   margin-block-start: 0.75rem;
   border-block-start: 1px solid var(--screen-rule, rgb(225 253 255 / 0.6));
@@ -1063,7 +1067,7 @@ body {
   border: 1px solid var(--screen-rule, rgb(225 253 255 / 0.6));
   border-radius: 0.25rem;
   background-color: var(--screen-panel, rgb(225 253 255 / 0.16));
-  min-block-size: 0;
+  min-block-size: 8em;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-color: var(--screen-outline, #09607a) transparent;
@@ -1153,6 +1157,7 @@ body {
   font-size: 0.875rem;
   line-height: 1.5;
   text-wrap: pretty;
+  overflow-wrap: anywhere;
 }
 
 .pokemon-settings-note {
@@ -1288,6 +1293,7 @@ body {
 
 .pokemon-detail-header {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   gap: 1rem;

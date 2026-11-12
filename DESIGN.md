@@ -215,7 +215,7 @@ At viewport widths of 700px and below, the reserved wing width becomes zero, its
 
 The overview has two columns, increasing to three at Tailwind's viewport `lg` breakpoint (64rem). Detail records use two equal columns, specimen left and facts right. At a detail content-container width of 340px or below they stack; the artwork shrinks from a maximum of 14rem to 10rem and the registration circle from 12rem to 9rem.
 
-Search, Filter, and Settings use flex layouts with `min-block-size: 0` so results or options can scroll while controls remain reachable. Filter actions sit outside the options scroller. Detail and About scroll as documents inside the common screen. These are purposeful content differences within the same fixed viewport.
+Search, Filter, and Settings keep their nested scroll areas, with minimum heights that prevent enlarged text from collapsing them: 8em for search results and the settings list, and 12em for the filter form. The outer screen can scroll when surrounding copy needs more room. Search result rows, filter actions, and the detail header wrap; catalog names and settings descriptions can break long words. Filter actions stay outside the options scroller. Detail and About scroll as documents inside the common screen. The shared screen height stays unchanged.
 
 ## Elevation & Depth
 
