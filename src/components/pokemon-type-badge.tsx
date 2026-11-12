@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
-import type { PokemonType } from "../app/types";
+import type { PokemonType } from "@/lib/pokemon-types";
 
 type Props = {
   type: PokemonType;

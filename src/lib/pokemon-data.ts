@@ -1,13 +1,6 @@
 import { gql } from "@apollo/client";
 import { print } from "graphql";
 import { unstable_cache } from "next/cache";
-import type {
-  PokemonDetail,
-  PokemonListPage,
-  PokemonSearchItem,
-  PokemonType,
-  PokemonTypeName,
-} from "@/app/types";
 import { getClient, query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
 import { createCachedPokemonRequest } from "@/lib/pokemon-cache";
@@ -20,6 +13,13 @@ import {
 } from "@/lib/pokemon-filters";
 import { POKEMON_MAX_ID } from "@/lib/pokemon-id";
 import { type PokemonResult, requestPokemon } from "@/lib/pokemon-request";
+import type {
+  PokemonDetail,
+  PokemonListPage,
+  PokemonSearchItem,
+  PokemonType,
+  PokemonTypeName,
+} from "@/lib/pokemon-types";
 
 interface TypeName {
   name: PokemonTypeName;

@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import type { PokemonListPage } from "@/app/types";
 import { PokedexPageHeader } from "@/components/pokedex-page-header";
 import {
   getPokemonFilterHref,
@@ -11,6 +10,7 @@ import {
   hasPokemonFilters,
   type PokemonFilters,
 } from "@/lib/pokemon-filters";
+import type { PokemonListPage } from "@/lib/pokemon-types";
 import {
   type OverviewSnapshot,
   usePokemonOverview,

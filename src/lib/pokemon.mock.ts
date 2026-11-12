@@ -1,4 +1,4 @@
-import type { PokemonDetail, PokemonListItem } from "@/app/types";
+import type { PokemonDetail, PokemonListItem } from "@/lib/pokemon-types";
 
 export const MOCK_POKEMON = [
   {

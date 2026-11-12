@@ -14,9 +14,9 @@ import {
   SearchField,
   Text,
 } from "react-aria-components";
-import type { PokemonSearchItem } from "@/app/types";
 import { PokedexPageHeader } from "@/components/pokedex-page-header";
 import { useDebounce } from "@/hooks/use-debounce";
+import type { PokemonSearchItem } from "@/lib/pokemon-types";
 import formatDexNumber from "@/utilities/format-dex-number";
 
 export default function PokemonSearch({

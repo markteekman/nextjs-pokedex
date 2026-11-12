@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
+import type { PokemonType } from "@/lib/pokemon-types";
 import formatDexNumber from "@/utilities/format-dex-number";
-import type { PokemonType } from "../app/types";
 import PokemonTypeBadge from "./pokemon-type-badge";
 import PokeSprite from "./pokesprite";
 

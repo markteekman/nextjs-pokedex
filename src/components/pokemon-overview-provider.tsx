@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, type ReactNode, useContext, useState } from "react";
-import type { PokemonListPage } from "@/app/types";
+import type { PokemonListPage } from "@/lib/pokemon-types";
 
 export type OverviewSnapshot = {
   filterKey: string;

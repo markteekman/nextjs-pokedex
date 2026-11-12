@@ -1,4 +1,4 @@
-import type { PokemonListItem, PokemonType } from "@/app/types";
+import type { PokemonListItem, PokemonType } from "@/lib/pokemon-types";
 
 export const GENERATION_OPTIONS = [
   { id: 1, label: "Generation I", firstId: 1, lastId: 151 },
