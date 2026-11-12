@@ -34,6 +34,7 @@ export interface PokemonType {
  */
 export interface PokemonListItem {
   id: number;
+  /** English display name, including official punctuation and symbols. */
   name: string;
   types: PokemonType[];
   spriteUrl: string | null;

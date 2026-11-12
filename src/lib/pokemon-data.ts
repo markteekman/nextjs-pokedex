@@ -45,7 +45,8 @@ interface PokemonFlavorText {
 }
 
 interface PokemonSpeciesName {
-  genus: string | null;
+  name: string | null;
+  genus?: string | null;
 }
 
 interface PokemonForm {
@@ -63,9 +64,12 @@ interface PokemonDetailForm extends PokemonListForm {
   weight: number | null;
 }
 
-interface PokemonSpecies<Form> {
+interface PokemonSpeciesIdentity {
   id: number;
-  name: string;
+  pokemonspeciesnames: PokemonSpeciesName[] | null;
+}
+
+interface PokemonSpecies<Form> extends PokemonSpeciesIdentity {
   pokemons: Form[];
 }
 
@@ -73,7 +77,6 @@ interface PokemonDetailSpecies extends PokemonSpecies<PokemonDetailForm> {
   generation: GenerationResponse | null;
   pokemonspeciesflavortexts: PokemonFlavorText[] | null;
   fallbackFlavorTexts: PokemonFlavorText[] | null;
-  pokemonspeciesnames: PokemonSpeciesName[] | null;
 }
 
 const POKEMON_PAGE_SIZE = 36;
@@ -90,7 +93,9 @@ const GET_POKEMON = gql`
       where: $where
     ) {
       id
-      name
+      pokemonspeciesnames(where: { language_id: { _eq: 9 } }, limit: 1) {
+        name
+      }
       pokemons(where: { is_default: { _eq: true } }, limit: 1) {
         pokemontypes {
           type {
@@ -121,7 +126,9 @@ const GET_POKEMON_SEARCH_CATALOG = gql`
       where: { id: { _gte: 1, _lte: $maxId } }
     ) {
       id
-      name
+      pokemonspeciesnames(where: { language_id: { _eq: 9 } }, limit: 1) {
+        name
+      }
     }
   }
 `;
@@ -130,7 +137,6 @@ const GET_SINGLE_POKEMON = gql`
   query GetSinglePokemon($id: Int!) {
     pokemon: pokemonspecies(limit: 1, where: { id: { _eq: $id } }) {
       id
-      name
       pokemons(where: { is_default: { _eq: true } }, limit: 1) {
         pokemontypes {
           type {
@@ -167,12 +173,17 @@ const GET_SINGLE_POKEMON = gql`
       ) {
         flavor_text
       }
-      pokemonspeciesnames(where: { language_id: { _eq: 9 } }) {
+      pokemonspeciesnames(where: { language_id: { _eq: 9 } }, limit: 1) {
+        name
         genus
       }
     }
   }
 `;
+
+function getPokemonName(species: PokemonSpeciesIdentity): string {
+  return species.pokemonspeciesnames?.[0]?.name?.trim() || "Unknown Pokémon";
+}
 
 function getTypes(forms: PokemonForm[]): PokemonType[] {
   const firstForm = forms[0];
@@ -236,11 +247,11 @@ async function requestPokemonList(
   const hasMore = result.data.pokemon.length > POKEMON_PAGE_SIZE;
   const pokemons = result.data.pokemon
     .slice(0, POKEMON_PAGE_SIZE)
-    .map(({ id, name, pokemons }) => ({
-      id,
-      name,
-      types: getTypes(pokemons),
-      spriteUrl: pokemons[0]?.pokemonsprites[0]?.spriteUrl ?? null,
+    .map((species) => ({
+      id: species.id,
+      name: getPokemonName(species),
+      types: getTypes(species.pokemons),
+      spriteUrl: species.pokemons[0]?.pokemonsprites[0]?.spriteUrl ?? null,
     }));
   const lastId = pokemons.at(-1)?.id;
 
@@ -258,7 +269,7 @@ async function requestPokemonSearchCatalog(): Promise<
   PokemonResult<PokemonSearchItem[]>
 > {
   const result = await requestPokemon(() =>
-    query<{ pokemon: PokemonSearchItem[] }>({
+    query<{ pokemon: PokemonSpeciesIdentity[] }>({
       query: GET_POKEMON_SEARCH_CATALOG,
       variables: { maxId: POKEMON_MAX_ID },
     }),
@@ -268,7 +279,10 @@ async function requestPokemonSearchCatalog(): Promise<
 
   return {
     status: "success",
-    data: result.data.pokemon.map(({ id, name }) => ({ id, name })),
+    data: result.data.pokemon.map((species) => ({
+      id: species.id,
+      name: getPokemonName(species),
+    })),
   };
 }
 
@@ -292,7 +306,7 @@ async function requestPokemonDetail(
     status: "success",
     data: {
       id: firstResult.id,
-      name: firstResult.name,
+      name: getPokemonName(firstResult),
       types: getTypes(firstResult.pokemons),
       cryUrl: getLatestCry(firstResult.pokemons),
       spriteUrl: getSpriteUrl(firstResult.pokemons),

@@ -32,7 +32,7 @@ export function PokeSlot({
           {formatDexNumber(id)}
         </span>
         {src && <PokeSprite src={src} />}
-        <p className="leading-none first-letter:uppercase">{name}</p>
+        <p className="leading-none">{name}</p>
         <span className="flex flex-wrap justify-center gap-0.5">
           {types.map((pokemonType) => (
             <PokemonTypeBadge key={pokemonType.id} type={pokemonType} />

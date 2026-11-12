@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Props) {
   }
 
   const pokemon = result.data;
-  const name = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+  const name = pokemon.name;
 
   return createPageMetadata(
     `${name} ${number}`,

@@ -3,7 +3,7 @@ import type { PokemonDetail, PokemonListItem } from "@/app/types";
 export const MOCK_POKEMON = [
   {
     id: 1,
-    name: "bulbasaur",
+    name: "Bulbasaur",
     types: [
       { id: 12, name: "Grass" },
       { id: 4, name: "Poison" },
@@ -13,7 +13,7 @@ export const MOCK_POKEMON = [
   },
   {
     id: 2,
-    name: "ivysaur",
+    name: "Ivysaur",
     types: [
       { id: 12, name: "Grass" },
       { id: 4, name: "Poison" },
@@ -23,7 +23,7 @@ export const MOCK_POKEMON = [
   },
   {
     id: 3,
-    name: "venusaur",
+    name: "Venusaur",
     types: [
       { id: 12, name: "Grass" },
       { id: 4, name: "Poison" },
@@ -33,21 +33,21 @@ export const MOCK_POKEMON = [
   },
   {
     id: 4,
-    name: "charmander",
+    name: "Charmander",
     types: [{ id: 10, name: "Fire" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png",
   },
   {
     id: 5,
-    name: "charmeleon",
+    name: "Charmeleon",
     types: [{ id: 10, name: "Fire" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png",
   },
   {
     id: 6,
-    name: "charizard",
+    name: "Charizard",
     types: [
       { id: 10, name: "Fire" },
       { id: 3, name: "Flying" },
@@ -57,21 +57,21 @@ export const MOCK_POKEMON = [
   },
   {
     id: 7,
-    name: "squirtle",
+    name: "Squirtle",
     types: [{ id: 11, name: "Water" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png",
   },
   {
     id: 8,
-    name: "wartortle",
+    name: "Wartortle",
     types: [{ id: 11, name: "Water" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png",
   },
   {
     id: 9,
-    name: "blastoise",
+    name: "Blastoise",
     types: [{ id: 11, name: "Water" }],
     spriteUrl:
       "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png",
@@ -80,7 +80,7 @@ export const MOCK_POKEMON = [
 
 export const MOCK_POKEMON_DETAIL = {
   id: 1,
-  name: "bulbasaur",
+  name: "Bulbasaur",
   types: [
     { id: 12, name: "Grass" },
     { id: 4, name: "Poison" },
