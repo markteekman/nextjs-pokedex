@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { ApolloClient, HttpLink, InMemoryCache, gql } from "@apollo/client";
 import { CombinedGraphQLErrors, ServerError } from "@apollo/client/errors";
 import { createCachedPokemonRequest } from "../src/lib/pokemon-cache.ts";
 import { parsePokemonId } from "../src/lib/pokemon-id.ts";
@@ -130,4 +131,53 @@ test("request handling recovers from outages but preserves application errors", 
       (caught) => caught === error,
     );
   }
+});
+
+test("a response-body disconnect becomes unavailable and a retry can succeed", async (t) => {
+  t.mock.method(console, "error", () => {});
+  let disconnected = true;
+  t.mock.method(globalThis, "fetch", async () => {
+    if (!disconnected) {
+      return Response.json({ data: { pokemon: { id: 1 } } });
+    }
+    return new Response(
+      new ReadableStream({
+        start(controller) {
+          controller.enqueue(new TextEncoder().encode('{"data":'));
+        },
+        pull(controller) {
+          controller.error(new TypeError("Connection terminated mid-body"));
+        },
+      }),
+      { headers: { "content-type": "application/json" } },
+    );
+  });
+  const client = new ApolloClient({
+    cache: new InMemoryCache(),
+    link: new HttpLink({
+      uri: "https://example.invalid",
+      fetch: fetchPokemonApi,
+    }),
+  });
+  t.after(() => client.stop());
+  const request = () =>
+    requestPokemon(() =>
+      client.query({
+        query: gql`
+          query TestPokemon {
+            pokemon {
+              id
+            }
+          }
+        `,
+        fetchPolicy: "no-cache",
+      }),
+    );
+
+  assert.deepEqual(await request(), { status: "unavailable" });
+  disconnected = false;
+  assert.deepEqual(await request(), {
+    status: "success",
+    data: { pokemon: { id: 1 } },
+  });
 });

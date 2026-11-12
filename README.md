@@ -71,7 +71,7 @@ the hosting platform's Next.js cache support.
 Mock data bypasses the live cache. In development, the outage simulation below
 also bypasses warm entries without replacing them.
 
-Run `pnpm test` with Node.js 22.6 or newer for five focused tests in
+Run `pnpm test` with Node.js 22.6 or newer for six focused tests in
 `tests/pokemon-critical.test.mjs`, using Node's built-in test runner:
 
 - Detail IDs accept 1–649 and reject out-of-range or noncanonical paths.
@@ -80,6 +80,8 @@ Run `pnpm test` with Node.js 22.6 or newer for five focused tests in
 - Temporary failures remain retryable, and recovered empty results are cached.
 - Connection failures and HTTP 408/429/503 become recoverable outages, while
   application and GraphQL errors still propagate.
+- A disconnect while reading the response body becomes a recoverable outage,
+  and a subsequent request succeeds through Apollo's HTTP link.
 
 The tests use an in-memory cache stand-in and mocked requests; they make no
 requests to the public API and do not verify Next.js cache persistence,

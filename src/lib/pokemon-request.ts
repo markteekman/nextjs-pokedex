@@ -30,7 +30,20 @@ export const fetchPokemonApi: typeof fetch = async (input, options) => {
   try {
     // Successful normalized data is cached by pokemon-cache. A cache miss or
     // retry must reach the service; do not separately cache raw GraphQL errors.
-    return await fetch(input, { ...options, signal, cache: "no-store" });
+    const response = await fetch(input, {
+      ...options,
+      signal,
+      cache: "no-store",
+    });
+    if (!response.body) return response;
+
+    // Fetch resolves at headers. Read our non-streaming GraphQL body here too,
+    // so disconnects and timeouts remain inside the transport error boundary.
+    return new Response(await response.arrayBuffer(), {
+      status: response.status,
+      statusText: response.statusText,
+      headers: response.headers,
+    });
   } catch (error) {
     // Next.js can throw during fetch to opt a route into dynamic rendering.
     // Preserve those control-flow exceptions and other unexpected failures.
