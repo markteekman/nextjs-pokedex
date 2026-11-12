@@ -13,7 +13,7 @@ const stack = [
   ["GraphQL + Apollo", "A focused and typed data layer"],
   ["Tailwind CSS", "Responsive, maintainable styling"],
   ["React Aria", "Accessible interaction primitives"],
-  ["Motion", "Purposeful interface feedback"],
+  ["CSS animations", "Purposeful interface feedback"],
 ] as const;
 
 const accessibilityPrinciples = [

@@ -22,10 +22,6 @@ const badges = [
     colorClasses: "bg-indigo-400/10 text-indigo-400 inset-ring-indigo-400/30",
   },
   {
-    label: "Motion",
-    colorClasses: "bg-pink-400/10 text-pink-400 inset-ring-pink-400/20",
-  },
-  {
     label: "GitHub",
     colorClasses: "bg-gray-400/10 text-gray-400 inset-ring-gray-400/20",
   },
@@ -38,6 +34,16 @@ const badges = [
 export function Footer() {
   return (
     <footer className="py-20">
+      <p className="mb-5 px-4 text-center">
+        Thanks to{" "}
+        <a
+          href="https://pokeapi.co/"
+          className="underline decoration-2 underline-offset-4 hover:no-underline"
+        >
+          PokéAPI
+        </a>{" "}
+        and its contributors for the Pokémon data!
+      </p>
       <p className="mb-5 flex flex-wrap items-center justify-center gap-2 font-bold">
         <Copyright size={20} />
         {new Date().getFullYear()} Pokédex App - By{" "}
@@ -47,7 +53,6 @@ export function Footer() {
         >
           Mark Teekman
         </a>
-        . Tech stack:
       </p>
       <div className="flex flex-wrap items-center justify-center gap-2">
         {badges.map(({ label, colorClasses }) => (
