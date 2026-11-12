@@ -199,6 +199,22 @@ It takes priority over Netlify's `URL` and Vercel's
 
 Preview the image locally at [social-preview.png](http://localhost:3000/social-preview.png).
 
+## Crawler discovery
+
+`/sitemap.xml` lists the five main pages and all 649 supported Pokémon detail
+URLs, so crawlers can discover entries beyond the initial overview batch.
+The list uses `POKEMON_MAX_ID` and requires no Pokémon API requests.
+`/robots.txt` allows crawling and advertises the sitemap.
+
+Both files use the same site-origin configuration as page metadata:
+`SITE_URL`, Netlify's `URL`, Vercel's `VERCEL_PROJECT_PRODUCTION_URL`, then
+`http://localhost:3000` for local development. Set the production origin before
+building for deployment.
+
+Filter query combinations are not enumerated in the sitemap. They remain
+crawlable and retain their normalized canonical URLs. The sitemap includes
+canonical numeric detail paths only, such as `/1`, never aliases such as `/01`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

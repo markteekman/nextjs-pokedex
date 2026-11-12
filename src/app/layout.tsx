@@ -5,6 +5,7 @@ import { PokedexCase } from "@/components/pokedex-case";
 import { PokedexScreen } from "@/components/pokedex-screen";
 import { PokemonOverviewProvider } from "@/components/pokemon-overview-provider";
 import { createPageMetadata, POKEDEX_DESCRIPTION } from "@/lib/page-metadata";
+import { SITE_URL } from "@/lib/site-url";
 import { Footer } from "../components/footer";
 import "./globals.css";
 
@@ -15,13 +16,7 @@ const pixelifySans = Pixelify_Sans({
 
 export const metadata: Metadata = {
   ...createPageMetadata("National Pokédex", POKEDEX_DESCRIPTION),
-  metadataBase: new URL(
-    process.env.SITE_URL ||
-      process.env.URL ||
-      (process.env.VERCEL_PROJECT_PRODUCTION_URL
-        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-        : "http://localhost:3000"),
-  ),
+  metadataBase: SITE_URL,
 };
 
 export default function RootLayout({
