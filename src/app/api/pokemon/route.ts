@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getPokemon } from "@/lib/pokemon-data";
 import { parsePokemonFilters } from "@/lib/pokemon-filters";
+import { POKEMON_MAX_ID } from "@/lib/pokemon-id";
 
 // Browser responses stay fresh; successful batches use the server Data Cache.
 const headers = { "Cache-Control": "no-store" };
@@ -15,7 +16,7 @@ export async function GET(request: Request) {
     !/^\d+$/.test(cursor) ||
     !Number.isInteger(afterId) ||
     afterId < 0 ||
-    afterId >= 649
+    afterId >= POKEMON_MAX_ID
   ) {
     return NextResponse.json(
       { error: "Invalid Pokémon page cursor." },

@@ -12,6 +12,7 @@ import { getClient, query } from "@/lib/apollo-client";
 import { MOCK_POKEMON, MOCK_POKEMON_DETAIL } from "@/lib/pokemon.mock";
 import { requestPokemon, type PokemonResult } from "@/lib/pokemon-request";
 import { createCachedPokemonRequest } from "@/lib/pokemon-cache";
+import { POKEMON_MAX_ID } from "@/lib/pokemon-id";
 import {
   getPokemonFilterConditions,
   getPokemonFilterKey,
@@ -76,7 +77,6 @@ interface PokemonDetailSpecies extends PokemonSpecies<PokemonDetailForm> {
 }
 
 const POKEMON_PAGE_SIZE = 36;
-const POKEMON_MAX_ID = 649;
 
 const GET_POKEMON = gql`
   query GetPokemon(

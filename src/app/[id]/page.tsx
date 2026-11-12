@@ -3,6 +3,7 @@ import PokeSprite from "@/components/pokesprite";
 import { PokedexError } from "@/components/pokedex-error";
 import PokemonTypeBadge from "@/components/pokemon-type-badge";
 import { getSinglePokemon } from "@/lib/pokemon-data";
+import { parsePokemonId } from "@/lib/pokemon-id";
 import { getPokemonFootprintUrl } from "@/lib/pokemon-footprints";
 import { notFound } from "next/navigation";
 import formatDexNumber from "@/utilities/format-dex-number";
@@ -21,9 +22,9 @@ export default async function PokemonDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const pokemonId = Number(id);
+  const pokemonId = parsePokemonId(id);
 
-  if (!Number.isInteger(pokemonId) || pokemonId < 1) {
+  if (pokemonId === null) {
     notFound();
   }
 

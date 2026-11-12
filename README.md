@@ -71,9 +71,10 @@ the hosting platform's Next.js cache support.
 Mock data bypasses the live cache. In development, the outage simulation below
 also bypasses warm entries without replacing them.
 
-Run `pnpm test` with Node.js 22.6 or newer for four focused tests in
+Run `pnpm test` with Node.js 22.6 or newer for five focused tests in
 `tests/pokemon-critical.test.mjs`, using Node's built-in test runner:
 
+- Detail IDs accept 1–649 and reject out-of-range or noncanonical paths.
 - Filter normalization keeps URLs and cache keys consistent.
 - Successful cache results are reused without mixing Pokémon IDs.
 - Temporary failures remain retryable, and recovered empty results are cached.

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { CombinedGraphQLErrors, ServerError } from "@apollo/client/errors";
 import { createCachedPokemonRequest } from "../src/lib/pokemon-cache.ts";
+import { parsePokemonId } from "../src/lib/pokemon-id.ts";
 import {
   getPokemonFilterHref,
   getPokemonFilterKey,
@@ -19,6 +20,38 @@ function memoryCache(load) {
     return entries.get(key);
   };
 }
+
+test("detail IDs accept catalog boundaries and reject invalid or noncanonical paths", () => {
+  for (const id of [1, 25, 649]) {
+    assert.equal(parsePokemonId(String(id)), id);
+  }
+  for (const value of [
+    "",
+    "0",
+    "-1",
+    "650",
+    "2147483648",
+    "9007199254740993",
+    "01",
+    "+1",
+    "1.0",
+    "1.5",
+    "1e2",
+    "0x1",
+    " 1",
+    "1 ",
+    "1\n",
+    "bulbasaur",
+    "NaN",
+    "Infinity",
+  ]) {
+    assert.equal(
+      parsePokemonId(value),
+      null,
+      `Reject ${JSON.stringify(value)}`,
+    );
+  }
+});
 
 test("filters discard unknown values and share one canonical URL/cache key", () => {
   const filters = parsePokemonFilters({
