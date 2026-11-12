@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "raw.githubusercontent.com",
+        pathname: "/PokeAPI/sprites/master/sprites/**",
+        search: "",
       },
     ],
   },
