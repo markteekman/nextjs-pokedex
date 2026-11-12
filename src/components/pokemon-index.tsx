@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { PokemonListPage } from "@/app/types";
 import {
   getPokemonFilterHref,
@@ -10,11 +10,11 @@ import {
   hasPokemonFilters,
   type PokemonFilters,
 } from "@/lib/pokemon-filters";
-import { PokeSlot } from "./pokeslot";
 import {
-  usePokemonOverview,
   type OverviewSnapshot,
+  usePokemonOverview,
 } from "./pokemon-overview-provider";
+import { PokeSlot } from "./pokeslot";
 
 export default function PokemonIndex({
   initialPage,

@@ -1,21 +1,21 @@
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { cache } from "react";
 import PokeCry from "@/components/pokecry";
-import PokeSprite from "@/components/pokesprite";
 import { PokedexError } from "@/components/pokedex-error";
 import { PokemonDetailBackLink } from "@/components/pokemon-detail-back-link";
 import PokemonTypeBadge from "@/components/pokemon-type-badge";
+import PokeSprite from "@/components/pokesprite";
+import { createPageMetadata } from "@/lib/page-metadata";
 import { getSinglePokemon } from "@/lib/pokemon-data";
-import { parsePokemonId } from "@/lib/pokemon-id";
 import { getPokemonFootprintUrl } from "@/lib/pokemon-footprints";
-import { notFound } from "next/navigation";
+import { parsePokemonId } from "@/lib/pokemon-id";
 import formatDexNumber from "@/utilities/format-dex-number";
+import formatFlavorText from "@/utilities/format-flavor-text";
 import {
   formatPokemonHeight,
   formatPokemonWeight,
 } from "@/utilities/format-pokemon-measurements";
-import formatFlavorText from "@/utilities/format-flavor-text";
-import Image from "next/image";
-import { cache } from "react";
-import { createPageMetadata } from "@/lib/page-metadata";
 
 type Props = {
   params: Promise<{ id: string }>;

@@ -4,8 +4,8 @@ import { Navigation } from "@/components/navigation";
 import { PokedexCase } from "@/components/pokedex-case";
 import { PokedexScreen } from "@/components/pokedex-screen";
 import { PokemonOverviewProvider } from "@/components/pokemon-overview-provider";
-import { Footer } from "../components/footer";
 import { createPageMetadata, POKEDEX_DESCRIPTION } from "@/lib/page-metadata";
+import { Footer } from "../components/footer";
 import "./globals.css";
 
 const pixelifySans = Pixelify_Sans({

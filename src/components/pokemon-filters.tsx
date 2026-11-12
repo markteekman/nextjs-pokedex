@@ -3,7 +3,7 @@
 import { Check } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition, type FormEvent } from "react";
+import { type FormEvent, useState, useTransition } from "react";
 import {
   Button,
   CheckboxButton,
@@ -14,11 +14,11 @@ import {
   Text,
 } from "react-aria-components";
 import {
+  type PokemonFilters as Filters,
   GENERATION_OPTIONS,
-  TYPE_OPTIONS,
   getPokemonFilterHref,
   parsePokemonFilters,
-  type PokemonFilters as Filters,
+  TYPE_OPTIONS,
 } from "@/lib/pokemon-filters";
 import { usePokemonOverview } from "./pokemon-overview-provider";
 

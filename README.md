@@ -20,6 +20,17 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Import ordering
+
+Biome's [import organizer](https://biomejs.dev/assist/actions/organize-imports/)
+keeps imports consistent across JavaScript and TypeScript files, including tests
+and configuration files. It respects `.gitignore`; its formatter, linter, and
+other assist actions are disabled. ESLint and Prettier retain their existing roles.
+
+- `pnpm imports:check` checks import ordering without changing files.
+- `pnpm imports:fix` applies Biome's import ordering.
+- `pnpm lint` runs ESLint followed by the import-order check.
+
 ## Pokémon data caching
 
 Successful normalized overview and detail results use Next.js's persistent Data

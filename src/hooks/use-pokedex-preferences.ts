@@ -2,8 +2,8 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import {
-  parsePreferences,
   type PokedexPreferences,
+  parsePreferences,
 } from "@/lib/pokedex-preferences";
 
 const STORAGE_KEY = "pokedex:preferences";

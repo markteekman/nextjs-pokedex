@@ -1,21 +1,21 @@
 "use client";
 
-import Link from "next/link";
 import { clsx } from "clsx";
 import {
   Funnel,
   Home,
   Info,
+  type LucideIcon,
   Search,
   Settings,
-  type LucideIcon,
 } from "lucide-react";
-import { Suspense, type ReactNode } from "react";
+import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { type ReactNode, Suspense } from "react";
 import {
   getPokemonFilterHref,
-  parsePokemonFilters,
   type PokemonFilters,
+  parsePokemonFilters,
 } from "@/lib/pokemon-filters";
 
 const menuItems: {

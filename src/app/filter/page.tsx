@@ -2,8 +2,8 @@ import PokemonFilters from "@/components/pokemon-filters";
 import { createPageMetadata } from "@/lib/page-metadata";
 import {
   getPokemonFilterKey,
-  parsePokemonFilters,
   type PokemonFilterSearchParams,
+  parsePokemonFilters,
 } from "@/lib/pokemon-filters";
 
 export const metadata = createPageMetadata(

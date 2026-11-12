@@ -1,12 +1,9 @@
 "use client";
 
-import { ChevronRight, SearchIcon, X } from "lucide-react";
 import Fuse from "fuse.js/basic";
+import { ChevronRight, SearchIcon, X } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import type { PokemonSearchItem } from "@/app/types";
-import { useDebounce } from "@/hooks/use-debounce";
-import formatDexNumber from "@/utilities/format-dex-number";
 import {
   Autocomplete,
   Button,
@@ -17,6 +14,9 @@ import {
   SearchField,
   Text,
 } from "react-aria-components";
+import type { PokemonSearchItem } from "@/app/types";
+import { useDebounce } from "@/hooks/use-debounce";
+import formatDexNumber from "@/utilities/format-dex-number";
 
 export default function PokemonSearch({
   pokemons,

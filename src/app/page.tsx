@@ -1,13 +1,13 @@
-import { getPokemon } from "@/lib/pokemon-data";
 import { PokedexError } from "@/components/pokedex-error";
 import PokemonIndex from "@/components/pokemon-index";
 import { createPageMetadata, POKEDEX_DESCRIPTION } from "@/lib/page-metadata";
+import { getPokemon } from "@/lib/pokemon-data";
 import {
   getPokemonFilterHref,
   getPokemonFilterKey,
   getPokemonFilterSummary,
-  parsePokemonFilters,
   type PokemonFilterSearchParams,
+  parsePokemonFilters,
 } from "@/lib/pokemon-filters";
 
 type Props = {

@@ -1,10 +1,10 @@
 import { HttpLink } from "@apollo/client";
-import { fetchPokemonApi } from "@/lib/pokemon-request";
 import {
   ApolloClient,
   InMemoryCache,
   registerApolloClient,
 } from "@apollo/client-integration-nextjs";
+import { fetchPokemonApi } from "@/lib/pokemon-request";
 
 export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
   return new ApolloClient({

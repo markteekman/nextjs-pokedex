@@ -1,7 +1,7 @@
-import { getPokemonSearchCatalog } from "@/lib/pokemon-data";
-import PokemonSearch from "@/components/pokemon-search";
 import { PokedexError } from "@/components/pokedex-error";
+import PokemonSearch from "@/components/pokemon-search";
 import { createPageMetadata } from "@/lib/page-metadata";
+import { getPokemonSearchCatalog } from "@/lib/pokemon-data";
 
 export const metadata = createPageMetadata(
   "Search Pokémon",

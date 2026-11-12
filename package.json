@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "eslint && pnpm imports:check",
+    "imports:check": "biome ci .",
+    "imports:fix": "biome check --write .",
     "typecheck": "next typegen && tsc --noEmit",
     "format:check": "prettier --check .",
     "test": "node --experimental-strip-types --test tests/pokemon-critical.test.mjs"
@@ -26,6 +28,7 @@
     "rxjs": "^7.8.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.6.7",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
