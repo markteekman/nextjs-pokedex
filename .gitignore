@@ -25,6 +25,7 @@
 *.pem
 /.impeccable/*
 !/.impeccable/design.json
+/.zed/
 
 # debug
 npm-debug.log*
