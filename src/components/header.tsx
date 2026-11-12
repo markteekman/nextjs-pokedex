@@ -1,4 +1,4 @@
-import { LightIndicators } from "./ligths-indicators";
+import { LightIndicators } from "./light-indicators";
 
 export function Header() {
   return (
