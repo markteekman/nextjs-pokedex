@@ -71,9 +71,19 @@ the hosting platform's Next.js cache support.
 Mock data bypasses the live cache. In development, the outage simulation below
 also bypasses warm entries without replacing them.
 
-Run `npm test` for deterministic cache-policy tests. They check cache hits,
-failure/retry behavior, per-ID isolation, query-key changes, empty results and
-outage simulation without making requests to the public API.
+Run `pnpm test` with Node.js 22.6 or newer for four focused tests in
+`tests/pokemon-critical.test.mjs`, using Node's built-in test runner:
+
+- Filter normalization keeps URLs and cache keys consistent.
+- Successful cache results are reused without mixing Pokémon IDs.
+- Temporary failures remain retryable, and recovered empty results are cached.
+- Connection failures and HTTP 408/429/503 become recoverable outages, while
+  application and GraphQL errors still propagate.
+
+The tests use an in-memory cache stand-in and mocked requests; they make no
+requests to the public API and do not verify Next.js cache persistence,
+revalidation timing, or browser interactions. The command names the suite
+explicitly, so a missing test file fails instead of silently discovering no tests.
 
 ## Design system
 

@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --test tests/pokemon-critical.test.mjs"
   },
   "dependencies": {
     "@apollo/client": "^4.2.3",
