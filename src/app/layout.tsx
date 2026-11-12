@@ -27,11 +27,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${pixelifySans.variable} h-full antialiased`}>
       <body className="flex flex-col py-8 font-sans">
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
         <PokedexCase>
           <aside className="pokedex-navigation pr-4">
             <Navigation />
           </aside>
-          <main className="pokedex-main mt-5 px-16">
+          <main
+            id="main-content"
+            tabIndex={-1}
+            className="pokedex-main mt-5 px-16"
+          >
             <PokemonOverviewProvider>
               <PokedexScreen>{children}</PokedexScreen>
             </PokemonOverviewProvider>

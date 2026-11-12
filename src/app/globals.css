@@ -50,6 +50,32 @@ body {
   pointer-events: none;
 }
 
+/* --- Keyboard skip navigation --- */
+
+.skip-link {
+  position: fixed;
+  transform: translateY(calc(-100% - 2rem));
+  z-index: 50;
+  inset-block-start: 1rem;
+  inset-inline-start: 1rem;
+  border: 2px solid currentColor;
+  border-radius: 0.25rem;
+  background-color: var(--color-pokedex-bezel);
+  padding: 0.75rem 1rem;
+  color: #063e51;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 3px solid white;
+  outline-offset: 3px;
+}
+
+.pokedex-main:focus-visible {
+  outline: 3px solid white;
+  outline-offset: 4px;
+}
+
 /* --- Device case and entrance animation --- */
 
 .pokedex {

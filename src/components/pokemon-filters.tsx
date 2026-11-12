@@ -70,7 +70,7 @@ export default function PokemonFilters({
           >
             <Label className="pokemon-filter-label">Generation</Label>
             <Text slot="description" className="pokemon-filter-description">
-              Match any selected introduction generation.
+              Show Pokémon introduced in any selected generation.
             </Text>
             <div className="pokemon-filter-generation-options">
               {GENERATION_OPTIONS.map(({ id, label }) => (
