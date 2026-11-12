@@ -152,11 +152,16 @@ Run the request-handling checks with `pnpm test`.
 
 ## Social previews
 
-The root layout defines shared Open Graph metadata and a Twitter large-image
-card using `public/social-preview.png`, a 1200 × 630 image shared by every page.
-The metadata includes the image dimensions, content type, and descriptive alt
-text. Next.js reuses the Open Graph image for Twitter.
-Page-specific titles and descriptions can still override the normal page metadata.
+Each page defines a descriptive title, description, and canonical URL through
+`src/lib/page-metadata.ts`. Open Graph and Twitter use the same page-specific
+text and `public/social-preview.png`, a shared 1200 × 630 image with dimensions,
+content type, and descriptive alt text.
+
+Detail metadata includes the Pokémon name and number, with its description when
+available. Metadata and page rendering share one request-scoped lookup. Filtered
+overview URLs use the validated filters for their title and canonical query;
+the filter form itself uses `/filter` as its canonical URL. Temporary detail
+outages receive an unavailable title and `noindex` rather than normal entry metadata.
 
 Set `SITE_URL` to your public origin (for example, `https://your-domain.com`) in
 your deployment environment so social image URLs resolve to the correct domain.

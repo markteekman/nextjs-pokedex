@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
+import { createPageMetadata } from "@/lib/page-metadata";
 
-export const metadata: Metadata = {
-  title: "About | Next.js Pokédex App",
-  description:
-    "Learn why PokeCenter was built, what powers it, and how accessibility shaped the experience.",
-};
+export const metadata = createPageMetadata(
+  "About",
+  "Learn why PokeCenter was built, what powers it, and how accessibility shaped the experience.",
+  "/about",
+);
 
 const stack = [
   ["Next.js", "App Router and server-first foundation"],

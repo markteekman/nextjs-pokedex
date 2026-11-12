@@ -15,13 +15,15 @@ import formatFlavorText from "@/utilities/format-flavor-text";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { cache } from "react";
+import { createPageMetadata } from "@/lib/page-metadata";
 
-export default async function PokemonDetailPage({
-  params,
-}: {
+type Props = {
   params: Promise<{ id: string }>;
-}) {
-  const { id } = await params;
+};
+
+// Metadata and page rendering share the same result within this request.
+const loadPokemon = cache(async (id: string) => {
   const pokemonId = parsePokemonId(id);
 
   if (pokemonId === null) {
@@ -30,7 +32,7 @@ export default async function PokemonDetailPage({
 
   const result = await getSinglePokemon(pokemonId);
 
-  if (result.status === "unavailable") return <PokedexError />;
+  if (result.status === "unavailable") return result;
 
   const pokemon = result.data;
 
@@ -38,6 +40,44 @@ export default async function PokemonDetailPage({
     notFound();
   }
 
+  return { status: "success" as const, data: pokemon };
+});
+
+export async function generateMetadata({ params }: Props) {
+  const { id } = await params;
+  const result = await loadPokemon(id);
+  const number = formatDexNumber(Number(id));
+
+  if (result.status === "unavailable") {
+    return {
+      ...createPageMetadata(
+        `Pokémon ${number} unavailable`,
+        "The Pokémon data service is temporarily unavailable. Please try again shortly.",
+        `/${id}`,
+      ),
+      robots: { index: false },
+    };
+  }
+
+  const pokemon = result.data;
+  const name = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
+
+  return createPageMetadata(
+    `${name} ${number}`,
+    pokemon.flavorText
+      ? `${name} ${number}. ${formatFlavorText(pokemon.flavorText)}`
+      : `Explore ${name} ${number}: types, measurements, artwork, and more.`,
+    `/${pokemon.id}`,
+  );
+}
+
+export default async function PokemonDetailPage({ params }: Props) {
+  const { id } = await params;
+  const result = await loadPokemon(id);
+
+  if (result.status === "unavailable") return <PokedexError />;
+
+  const pokemon = result.data;
   const footprintUrl = getPokemonFootprintUrl(pokemon.id);
 
   return (

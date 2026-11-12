@@ -1,9 +1,16 @@
 import PokemonFilters from "@/components/pokemon-filters";
+import { createPageMetadata } from "@/lib/page-metadata";
 import {
   getPokemonFilterKey,
   parsePokemonFilters,
   type PokemonFilterSearchParams,
 } from "@/lib/pokemon-filters";
+
+export const metadata = createPageMetadata(
+  "Filter Pokémon",
+  "Filter the National Pokédex by generation and type to find matching Pokémon.",
+  "/filter",
+);
 
 export default async function Filter({
   searchParams,

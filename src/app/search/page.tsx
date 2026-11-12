@@ -1,6 +1,13 @@
 import { getPokemonSearchCatalog } from "@/lib/pokemon-data";
 import PokemonSearch from "@/components/pokemon-search";
 import { PokedexError } from "@/components/pokedex-error";
+import { createPageMetadata } from "@/lib/page-metadata";
+
+export const metadata = createPageMetadata(
+  "Search Pokémon",
+  "Search 649 Pokémon by name and open their Pokédex entries, artwork, types, and descriptions.",
+  "/search",
+);
 
 export default async function Search() {
   const result = await getPokemonSearchCatalog();
