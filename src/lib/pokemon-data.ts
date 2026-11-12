@@ -20,27 +20,6 @@ import {
   type PokemonFilters,
 } from "@/lib/pokemon-filters";
 
-interface CryUrls {
-  latest: string | null;
-  legacy: string | null;
-}
-
-interface PokemonCry {
-  cries: CryUrls | null;
-}
-
-interface SpriteUrl {
-  front_default: string | null;
-}
-
-interface PokemonSprites {
-  sprites: {
-    other: {
-      "official-artwork": SpriteUrl | null;
-    };
-  };
-}
-
 interface TypeName {
   name: PokemonTypes;
 }
@@ -76,9 +55,8 @@ interface PokemonListForm extends PokemonForm {
   pokemonsprites: { spriteUrl: string | null }[];
 }
 
-interface PokemonDetailForm extends PokemonForm {
-  pokemonsprites: PokemonSprites[];
-  pokemoncries: PokemonCry[];
+interface PokemonDetailForm extends PokemonListForm {
+  pokemoncries: { cryUrl: string | null }[];
 
   height: number | null;
   weight: number | null;
@@ -153,7 +131,7 @@ const GET_SINGLE_POKEMON = gql`
     pokemon: pokemonspecies(limit: 1, where: { id: { _eq: $id } }) {
       id
       name
-      pokemons {
+      pokemons(where: { is_default: { _eq: true } }, limit: 1) {
         pokemontypes {
           type {
             id
@@ -163,12 +141,12 @@ const GET_SINGLE_POKEMON = gql`
           }
         }
         pokemoncries {
-          cries
+          cryUrl: cries(path: "latest")
         }
         height
         weight
         pokemonsprites {
-          sprites
+          spriteUrl: sprites(path: "other.official-artwork.front_default")
         }
       }
       generation {
@@ -214,10 +192,7 @@ function getSpriteUrl(forms: PokemonDetailForm[]): string | null {
 
   if (!firstForm) return null;
 
-  return (
-    firstForm.pokemonsprites[0]?.sprites?.other["official-artwork"]
-      ?.front_default ?? null
-  );
+  return firstForm.pokemonsprites[0]?.spriteUrl ?? null;
 }
 
 function getLatestCry(forms: PokemonDetailForm[]): string | null {
@@ -225,7 +200,7 @@ function getLatestCry(forms: PokemonDetailForm[]): string | null {
 
   if (!firstForm) return null;
 
-  return firstForm.pokemoncries[0]?.cries?.latest ?? null;
+  return firstForm.pokemoncries[0]?.cryUrl ?? null;
 }
 
 async function requestPokemonList(
