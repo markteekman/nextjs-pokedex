@@ -2,7 +2,7 @@
 
 import { Unplug } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 
 type Props = {
   title?: string;
@@ -17,8 +17,12 @@ export function PokedexError({
 }: Props) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  const [hasRetried, setHasRetried] = useState(false);
 
   function retry() {
+    if (isPending) return;
+
+    setHasRetried(true);
     startTransition(() => {
       router.refresh();
       onReset?.();
@@ -34,12 +38,16 @@ export function PokedexError({
         type="button"
         className="pokedex-retry-button"
         onClick={retry}
-        disabled={isPending}
+        aria-disabled={isPending}
       >
         Try again
       </button>
-      <p className="pokedex-retry-status" role="status">
-        {isPending ? "Trying to reconnect…" : ""}
+      <p className="pokedex-retry-status" role="status" aria-atomic="true">
+        {isPending
+          ? "Trying to reconnect…"
+          : hasRetried
+            ? "The page is still unavailable. Please try again."
+            : ""}
       </p>
     </div>
   );

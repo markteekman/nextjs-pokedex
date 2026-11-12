@@ -586,7 +586,7 @@ body {
   outline-offset: 4px;
 }
 
-.pokedex-retry-button:disabled {
+.pokedex-retry-button[aria-disabled="true"] {
   cursor: wait;
 }
 

@@ -133,11 +133,13 @@ export default function PokemonSearch({
         {!hasQuery && (
           <p className="pokemon-search-hint">Start typing a Pokémon name.</p>
         )}
-        <p role="status" className="pokemon-search-status">
+        <p role="status" aria-atomic="true" className="pokemon-search-status">
           {isFiltering
             ? "Updating results…"
-            : hasQuery && filteredPokemon.length > 0
-              ? `${filteredPokemon.length} matching Pokémon`
+            : hasQuery
+              ? filteredPokemon.length > 0
+                ? `${filteredPokemon.length} matching Pokémon`
+                : "No matching Pokémon. Try another name."
               : ""}
         </p>
       </Autocomplete>
