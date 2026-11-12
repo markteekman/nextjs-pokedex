@@ -1649,6 +1649,7 @@ body {
     visibility: hidden;
   }
 
+  .pokedex-nav-button,
   .pokecry-button,
   .pokemon-setting-track,
   .pokemon-setting-thumb {
