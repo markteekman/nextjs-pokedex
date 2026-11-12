@@ -1,5 +1,40 @@
 import { Copyright } from "lucide-react";
 
+const badges = [
+  {
+    label: "Next.js",
+    colorClasses: "bg-yellow-400/10 text-yellow-500 inset-ring-yellow-400/20",
+  },
+  {
+    label: "TypeScript",
+    colorClasses: "bg-green-400/10 text-green-400 inset-ring-green-500/20",
+  },
+  {
+    label: "Tailwind",
+    colorClasses: "bg-purple-400/10 text-purple-400 inset-ring-purple-400/30",
+  },
+  {
+    label: "GraphQL",
+    colorClasses: "bg-blue-400/10 text-blue-400 inset-ring-blue-400/30",
+  },
+  {
+    label: "React ARIA",
+    colorClasses: "bg-indigo-400/10 text-indigo-400 inset-ring-indigo-400/30",
+  },
+  {
+    label: "Motion",
+    colorClasses: "bg-pink-400/10 text-pink-400 inset-ring-pink-400/20",
+  },
+  {
+    label: "GitHub",
+    colorClasses: "bg-gray-400/10 text-gray-400 inset-ring-gray-400/20",
+  },
+  {
+    label: "Netlify",
+    colorClasses: "bg-red-400/10 text-red-400 inset-ring-red-400/20",
+  },
+];
+
 export function Footer() {
   return (
     <footer className="py-20">
@@ -15,30 +50,14 @@ export function Footer() {
         . Tech stack:
       </p>
       <div className="flex flex-wrap items-center justify-center gap-2">
-        <span className="inline-flex items-center rounded-md bg-yellow-400/10 px-2 py-1 text-xs font-medium text-yellow-500 inset-ring inset-ring-yellow-400/20">
-          Next.js
-        </span>
-        <span className="inline-flex items-center rounded-md bg-green-400/10 px-2 py-1 text-xs font-medium text-green-400 inset-ring inset-ring-green-500/20">
-          TypeScript
-        </span>
-        <span className="inline-flex items-center rounded-md bg-purple-400/10 px-2 py-1 text-xs font-medium text-purple-400 inset-ring inset-ring-purple-400/30">
-          Tailwind
-        </span>
-        <span className="inline-flex items-center rounded-md bg-blue-400/10 px-2 py-1 text-xs font-medium text-blue-400 inset-ring inset-ring-blue-400/30">
-          GraphQL
-        </span>
-        <span className="inline-flex items-center rounded-md bg-indigo-400/10 px-2 py-1 text-xs font-medium text-indigo-400 inset-ring inset-ring-indigo-400/30">
-          React ARIA
-        </span>
-        <span className="inline-flex items-center rounded-md bg-pink-400/10 px-2 py-1 text-xs font-medium text-pink-400 inset-ring inset-ring-pink-400/20">
-          Motion
-        </span>
-        <span className="inline-flex items-center rounded-md bg-gray-400/10 px-2 py-1 text-xs font-medium text-gray-400 inset-ring inset-ring-gray-400/20">
-          GitHub
-        </span>
-        <span className="inline-flex items-center rounded-md bg-red-400/10 px-2 py-1 text-xs font-medium text-red-400 inset-ring inset-ring-red-400/20">
-          Netlify
-        </span>
+        {badges.map(({ label, colorClasses }) => (
+          <span
+            key={label}
+            className={`inline-flex items-center rounded-md px-2 py-1 text-xs font-medium inset-ring ${colorClasses}`}
+          >
+            {label}
+          </span>
+        ))}
       </div>
     </footer>
   );
