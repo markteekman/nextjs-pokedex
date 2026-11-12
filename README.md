@@ -1,6 +1,6 @@
 # Next.js Pokédex
 
-<img width="1200" height="630" alt="social-preview" src="https://github.com/user-attachments/assets/cb474667-394e-4b18-87a3-5a8f11fa78d2" />
+<img width="1109" height="835" alt="Pokédex App" src="https://github.com/user-attachments/assets/93d32a07-b6ad-451c-b073-5bfc71e48109" />
 
 A retro-inspired Pokédex for exploring the first 649 Pokémon, built as a hobby project to learn Next.js, TypeScript, GraphQL, and Apollo. It combines a familiar red Pokédex design with a responsive interface, playful CSS animations, and attention to accessibility, using Tailwind CSS and React Aria.
 
