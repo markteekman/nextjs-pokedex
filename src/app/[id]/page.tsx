@@ -4,8 +4,8 @@ import { cache } from "react";
 import PokeCry from "@/components/pokecry";
 import { PokedexError } from "@/components/pokedex-error";
 import { PokemonDetailBackLink } from "@/components/pokemon-detail-back-link";
+import PokemonDetailSprite from "@/components/pokemon-detail-sprite";
 import PokemonTypeBadge from "@/components/pokemon-type-badge";
-import PokeSprite from "@/components/pokesprite";
 import { createPageMetadata } from "@/lib/page-metadata";
 import { getSinglePokemon } from "@/lib/pokemon-data";
 import { getPokemonFootprintUrl } from "@/lib/pokemon-footprints";
@@ -92,10 +92,10 @@ export default async function PokemonDetailPage({ params }: Props) {
       <div className="pokemon-detail-record">
         <div className="pokemon-detail-specimen">
           {pokemon.spriteUrl ? (
-            <PokeSprite
+            <PokemonDetailSprite
+              key={pokemon.spriteUrl}
               src={pokemon.spriteUrl}
               alt={pokemon.name}
-              variant="detail"
               preload
             />
           ) : (
