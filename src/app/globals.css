@@ -965,6 +965,7 @@ body {
 }
 
 .pokemon-about-stack {
+  container-type: inline-size;
   border: 1px solid var(--screen-rule, rgb(225 253 255 / 0.6));
   border-radius: 0.25rem;
   background-color: var(--screen-panel, rgb(225 253 255 / 0.16));
@@ -976,6 +977,12 @@ body {
   gap: 0.25rem 0.875rem;
   border-block-end: 1px solid var(--screen-rule, rgb(225 253 255 / 0.6));
   padding: 0.625rem 0.875rem;
+}
+
+@container (max-width: 24rem) {
+  .pokemon-about-stack > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .pokemon-about-stack > div:last-child {
